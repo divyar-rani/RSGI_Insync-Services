@@ -1,0 +1,39 @@
+<div style="display: grid; grid-template-columns: 1fr auto;">
+    <div >
+        <span style="font-weight: 600;">{{total}}</span> policies 
+        <span *ngIf="remote"  style="cursor: pointer;">
+            <mat-icon  *ngIf="cachReload"><mat-spinner diameter="14"></mat-spinner></mat-icon>
+            <span *ngIf="!cachReload" style="padding-left: 1em;" (click)="_reload_cache()">cache</span>
+            <span *ngIf="remote && !pending" style="padding-left: 1em;" (click)="pending=true">all</span>
+            <span *ngIf="remote && pending" style="padding-left: 1em;" (click)="pending=false">pending</span>
+        </span>
+    </div>
+    <div>
+        <span class="material-icons-outlined incdec-icon" (click)="changeyear(-1)">chevron_left</span>
+        {{year}}
+        <span class="material-icons-outlined incdec-icon" (click)="changeyear(+1)">chevron_right</span>
+        <span style="padding-right: 1em;"></span>
+        <span class="material-icons-outlined incdec-icon" (click)="changemonth(-1)">chevron_left</span>
+        {{months[+month]}}
+        <span class="material-icons-outlined incdec-icon" (click)="changemonth(+1)">chevron_right</span>
+    </div>
+
+</div>
+
+<div class="caldar-container">
+    <div class="weekdays">
+        <div class="weekday-header" *ngFor="let w of weekdays">{{w}}</div>
+    </div>
+    <div class="weekdays">
+        <div class="weekday" *ngFor="let day of days; let i=index" (click)="showPolicies(day)">
+            <div class="weekday-day">{{day.day}}</div>
+            <ng-template [ngIf]="pending">
+                <div *ngIf="day.day" class="weekday-total" [class.weekday-mismatch]="day.total!=day.local" [class.weekday-zero]="day.total==0">{{day.total-day.local}}</div>
+            </ng-template>
+            <ng-template [ngIf]="!pending">
+                <div [class.weekday-total]="!remote" [class.weekday-total-remote]="remote" [class.weekday-mismatch]="day.total!=day.local" 
+                    [class.weekday-zero]="day.total==0">{{day.total}}</div>
+            </ng-template>
+        </div>
+    </div>
+</div>

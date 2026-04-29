@@ -1,0 +1,47 @@
+.caldar-container {
+    background-color: #222223;
+    padding: 1em 1em;
+    border-radius: 1em 1em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.incdec-icon {
+    vertical-align: bottom;
+    cursor: pointer;
+    font-size: 1.4em;
+}
+.weekdays {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.weekday-header {
+    color: #888;
+    text-align: center;
+    padding-bottom: 1em;
+}
+.weekday {
+    padding: .6em .3em;
+    cursor: pointer;
+}
+.weekday-day {
+    font-size: .9em;
+    color: #666;
+    text-align: center;
+    
+}
+.weekday-total {
+    font-size: 1.1em;
+    text-align: center;
+    color: #FFF;
+}
+.weekday-total-remote {
+    font-size: 1.1em;
+    text-align: center;
+    color: #3F3;
+}
+.weekday-zero {
+    // color: #988;
+    color: #222223;
+}
+.weekday-mismatch {
+    color: #F40;
+}

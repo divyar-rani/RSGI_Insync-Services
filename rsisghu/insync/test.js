@@ -1,0 +1,247 @@
+const axios = require('axios');
+let data = '<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <pol:FGUWPolicyVO>
+            <oprId>GMCPOLICY</oprId>
+            <polNo>APG0000593000100</polNo>
+            <IUWP1_ENQ_KEY_2>34AABCR7106G1ZO</IUWP1_ENQ_KEY_2>
+            <IUWP1_POL_WARR>APG000059300001</IUWP1_POL_WARR>
+            <IUWP1_LINK_FLD>APGX42570001751</IUWP1_LINK_FLD>
+            <endtNo>000</endtNo>
+            <IUWP1_PRD_CD>APG</IUWP1_PRD_CD>
+            <IUWP1_ENDT_REAS>00</IUWP1_ENDT_REAS>
+            <IUWP1_CAT_CD>D</IUWP1_CAT_CD>
+            <IUWP1_ACC_CD>AG020227</IUWP1_ACC_CD>
+            <IUWP1_BR_CD>X4</IUWP1_BR_CD>
+            <isNewAgent>N</isNewAgent>
+            <isNewClient>N</isNewClient>
+            <IUWP1_CLI_CD>AG020227</IUWP1_CLI_CD>
+            <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID>
+            <IUWP1_DOM>URB</IUWP1_DOM>
+            <IUWP1_TERR>TN</IUWP1_TERR>
+            <IUWP1_UWYR>2025</IUWP1_UWYR>
+            <IUWP1_BUS_TP>AA</IUWP1_BUS_TP>
+            <IUWP1_ORACC_CD>OA503184</IUWP1_ORACC_CD>
+            <IUWP1_TERM>01</IUWP1_TERM>
+            <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
+            <IUWP1_INSTL_MODE>A</IUWP1_INSTL_MODE>
+            <nomineeUpdateFlag>N</nomineeUpdateFlag>
+            <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>
+            <IUWP1_RN_CD>Y</IUWP1_RN_CD>
+            <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
+            <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>
+            <primeIUWP1_INCR_SI>6500000</primeIUWP1_INCR_SI>
+            <IUWP1_DECLN_NO/>
+            <IUWP1_ICP_DT>07/03/2026</IUWP1_ICP_DT>
+            <IUWP1_EXP_DT>06/03/2027</IUWP1_EXP_DT>
+            <IUWP1_ISS_DT>07/03/2026</IUWP1_ISS_DT>
+            <IUWP1_ACC_DT>07/03/2026</IUWP1_ACC_DT>
+            <IUWP1_EFF_DT>07/03/2026</IUWP1_EFF_DT>
+            <IUWP1_PROPOSAL_DT>07/03/2026</IUWP1_PROPOSAL_DT>
+            <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
+            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
+            <clientUpdateFlag>Y</clientUpdateFlag>
+            <IUWP1_QUOT_NO>APGX42570001751</IUWP1_QUOT_NO>
+            <IUWP1_CLI_ADDR_1>2, VIJAYAPURAM, CHINNASELAM</IUWP1_CLI_ADDR_1>
+            <IUWP1_CLI_ADDR_2>2, VIJAYAPURAM, CHINNASELAM</IUWP1_CLI_ADDR_2>
+            <IUWP1_CLI_ADDR_3>2, VIJAYAPURAM, CHINNASELAM</IUWP1_CLI_ADDR_3>
+            <vipFlag>N</vipFlag>
+            <panNo/>
+            <isNewNominee>N</isNewNominee>
+            <nomineeCode/>
+            <nomineeDesc/>
+            <relationWithProposer/>
+            <nomineeDOB/>
+            <nomineeSex/>
+            <nomineeMinorFlag/>
+            <aadharNo/>
+            <guardianAge/>
+            <nomineeAddr1/>
+            <nomineeAddr2/>
+            <nomineeAddr3/>
+            <IUWP1_OTH_INT_PTY_CD1>AG020227</IUWP1_OTH_INT_PTY_CD1>
+            <IUWP1_OTH_INT_PTY_CD2>HR003888</IUWP1_OTH_INT_PTY_CD2>
+            <IUWP1_OTH_INT_PTY_CD3>UW000919</IUWP1_OTH_INT_PTY_CD3>
+            <IUWP1_OTH_INT_PTY_CD4>TU000919</IUWP1_OTH_INT_PTY_CD4>
+            <clientVO>
+                <cityCode>VLL</cityCode>
+                <IUWPC_2ND_ZIP>606201</IUWPC_2ND_ZIP>
+                <IUWPC_CAMPAIGN/>
+                <IUWPC_CLI_EMAIL1>xxx@gmail.com</IUWPC_CLI_EMAIL1>
+                <IUWPC_CLI_TP>O</IUWPC_CLI_TP>
+                <IUWPC_CON_CD>IND</IUWPC_CON_CD>
+                <IUWPC_DOB/>
+                <IUWPC_FIRSTNAME2>LAKSHMI FINANCE</IUWPC_FIRSTNAME2>
+                <IUWPC_HAND_PHONE>0</IUWPC_HAND_PHONE>
+                <IUWPC_MARITAL_STATUS/>
+                <IUWPC_OFF_PHONE/>
+                <IUWPC_OTHRNAME2/>
+                <IUWPC_SEX/>
+                <IUWPC_STATE_CD>TN</IUWPC_STATE_CD>
+                <IUWPC_SURNAME2/>
+                <IUWPC_TRADE>1000</IUWPC_TRADE>
+            </clientVO>
+            <userTextVO>
+                <IUWP1_ATEXT1/>
+                <IUWP1_ATEXT2>2034</IUWP1_ATEXT2>
+                <IUWP1_ATEXT3>HealthBuzz</IUWP1_ATEXT3>
+                <IUWP1_ATEXT5>500000</IUWP1_ATEXT5>
+            </userTextVO>
+            <settlementVOList>
+                <IUWP1_ACC_CD>AG020227</IUWP1_ACC_CD>
+                <IUWP1_STL_REF>RE00030345</IUWP1_STL_REF>
+                <IUWP1_STL_SRC>RECT</IUWP1_STL_SRC>
+                <IUWP1_STL_TYPE>EXISTINGRECT</IUWP1_STL_TYPE>
+            </settlementVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZSDEXP</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>-50</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZSTDTY</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>50</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZUTGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U/>
+                <primeIUWP4_NEW_INCR_PREM/>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZCGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U/>
+                <primeIUWP4_NEW_INCR_PREM/>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZIGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>18</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>921</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZSGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U/>
+                <primeIUWP4_NEW_INCR_PREM/>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZOVCM</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>15.00</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM/>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZTPAFE</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>4.00</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>86</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <itemSectionVOList>
+                <coverageVOList>
+                    <IUWP3_COVG_CD>APDPRM</IUWP3_COVG_CD>
+                    <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
+                    <IUWP3_RT_U>0</IUWP3_RT_U>
+                    <primeIUWP3_INCR_PREM>5029</primeIUWP3_INCR_PREM>
+                    <primeIUWP3_INCR_SI>6500000</primeIUWP3_INCR_SI>
+                </coverageVOList>
+                <IUWP2_COVER_CD>APG</IUWP2_COVER_CD>
+                <IUWP2_DED_CODE/>
+                <IUWP2_DESC1>[PA1],[PA3],[PA18],[8]</IUWP2_DESC1>
+                <IUWP2_DESC3>Nill</IUWP2_DESC3>
+                <IUWP2_DESC5>5029.00</IUWP2_DESC5>
+                <IUWP2_DESC7>5029</IUWP2_DESC7>
+                <IUWP2_DESC9>13.00</IUWP2_DESC9>
+                <IUWP2_DESC11>0</IUWP2_DESC11>
+                <IUWP2_DESC12/>
+                <IUWP2_DESC2>Nill</IUWP2_DESC2>
+                <IUWP2_DESC3>Nill</IUWP2_DESC3>
+                <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
+                <IUWP2_MAP_REF_NO>0</IUWP2_MAP_REF_NO>
+                <IUWP2_SECT_NO>01</IUWP2_SECT_NO>
+                <IUWP2_WAR>Chennai</IUWP2_WAR>
+                <IUWP2_TERR_CD>PO</IUWP2_TERR_CD>
+                <IUWP2_ZIP_CD>606201</IUWP2_ZIP_CD>
+                <primeIUWP2_INCR_SI>6500000</primeIUWP2_INCR_SI>
+                <primeIUWP2_INCR_ACT_PREM>5029</primeIUWP2_INCR_ACT_PREM>
+                <IUWP2_INT_CD/>
+                <IUWP2_RSK_CAT>PA1</IUWP2_RSK_CAT>
+                <IUWP2_SI_TP>G</IUWP2_SI_TP>
+                <IUWP2_BAS_RT>E</IUWP2_BAS_RT>
+                <rsPaVO>
+                    <IUWP2_PA_CD>ST000004</IUWP2_PA_CD>
+                    <IUWP2_PA_BR_NAME/>
+                    <IUWP2_PA_ID_DOCN>13</IUWP2_PA_ID_DOCN>
+                    <IUWP2_PA_ID_DTY>NB</IUWP2_PA_ID_DTY>
+                    <IUWP2_PA_OCCUP_INS/>
+                    <IUWP2_PA_BENFY_BR_NAME>5029</IUWP2_PA_BENFY_BR_NAME>
+                    <isBenfClient>N</isBenfClient>
+                    <isInsuredClient>N</isInsuredClient>
+                    <isInsuredNominee>N</isInsuredNominee>
+                    <isNewBenf>N</isNewBenf>
+                    <isNewInsured>N</isNewInsured>
+                    <isUpdateInsured>N</isUpdateInsured>
+                    <IUWP2_PA_TRADE>1000</IUWP2_PA_TRADE>
+                    <membershipNo/>
+                    <uwBenfVO/>
+                    <IUWP2_PA_OCCUP_CL>C104</IUWP2_PA_OCCUP_CL>
+                    <IUWP2_PA_OCCUP_INS>500000</IUWP2_PA_OCCUP_INS>
+                </rsPaVO>
+                <rsAdditionalDetailsVO>
+                    <IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
+                    <IUWP2_ADDITIONAL_FIELD5/>
+                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7>
+                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8>
+                    <IUWP2_ADDITIONAL_FIELD9/>
+                    <IUWP2_ADDITIONAL_FIELD10>SINGARAVEL</IUWP2_ADDITIONAL_FIELD10>
+                    <IUWP2_ADDITIONAL_FIELD11>singaravel99.ss@gmail.com</IUWP2_ADDITIONAL_FIELD11>
+                    <IUWP2_ADDITIONAL_FIELD12>9443353368</IUWP2_ADDITIONAL_FIELD12>
+                    <IUWP2_ADDITIONAL_FIELD40>0</IUWP2_ADDITIONAL_FIELD40>
+                    <IUWP2_ADDITIONAL_FIELD41>0</IUWP2_ADDITIONAL_FIELD41>
+                    <IUWP2_ADDITIONAL_FIELD42>0</IUWP2_ADDITIONAL_FIELD42>
+                    <IUWP2_ADDITIONAL_FIELD43>0</IUWP2_ADDITIONAL_FIELD43>
+                    <IUWP2_ADDITIONAL_FIELD44>0</IUWP2_ADDITIONAL_FIELD44>
+                    <IUWP2_ADDITIONAL_FIELD45>0</IUWP2_ADDITIONAL_FIELD45>
+                    <IUWP2_ADDITIONAL_FIELD46>0</IUWP2_ADDITIONAL_FIELD46>
+                    <IUWP2_ADDITIONAL_FIELD47>0</IUWP2_ADDITIONAL_FIELD47>
+                    <IUWP2_ADDITIONAL_FIELD48>0</IUWP2_ADDITIONAL_FIELD48>
+                    <IUWP2_ADDITIONAL_FIELD49>0</IUWP2_ADDITIONAL_FIELD49>
+                    <IUWP2_ADDITIONAL_FIELD50>0</IUWP2_ADDITIONAL_FIELD50>
+                </rsAdditionalDetailsVO>
+            </itemSectionVOList>
+            <IUWP1_SB_OPT>G</IUWP1_SB_OPT>
+        </pol:FGUWPolicyVO>
+    </soapenv:Body>
+</soapenv:Envelope>';
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthNewBusiness?wsdl',
+  headers: { 
+    'Content-Type': 'application/soap+xml'
+  },
+  data : data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+	
+	<Get name="ThreadPool">
+		<Set name="minThreads" type="int">30</Set>
+		<Set name="maxThreads" type="int">200</Set>
+		<Set name="detailedDump">false</Set>
+	</Get>
+	
+	<Call class="java.lang.System" name="setProperties">
+        <Arg>
+            <New class="java.util.Properties">
+                <Call name="putAll">
+                    <Arg>
+                        <Call class="java.lang.System" name="getProperties"/>
+                    </Arg>
+                </Call>
+                <Call name="setProperty">
+                    <Arg>org.eclipse.jetty.server.Request.maxFormContentSize</Arg>
+                    <Arg>209715200</Arg>
+                </Call>
+            </New>
+        </Arg>
+    </Call>
+</Configure>

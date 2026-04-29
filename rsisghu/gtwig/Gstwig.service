@@ -1,0 +1,11 @@
+[Unit]
+Description=GSTwig Service
+
+[Service]
+ExecStart=/usr/bin/java -Xms64m -Xmx2048m -jar /mnt/ebs1/rsclaims/gtwig/jetty-runner.jar --port 8080 --config /mnt/ebs1/rsclaims/gtwig/config.xml --path /gstwig /mnt/ebs1/rsclaims/gtwig/GSTwigService.war
+WorkingDirectory=/mnt/ebs1/rsclaims/gtwig
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
