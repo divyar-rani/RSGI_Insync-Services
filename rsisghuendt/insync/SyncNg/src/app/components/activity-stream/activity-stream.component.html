@@ -1,0 +1,11 @@
+
+<div class="activity-wrapper" style="padding: 1em 1em;">
+    Activity stream <span class="material-icons-outlined" style="cursor: pointer; font-size: 1.1em" (click)="copyLogsToClipboard()">content_copy</span>
+    <div class="activity-container">
+        <div class="activity-item" *ngFor="let msg of messages">
+            <div class="activity-item-time">{{msg.time}}</div>
+            <div class="activity-item-type" [class]="'activity-item-type-'+msg.type">{{msg.type}}</div>
+            <div class="activity-item-msg" [ngClass]="msg.color">{{msg.message}}</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="summary-wrapper" *ngIf="profile">
+    <div style="padding: 0em 1em; grid-area: a;">
+        <summary [product]="product"></summary>
+    </div>
+    <div class="pol-calendar" style="grid-area: b;">
+        Insillion <policy-calendar [remote]="'policy'" [product]="product"></policy-calendar>
+    </div>
+    <div class="pol-calendar" style="grid-area: c;">
+        Staging <policy-calendar  [product]="product"></policy-calendar>
+    </div>
+</div>
+
+
+<div style="height: 400px;" *ngIf="profile">
+    <activity-stream></activity-stream>
+</div>

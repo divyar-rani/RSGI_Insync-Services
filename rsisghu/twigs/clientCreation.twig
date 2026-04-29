@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:par="http://partymovements.webservices.party.rs.firstapex.com/">
+    <soapenv:Header />
+   <soapenv:Body>
+     {% if (proposal.data.cust_buss_type != 'Entity')%} 
+      <par:FGPartyIndividualTO>
+         <oprId>GMCPOLICY</oprId>
+         <currentRole>ICR</currentRole>
+         <partyID>{{ policy.data.customerno_id }}</partyID>
+         <sex></sex>
+         <DOB></DOB>
+         <nameTO>
+            <prefix></prefix>
+            <suffix></suffix>
+            <lastName>{{slice((proposal.data.proposer_name_primary_insured | replace({"&":"and"})),0,29)}}</lastName>
+            <firstName></firstName>
+            <middleName></middleName>
+         </nameTO>
+         <addressesList>
+            <purpose>M</purpose>
+            <line1>{{ slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30) }}</line1>
+            <line2>{{ slice((proposal.data.proposer_comm_addressline2| replace({"&":"and"})),0,30) }}</line2>
+            <line3>{{ slice((proposal.data.proposer_comm_addressline3| replace({"&":"and"})),0,30) }}</line3>
+            <line4>{{ slice((proposal.data.proposer_comm_addressline4|replace({"&":"and"})),0,30)}}</line4>
+            <email>{{ proposal.data.proposer_email }}</email>
+            <zipNumber>{{ proposal.data.proposer_comm_pincode }}</zipNumber>
+            <state>{{ proposal.data.proposer_comm_state_code }}</state>
+         </addressesList>
+         <!--To update handphone -->
+         <phonesList>
+            <phone>{{ proposal.data.mobile }}</phone>
+            <purpose>H</purpose>
+         </phonesList>
+         <!--To update AADHAAR, EIA, IR -->
+         <accountTO>
+            <bankCode>BK000000</bankCode>
+            <accountNumber>1</accountNumber>
+         </accountTO>
+      </par:FGPartyIndividualTO>
+    {% else %}
+        <par:FGPartyCorporateTO>
+         <oprId>T02</oprId>
+         <currentRole>CCR</currentRole>
+         <partyID>{{ policy.data.customerno_id }}</partyID>
+         <nameTO>
+            <prefix></prefix>
+            <suffix></suffix>
+            <lastName></lastName>
+            <fullName>{{slice((proposal.data.proposer_name_primary_insured | replace({"&":"and"})),0,29)}}</fullName>
+            <middleName></middleName>
+         </nameTO>
+         <addressesList>
+            <purpose>M</purpose>
+            <line1>{{ slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30) }}</line1>
+            <zipNumber>{{ proposal.data.proposer_comm_pincode }}</zipNumber>
+            <state>{{ proposal.data.proposer_comm_state_code }}</state>
+         </addressesList>
+      </par:FGPartyCorporateTO> 
+    {% endif %}
+   </soapenv:Body>
+</soapenv:Envelope>

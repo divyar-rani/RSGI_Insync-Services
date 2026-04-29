@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
+    <soapenv:Header/>
+    <soapenv:Body>{% set global_map = {'Group' : 'GR','Mid Corporate' : 'MC','Affinity' : 'AA','SF' : 'SF','C.N.A' : 'CNA','CODAN' : 'CO','Global Network (RSA)' : 'GN','Globex Underwriting Services' : 'GBX','HDI Gerling' : 'HD','Helvetia' : 'HV','Intact Insurance Specialty Solutions' : 'IT','Liberty Mutual' : 'LM','POHJOLA INSURANCE LTD' : 'PO','R+V Re' : 'RUV','RSA' : 'RS','RUV' : 'RUV','Swiss Re' : 'SWRE','The Hanover Insurance Group' : 'HIG','Trygg Hansa' : 'TR','Vero Insurance' : 'VE','Vienna Insurance Group' : 'VIG','Retail Agency' : 'AA','Commercial': 'CM', 'AAR' : 'AA'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK' } %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber' : 'A','Red':'R'}  %}{% set taxes =  { 'SGST' : 'ZSGST', 'CGST' : 'ZCGST','IGST' : 'ZIGST', 'UGST' : 'ZUTGST' } %}		
+
+        
+        <pol:FGUWPolicyVO>
+            <oprId>GMCPOLICY</oprId>
+            <polNo>{{proposal.data.proposer_expiring_policy_no}}</polNo>
+            <IUWP1_ENQ_KEY_2>{{quote.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
+            <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR>			
+            <IUWP1_LINK_FLD>{{policy_no}}</IUWP1_LINK_FLD>
+            <endtNo>000</endtNo>
+            <IUWP1_PRD_CD>APG</IUWP1_PRD_CD>
+            <IUWP1_ENDT_REAS>12</IUWP1_ENDT_REAS>
+            <IUWP1_CAT_CD>D</IUWP1_CAT_CD>
+            <IUWP1_BR_CD>{{quote.data.branch_code}}</IUWP1_BR_CD>
+            <isNewAgent>N</isNewAgent>
+            <isNewClient>N</isNewClient> 
+			{% set imd_types = ['IMD','Parent_Imd','Parent IMD'] %}
+            {% set cust_types = ['Customer','Parent_Customer','Parent Customer'] %}		       
+            {% for item in payment.details %}
+                {% set payer_type = item.data.payer_type|trim %}
+                {% set party_id = item.data.exist_party_id|upper %}
+                {% if payer_type in imd_types %}
+                {% if proposal.data.existing_client == 'Existing' %}
+                    <IUWP1_CLI_CD>{{proposal.data.customer_id}}</IUWP1_CLI_CD>
+                {% else %}
+                    <IUWP1_CLI_CD>{{proposal.data.customer_id|upper}}</IUWP1_CLI_CD>
+                {% endif %}
+                    <IUWP1_ACC_CD>{{party_id}}</IUWP1_ACC_CD>
+                {% elseif payer_type in cust_types %}
+                {% if proposal.data.existing_client == 'Existing' %}
+                    <IUWP1_CLI_CD>{{proposal.data.customer_id}}</IUWP1_CLI_CD>
+                {% else %}
+                    <IUWP1_CLI_CD>{{party_id}}</IUWP1_CLI_CD>
+                {% endif %}
+                    <IUWP1_ACC_CD>{{party_id}}</IUWP1_ACC_CD>
+                {% endif %}
+            {% endfor %}    
+            <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID>
+            <IUWP1_DOM>URB</IUWP1_DOM>
+            <IUWP1_TERR>{{proposal.data.proposer_comm_state_code}}</IUWP1_TERR> 
+			<IUWP1_QUOT_NO>{{proposal_no}}</IUWP1_QUOT_NO>
+			{% set issue_date = proposal.data.issue_date  %}
+            {% set issued_month = slice(issue_date, 5, 2)%}
+            {% if ( issued_month < 4) %}
+            <IUWP1_UWYR>{{slice(issue_date, 0, 4) - 1}}</IUWP1_UWYR>
+            {%else%}
+            <IUWP1_UWYR>{{slice(issue_date, 0, 4)}}</IUWP1_UWYR>
+            {%endif%}
+			{% if proposal.data.imd_channel == 'Global' %}
+            <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_subchannel] }}</IUWP1_BUS_TP>{% else %}
+            <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_channel] | default('AA') }}</IUWP1_BUS_TP>{% endif %}
+            <IUWP1_ORACC_CD>{{proposal.data.imd_oa_agent}}</IUWP1_ORACC_CD>			
+            <IUWP1_TERM>{{policy_term[proposal.data.tenure_type]}}</IUWP1_TERM>
+            <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
+            <IUWP1_INSTL_MODE>A</IUWP1_INSTL_MODE>
+            <nomineeUpdateFlag>N</nomineeUpdateFlag>
+            <IUWP1_DELIVERY_MODE>E</IUWP1_DELIVERY_MODE>            
+            <IUWP1_RN_CD>00</IUWP1_RN_CD>
+			<IUWP1_OLD_POL_NO>{{proposal.data.proposer_expiring_policy_no}}</IUWP1_OLD_POL_NO>
+            <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
+            <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>
+            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP1_INCR_SI>
+            <IUWP1_DECLN_NO/>			
+            <IUWP1_ICP_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_ICP_DT>
+            <IUWP1_EXP_DT>{{proposal.data.is_fg_policy_end_date}}</IUWP1_EXP_DT>
+            <IUWP1_ISS_DT>{{proposal.data.is_fg_issue_date}}</IUWP1_ISS_DT>
+            <IUWP1_ACC_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_ACC_DT>
+            <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
+            <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT> 	
+            <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
+            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
+            {% if (proposal.data.existing_client != 'Existing') %}
+            <clientUpdateFlag>Y</clientUpdateFlag>
+            {% else %}
+            <clientUpdateFlag>N</clientUpdateFlag>
+            {% endif %}
+            <IUWP1_QUOT_NO></IUWP1_QUOT_NO>
+            <IUWP1_CLI_ADDR_1>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_1>
+            <IUWP1_CLI_ADDR_2>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_2>
+            <IUWP1_CLI_ADDR_3>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_3>
+            <vipFlag>N</vipFlag>
+            <panNo>{{proposal.data.proposer_pan}}</panNo>
+            <isNewNominee>N</isNewNominee>
+            <nomineeCode/>
+            <nomineeDesc/>
+            <relationWithProposer/>
+            <nomineeDOB/>
+            <nomineeSex/>
+            <nomineeMinorFlag/>
+            <aadharNo/>
+            <guardianAge/>
+            <nomineeAddr1/>
+            <nomineeAddr2/>
+            <nomineeAddr3/>
+            <IUWP1_OTH_INT_PTY_CD1>{{proposal.data.imd_code}}</IUWP1_OTH_INT_PTY_CD1>
+            <IUWP1_OTH_INT_PTY_CD2>{{proposal.data.imd_sales_rep}}</IUWP1_OTH_INT_PTY_CD2>
+            <IUWP1_OTH_INT_PTY_CD3>{{proposal.data.imd_approving_uw}}</IUWP1_OTH_INT_PTY_CD3>
+            <IUWP1_OTH_INT_PTY_CD4>{{proposal.data.imd_trading_uw}}</IUWP1_OTH_INT_PTY_CD4>
+
+            <clientVO>
+                <cityCode></cityCode>
+                <IUWPC_2ND_ZIP>{{proposal.data.proposer_comm_pincode}}</IUWPC_2ND_ZIP>
+                <IUWPC_CAMPAIGN/>
+                <IUWPC_CLI_EMAIL1>{{proposal.data.email}}</IUWPC_CLI_EMAIL1>
+                {% if (proposal.data.cust_buss_type == 'Entity' )%}                     
+                    <IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
+                {% else %}                        
+                    <IUWPC_CLI_TP>I</IUWPC_CLI_TP>
+                {%endif%}    
+                <IUWPC_CON_CD>IND</IUWPC_CON_CD>
+                <IUWPC_DOB/>
+                <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>				
+                <IUWPC_HAND_PHONE>0</IUWPC_HAND_PHONE>
+                <IUWPC_MARITAL_STATUS/>
+                <IUWPC_OFF_PHONE/>
+                <IUWPC_OTHRNAME2/>
+                <IUWPC_SEX/>
+                 <IUWPC_STATE_CD>{{proposal.data.proposer_comm_state_code}}</IUWPC_STATE_CD> 				
+                <IUWPC_SURNAME2/>
+                <IUWPC_TRADE>1000</IUWPC_TRADE>
+            </clientVO>
+            <userTextVO>
+                <IUWP1_ATEXT1>{{policy_no}}</IUWP1_ATEXT1>
+                <IUWP1_ATEXT2></IUWP1_ATEXT2>
+                <IUWP1_ATEXT3>INSILLION</IUWP1_ATEXT3>
+                <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si}}</IUWP1_ATEXT5>
+            </userTextVO>    
+            {% for detail in payment.details %} 
+            {% set mode = detail.data.payment_method_mode %}
+            {% set party = detail.data.exist_party_id %} 
+            {% if mode == 'CD' and detail.data.cd_no|default('') != '' %} 
+                <settlementVOList>
+                <IUWP1_ACC_CD>{{party}}</IUWP1_ACC_CD>
+                <IUWP1_STL_REF>{{ detail.data.cd_no }}</IUWP1_STL_REF>
+                <IUWP1_STL_SRC>CD</IUWP1_STL_SRC>
+                <IUWP1_STL_TYPE>CD</IUWP1_STL_TYPE>
+                </settlementVOList>
+            {% elseif mode != 'Bank Guarantee' %}
+            {% set ref = '' %} 
+            {% if detail.data.fg_receipt_no != '' %}{% set ref = detail.data.fg_receipt_no %}{% elseif detail.data.receipt_no != '' %}{% set ref = detail.data.receipt_no %}{% endif %} 
+            {% if ref != '' %} 
+                <settlementVOList>
+                <IUWP1_ACC_CD>{{party}}</IUWP1_ACC_CD>
+                <IUWP1_STL_REF>{{ref}}</IUWP1_STL_REF>
+                <IUWP1_STL_SRC>RECT</IUWP1_STL_SRC>
+                <IUWP1_STL_TYPE>EXISTINGRECT</IUWP1_STL_TYPE>
+                </settlementVOList> 
+            {% endif %} 
+            {% endif %} 
+            {% endfor %}
+            {% for tax in proposal.data.tax_details.tax_parts|default([]) %}                
+                <policyCoverageVOList>
+                <IUWP4_COVG_CD>{{ taxes[tax.name] }}</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>{{tax.rate}}</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
+                </policyCoverageVOList>                
+            {% endfor %}
+            {% set covers = [
+                {"code": "APDPRM", "flag": proposal.data.addon_death, "premium": proposal.data.ren_death_cover_premium, "rate": proposal.data.death_final_rate},
+                {"code": "APSPRM", "flag": proposal.data.addon_ptd, "premium": proposal.data.ren_ptd_f_premium,"rate":proposal.data.ptd_base_rate},
+                {"code": "APPPRM", "flag": proposal.data.addon_ppd, "premium": proposal.data.ren_ppd_f_premium,"rate":proposal.data.ppd_base_rate},
+                {"code": "APGTPR", "flag": proposal.data.addon_ttd, "premium": proposal.data.ren_final_ttd_premium,"rate":""},
+                {"code": "APEDG", "flag": proposal.data.addon_child_benefits, "premium": proposal.data.ren_child_education_premium,"rate":""},
+                {"code": "ACLOD", "flag": proposal.data.addon_ambulance, "premium": proposal.data.ren_ambulance_premium,"rate":""},
+                {"code": "APGMB", "flag": proposal.data.addon_modification, "premium": proposal.data.ren_modification_benefits_premium,"rate":""},
+                {"code": "APGFT", "flag": proposal.data.addon_family_trans_benefit, "premium": proposal.data.ren_family_trans_premium,"rate":""},               
+                {"code": "TRTROR", "flag": proposal.data.addon_repatriation_mortal_remains, "premium": proposal.data.ren_repatriations_premium,"rate":""},
+                {# {"code": "", "flag": proposal.data.addon_loss_clothing, "premium": proposal.data.ren_loss_of_cloths_premium,"rate":""},
+				{"code": "", "flag": proposal.data.addon_funeral_expenses, "premium": proposal.data.ren_funeral_expense_premium,"rate":""}, 
+                {"code": "", "flag": proposal.data.addon_loss_of_limbs, "premium": proposal.data.ren_limbs_f_premium, "rate":proposal.data.limbs_base_rate},				
+                {"code": "", "flag": proposal.data.addon_national_cover, "premium": proposal.data.ren_national_cover_premium,"rate":""}, #}
+                {"code": "APMPRM", "flag": proposal.data.addon_medical_exp, "premium": proposal.data.ren_medical_expense_premium,"rate":""}
+            ] %}
+                <itemSectionVOList>
+				{% for cover in covers %}
+                {% if cover.flag == 'Yes' %}
+                {% if cover.code %}
+                <coverageVOList>
+                <IUWP3_COVG_CD>{{cover.code}}</IUWP3_COVG_CD>
+                <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>				
+				{% if cover.rate == '0' or cover.rate == 0 or cover.rate == '' %}{% set c_rate = 0 %}{% else %}{% set c_rate = cover.rate|number_format(2)%}{% endif %}				
+                <IUWP3_RT_U>{{c_rate}}</IUWP3_RT_U>
+				{% if cover.premium == '0' or cover.premium == 0 or cover.premium == '' %}{% set c_premium = 0 %}{% else %}{% set c_premium = cover.premium|number_format(2)%}{% endif %}
+                <primeIUWP3_INCR_PREM>{{c_premium}}</primeIUWP3_INCR_PREM>
+                <primeIUWP3_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP3_INCR_SI>
+                </coverageVOList>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                <IUWP2_COVER_CD>APG</IUWP2_COVER_CD>
+                <IUWP2_DED_CODE/>
+				{% set m = 0 %}
+                {# <IUWP2_DESC1>{% for prod in quote.data.clause_wordings %}{{(m == '0') ? '' : ',' }}{% if prod.id|slice(9,15) != ''  %}[{{prod.id|slice(9,15)}}]{% set m = m+1 %}{% endif %}{% endfor %}</IUWP2_DESC1>  temperorily added till 15 chars #}				
+                <IUWP2_DESC2></IUWP2_DESC2>
+                <IUWP2_DESC3></IUWP2_DESC3>
+                <IUWP2_DESC4></IUWP2_DESC4>
+                <IUWP2_DESC5></IUWP2_DESC5>
+                <IUWP2_DESC6></IUWP2_DESC6>
+                <IUWP2_DESC7></IUWP2_DESC7>
+                <IUWP2_DESC8></IUWP2_DESC8>
+                <IUWP2_DESC9></IUWP2_DESC9>
+                <IUWP2_DESC10></IUWP2_DESC10>
+                <IUWP2_DESC11></IUWP2_DESC11>
+                <IUWP2_DESC12></IUWP2_DESC12>
+                <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
+                <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
+                <IUWP2_SECT_NO>01</IUWP2_SECT_NO>
+                <IUWP2_TERR_CD>{{proposal.data.proposer_comm_state_code}}</IUWP2_TERR_CD> 
+                <IUWP2_ZIP_CD>{{proposal.data.proposer_comm_pincode}}</IUWP2_ZIP_CD> 
+				<IUWP2_WAR>{{proposal.data.proposer_comm_state}}</IUWP2_WAR>
+                <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
+                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.premium_value}}</primeIUWP2_INCR_ACT_PREM>
+                <IUWP2_INT_CD/>
+                <IUWP2_RSK_CAT>{{quote.data.occ_pa_category}}</IUWP2_RSK_CAT>
+                <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
+                <IUWP2_BAS_RT>E</IUWP2_BAS_RT>
+                <IUWP2_EMLX>{{proposal.data.email}}</IUWP2_EMLX>
+                <rsPaVO>
+                {%if proposal.data.tpa_code == '' %}<IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}<IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>{% endif %}
+                <IUWP2_PA_BR_NAME>{{proposal.data.fg_family_def}}</IUWP2_PA_BR_NAME>
+                <IUWP2_PA_ID_DOCN>{{proposal.data.bk_total_lives}}</IUWP2_PA_ID_DOCN>
+                    <IUWP2_PA_ID_DTY></IUWP2_PA_ID_DTY>
+                    <IUWP2_PA_OCCUP_INS/>
+                    <IUWP2_PA_BENFY_BR_NAME></IUWP2_PA_BENFY_BR_NAME>
+                    <isBenfClient>N</isBenfClient>
+                    <isInsuredClient>N</isInsuredClient>
+                    <isInsuredNominee>N</isInsuredNominee>
+                    <isNewBenf>N</isNewBenf>
+                    <isNewInsured>N</isNewInsured>
+                    <isUpdateInsured>N</isUpdateInsured>
+                    <IUWP2_PA_TRADE>1000</IUWP2_PA_TRADE>
+                    <IUWP2_PA_OCCUP_CAT>PAEE</IUWP2_PA_OCCUP_CAT>
+                    <membershipNo/>
+                    <uwBenfVO/>
+                    <IUWP2_PA_OCCUP_CL>C104</IUWP2_PA_OCCUP_CL>													   
+                <IUWP2_PA_OCCUP_INS>{{proposal.data.bk_highest_individual_si}}</IUWP2_PA_OCCUP_INS>
+                </rsPaVO>
+                <rsAdditionalDetailsVO>
+                <IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
+                    <IUWP2_ADDITIONAL_FIELD5/>
+                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7>
+                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8>
+                    <IUWP2_ADDITIONAL_FIELD9/>							  
+                <IUWP2_ADDITIONAL_FIELD10>{{slice(proposal.data.first_name,0,30)}}</IUWP2_ADDITIONAL_FIELD10>
+                <IUWP2_ADDITIONAL_FIELD11>{{proposal.data.email}}</IUWP2_ADDITIONAL_FIELD11>
+                <IUWP2_ADDITIONAL_FIELD12>{{proposal.data.mobile_no}}</IUWP2_ADDITIONAL_FIELD12>
+                    <IUWP2_ADDITIONAL_FIELD40>0</IUWP2_ADDITIONAL_FIELD40>
+                    <IUWP2_ADDITIONAL_FIELD41>0</IUWP2_ADDITIONAL_FIELD41>
+                    <IUWP2_ADDITIONAL_FIELD42>0</IUWP2_ADDITIONAL_FIELD42>
+                    <IUWP2_ADDITIONAL_FIELD43>0</IUWP2_ADDITIONAL_FIELD43>
+                    <IUWP2_ADDITIONAL_FIELD44>0</IUWP2_ADDITIONAL_FIELD44>
+                    <IUWP2_ADDITIONAL_FIELD45>0</IUWP2_ADDITIONAL_FIELD45>
+                    <IUWP2_ADDITIONAL_FIELD46>0</IUWP2_ADDITIONAL_FIELD46>
+                    <IUWP2_ADDITIONAL_FIELD47>0</IUWP2_ADDITIONAL_FIELD47>
+                    <IUWP2_ADDITIONAL_FIELD48>0</IUWP2_ADDITIONAL_FIELD48>
+                    <IUWP2_ADDITIONAL_FIELD49>0</IUWP2_ADDITIONAL_FIELD49>
+                    <IUWP2_ADDITIONAL_FIELD50>0</IUWP2_ADDITIONAL_FIELD50></rsAdditionalDetailsVO>
+                </itemSectionVOList>                       
+
+            <IUWP1_SB_OPT>G</IUWP1_SB_OPT>
+        </pol:FGUWPolicyVO>
+    </soapenv:Body>
+</soapenv:Envelope>

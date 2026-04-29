@@ -1,0 +1,49 @@
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.summary-table th {
+    text-align: right;
+    padding: .3em 1em;
+    background: #757de8;
+    color: #FFF;
+    font-weight: normal;
+}
+.summary-table td {
+    padding: .6em 1em;
+    text-align: right;
+    cursor: pointer;
+}
+.summary-table > tr:last-child { background:#EEE; font-weight: bold;}
+.state-cell {
+    width: 100px;
+    word-wrap: normal;
+    overflow: hidden;
+}
+.prod-cell {
+    text-align: left !important;
+}
+
+
+.percentile-container {
+    padding-top: 2em;
+    display: flex;
+    gap: 1em;
+}
+
+.percentile-item {
+    padding: .25em 1em;
+}
+
+@media only screen and (max-width: 540px) {
+    .summary-period {
+        padding-left: .5em;
+    }
+    .percentile-item {
+        font-size: .85em;
+        padding: .25em 1em;
+    }
+    .percentile-container {
+        gap: .8em;
+    }
+}

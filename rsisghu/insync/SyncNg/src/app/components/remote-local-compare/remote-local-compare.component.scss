@@ -1,0 +1,24 @@
+.period-item-cal {
+    display: inline-block;
+    font-size: 0.8em;
+    cursor: pointer;
+    margin: 0px 1em 0px .25em;
+}
+
+table {
+    width: 100%;
+}
+table tr.mat-header-row, tr.mat-row {
+    height: 40px;
+}
+table th {
+    background: #757de8;
+    color: #FFF;
+    font-weight: normal;
+}
+::ng-deep .mat-sort-header-arrow {
+    color: #FFF;
+}
+.action-cell {
+    width: 100px;
+}

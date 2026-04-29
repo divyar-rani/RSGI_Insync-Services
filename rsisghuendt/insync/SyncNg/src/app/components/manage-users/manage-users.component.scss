@@ -1,0 +1,9 @@
+.utable {
+    width: 680px;
+}
+.user-add {
+    max-width: 680px;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1em;
+}
