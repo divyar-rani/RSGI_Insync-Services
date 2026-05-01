@@ -1,14 +1,14 @@
 const conf = {
     port: 8097,
-    tmp: '/mnt/ebs1/tmp/is_sitnexus',
+    tmp: '/mnt/ebs1/tmp/is_rsisghureport',
     dbtype: 'mysql',
-    server_id: 'is_sitnexus',
+    server_id: 'is_rsisghureport',
     db: {
-        host: 'localhost',
+        host: 'rs-uat-webapp.cq2cwczu14rw.ap-south-1.rds.amazonaws.com',
         port: 3306,
-        database: 'is_sitnexus',
-        user: 'is_sitnexus',
-        password: 'is_sitnexus',
+        database: 'is_rsisghureport',
+        user: 'admmin',
+        password: 'PyupxQPXXzzSuKKt9NTc',
         charset: 'utf8_unicode_ci',
         supportBigNumbers: true,
         dateStrings: true
@@ -19,8 +19,8 @@ const conf = {
     },
 
     sqs: {
-        url: "https://sqs.ap-south-2.amazonaws.com/288761739004/sit-nexus-insillion",
-        region: 'ap-south-2',
+        url: "https://sqs.ap-south-1.amazonaws.com/920043513072/uat-report-insillion",
+        region: 'ap-south-1',
         accessKeyId: '',
         secretAccessKey: '',
         iamRole: '',
