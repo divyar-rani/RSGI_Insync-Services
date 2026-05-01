@@ -178,7 +178,7 @@
             <itemSectionVOList>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_SECT_NO>01</IUWP2_SECT_NO>
-                <IUWP2_DESC1>[12],[5 (i)],[16],[21],[5 (ii)],[25],[26],[2a],[5(ii)],[5(ii)],[5(ii)]</IUWP2_DESC1>
+                <IUWP2_DESC1>{% for prod in proposal.data.clause_wordings %}{{(m == '0') ? '' : ',' }}{% if prod.id|slice(9,15) != ''  %}[{{prod.id|slice(9,15)}}]{% set m = m+1 %}{% endif %}{% endfor %}</IUWP2_DESC1> 
                 <IUWP2_DESC4></IUWP2_DESC4>
                 <IUWP2_DESC5></IUWP2_DESC5>
                 <IUWP2_DESC6></IUWP2_DESC6>

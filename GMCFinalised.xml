@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <pol:FGUWPolicyVO>
+            <oprId>GMCPOLICY</oprId> ** correct
+            <polNo>GMP0000002000100</polNo> ** correct
+            <IUWP1_ENQ_KEY_2>24AABCR7106G1ZP</IUWP1_ENQ_KEY_2> ** correct
+            <IUWP1_POL_WARR>GMP000000200000</IUWP1_POL_WARR> ** correct
+            <IUWP1_LINK_FLD>PRO2026805500002057</IUWP1_LINK_FLD> ** correct
+            <endtNo>000</endtNo> ** correct
+            <IUWP1_PRD_CD>AMG</IUWP1_PRD_CD> ** correct
+            <IUWP1_ENDT_REAS>00</IUWP1_ENDT_REAS>  ** correct
+            <IUWP1_CAT_CD>D</IUWP1_CAT_CD> 
+            <IUWP1_BR_CD>M5</IUWP1_BR_CD> ** correct
+            <isNewAgent>N</isNewAgent> ** correct
+            <isNewClient>N</isNewClient> ** correct
+            <IUWP1_CLI_CD>LW005393</IUWP1_CLI_CD> ** correct
+            <IUWP1_ACC_CD>AG020227</IUWP1_ACC_CD> ** correct
+            <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID> 
+            <IUWP1_DOM>URB</IUWP1_DOM> ** correct
+            <IUWP1_TERR>TN</IUWP1_TERR> ** correct
+            <IUWP1_QUOT_NO>PRO2026805500002057</IUWP1_QUOT_NO> ** correct
+            <IUWP1_UWYR>2026</IUWP1_UWYR> ** correct
+            <IUWP1_BUS_TP>AA</IUWP1_BUS_TP> ** correct
+            <IUWP1_ORACC_CD>OA500000</IUWP1_ORACC_CD> ** correct
+            <IUWP1_TERM>01</IUWP1_TERM> ** correct
+            <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY> 
+            <IUWP1_INSTL_MODE>A</IUWP1_INSTL_MODE> 
+            <nomineeUpdateFlag>N</nomineeUpdateFlag>
+            <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE> ** correct
+            <IUWP1_RN_CD>00</IUWP1_RN_CD> ** correct
+            <IUWP1_SI_CUR>INR</IUWP1_SI_CUR> ** correct
+            <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR> ** correct
+            <primeIUWP1_INCR_SI>500000</primeIUWP1_INCR_SI> ** correct
+            <IUWP1_DECLN_NO/>
+            <IUWP1_ICP_DT>29/04/2026</IUWP1_ICP_DT> ** correct
+            <IUWP1_EXP_DT>05/04/2027</IUWP1_EXP_DT> ** correct
+            <IUWP1_ISS_DT>30/04/2026</IUWP1_ISS_DT> ** correct
+            <IUWP1_ACC_DT>30/04/2026</IUWP1_ACC_DT> ** correct
+            <IUWP1_EFF_DT>29/04/2026</IUWP1_EFF_DT> ** correct
+            <IUWP1_PROPOSAL_DT>30/04/2026</IUWP1_PROPOSAL_DT> ** correct
+            <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM> ** correct
+            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM> ** correct
+            <clientUpdateFlag>Y</clientUpdateFlag> ** correct
+            <IUWP1_CLI_ADDR_1>NO.20</IUWP1_CLI_ADDR_1> ** correct
+            <IUWP1_CLI_ADDR_2>NO.20</IUWP1_CLI_ADDR_2> ** correct
+            <IUWP1_CLI_ADDR_3>NO.20</IUWP1_CLI_ADDR_3> ** correct
+            <vipFlag>N</vipFlag> ** correct
+            <panNo>BRTPS5245Q</panNo> ** correct
+            <isNewNominee>N</isNewNominee>  ** correct
+            <nomineeCode/>
+            <nomineeDesc/>
+            <relationWithProposer/>
+            <nomineeDOB/>
+            <nomineeSex/>
+            <nomineeMinorFlag/>
+            <aadharNo/>
+            <guardianAge/>
+            <nomineeAddr1/>
+            <nomineeAddr2/>
+            <nomineeAddr3/>
+            <IUWP1_OTH_INT_PTY_CD1>AG020227</IUWP1_OTH_INT_PTY_CD1> ** correct
+            <IUWP1_OTH_INT_PTY_CD2>HR002809</IUWP1_OTH_INT_PTY_CD2> ** correct
+            <IUWP1_OTH_INT_PTY_CD3>UW002741</IUWP1_OTH_INT_PTY_CD3> ** correct
+            <IUWP1_OTH_INT_PTY_CD4>TU002741</IUWP1_OTH_INT_PTY_CD4> ** correct
+            <clientVO>
+                <cityCode></cityCode>
+                <IUWPC_2ND_ZIP>600126</IUWPC_2ND_ZIP> ** correct
+                <IUWPC_CAMPAIGN/>
+                <IUWPC_CLI_EMAIL1></IUWPC_CLI_EMAIL1> ** correct
+                <IUWPC_CLI_TP>I</IUWPC_CLI_TP> ** correct
+                <IUWPC_CON_CD>IND</IUWPC_CON_CD> ** correct
+                <IUWPC_DOB/>
+                <IUWPC_FIRSTNAME2>SABARINATHAN</IUWPC_FIRSTNAME2> ** correct
+                <IUWPC_HAND_PHONE>0</IUWPC_HAND_PHONE> 
+                <IUWPC_MARITAL_STATUS/>
+                <IUWPC_OFF_PHONE/>
+                <IUWPC_OTHRNAME2/>
+                <IUWPC_SEX/>
+                <IUWPC_STATE_CD>TN</IUWPC_STATE_CD> ** correct
+                <IUWPC_SURNAME2/>
+                <IUWPC_TRADE>1000</IUWPC_TRADE> ** correct
+            </clientVO>
+            <userTextVO>
+                <IUWP1_ATEXT1/>
+                <IUWP1_ATEXT2>155</IUWP1_ATEXT2> ** correct
+                <IUWP1_ATEXT3>INSILLION</IUWP1_ATEXT3> ** correct
+                <IUWP1_ATEXT5>500000</IUWP1_ATEXT5> ** correct
+            </userTextVO>
+            <settlementVOList>
+                <IUWP1_ACC_CD>AG020227</IUWP1_ACC_CD> ** correct
+                <IUWP1_STL_REF>CDAG020227</IUWP1_STL_REF> ** correct
+                <IUWP1_STL_SRC>CD</IUWP1_STL_SRC> ** correct
+                <IUWP1_STL_TYPE>CD</IUWP1_STL_TYPE> ** correct
+            </settlementVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZIGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>18</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>74021.77</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <itemSectionVOList>
+                <coverageVOList>
+                    <IUWP3_COVG_CD>HSDPRM</IUWP3_COVG_CD>
+                    <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
+                    <IUWP3_RT_U>0</IUWP3_RT_U>
+                    <primeIUWP3_INCR_PREM>411232</primeIUWP3_INCR_PREM>
+                    <primeIUWP3_INCR_SI>500000</primeIUWP3_INCR_SI>
+                </coverageVOList>
+                <IUWP2_COVER_CD>AMG</IUWP2_COVER_CD>
+                <IUWP2_DED_CODE/>
+                <IUWP2_DESC1>[5 (i)],[16],[5 (ii)],[2a],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[8]</IUWP2_DESC1>
+                <IUWP2_DESC2>Nill</IUWP2_DESC2>
+                <IUWP2_DESC3>Nill</IUWP2_DESC3>
+                <IUWP2_DESC4></IUWP2_DESC4>
+                <IUWP2_DESC5>411232</IUWP2_DESC5>
+                <IUWP2_DESC6></IUWP2_DESC6>
+                <IUWP2_DESC7>411232</IUWP2_DESC7>
+                <IUWP2_DESC8></IUWP2_DESC8>
+                <IUWP2_DESC9>155</IUWP2_DESC9>
+                <IUWP2_DESC10></IUWP2_DESC10>
+                <IUWP2_DESC11>0</IUWP2_DESC11>
+                <IUWP2_DESC12></IUWP2_DESC12> ** GSTIN
+                <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
+                <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
+                <IUWP2_SECT_NO>01</IUWP2_SECT_NO>
+                <IUWP2_TERR_CD>TN</IUWP2_TERR_CD>
+                <IUWP2_ZIP_CD>600126</IUWP2_ZIP_CD>
+                <IUWP2_WAR>Tamilnadu</IUWP2_WAR>
+                <primeIUWP2_INCR_SI>500000</primeIUWP2_INCR_SI>
+                <primeIUWP2_INCR_ACT_PREM>411232.03</primeIUWP2_INCR_ACT_PREM>
+                <IUWP2_INT_CD>H015</IUWP2_INT_CD>
+                <IUWP2_RSK_CAT>AM0</IUWP2_RSK_CAT>
+                <IUWP2_SI_TP>G</IUWP2_SI_TP>
+                <IUWP2_BAS_RT>E</IUWP2_BAS_RT>
+                <IUWP2_EMLX></IUWP2_EMLX>
+                <rsPaVO>
+                    <IUWP2_PA_CD>SP000000</IUWP2_PA_CD>
+                    <IUWP2_PA_BR_NAME>Self, Spouse and Dependant Children</IUWP2_PA_BR_NAME>
+                    <IUWP2_PA_ID_DOCN>155</IUWP2_PA_ID_DOCN>
+                    <IUWP2_PA_ID_DTY>NB</IUWP2_PA_ID_DTY> ** Named & Unname and GMC only for NB
+                    <IUWP2_PA_OCCUP_INS>Manufacturing</IUWP2_PA_OCCUP_INS>
+                    <IUWP2_PA_BENFY_BR_NAME>2267</IUWP2_PA_BENFY_BR_NAME>
+                    <isBenfClient>N</isBenfClient>
+                    <isInsuredClient>N</isInsuredClient>
+                    <isInsuredNominee>N</isInsuredNominee>
+                    <isNewBenf>N</isNewBenf>
+                    <isNewInsured>N</isNewInsured>
+                    <isUpdateInsured>N</isUpdateInsured>
+                    <IUWP2_PA_TRADE>1000</IUWP2_PA_TRADE>
+                    <membershipNo/>
+                    <uwBenfVO/>
+                    <IUWP2_PA_OCCUP_CL>C104</IUWP2_PA_OCCUP_CL>
+                    <IUWP2_PA_OCCUP_INS>500000</IUWP2_PA_OCCUP_INS> ** Industry classification 
+                </rsPaVO>
+                <rsAdditionalDetailsVO>
+                    <IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
+                    <IUWP2_ADDITIONAL_FIELD5/>
+                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7> ** V24 Channel
+                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8> ** Industry classification
+                    <IUWP2_ADDITIONAL_FIELD9>Zap_SME_Plan 40</IUWP2_ADDITIONAL_FIELD9>
+                    <IUWP2_ADDITIONAL_FIELD10>SABARINATHAN</IUWP2_ADDITIONAL_FIELD10>
+                    <IUWP2_ADDITIONAL_FIELD11></IUWP2_ADDITIONAL_FIELD11>
+                    <IUWP2_ADDITIONAL_FIELD12>9894318709</IUWP2_ADDITIONAL_FIELD12>
+                    <IUWP2_ADDITIONAL_FIELD40>0</IUWP2_ADDITIONAL_FIELD40>
+                    <IUWP2_ADDITIONAL_FIELD41>0</IUWP2_ADDITIONAL_FIELD41>
+                    <IUWP2_ADDITIONAL_FIELD42>0</IUWP2_ADDITIONAL_FIELD42>
+                    <IUWP2_ADDITIONAL_FIELD43>0</IUWP2_ADDITIONAL_FIELD43>
+                    <IUWP2_ADDITIONAL_FIELD44>0</IUWP2_ADDITIONAL_FIELD44>
+                    <IUWP2_ADDITIONAL_FIELD45>0</IUWP2_ADDITIONAL_FIELD45>
+                    <IUWP2_ADDITIONAL_FIELD46>0</IUWP2_ADDITIONAL_FIELD46>
+                    <IUWP2_ADDITIONAL_FIELD47>0</IUWP2_ADDITIONAL_FIELD47>
+                    <IUWP2_ADDITIONAL_FIELD48>0</IUWP2_ADDITIONAL_FIELD48>
+                    <IUWP2_ADDITIONAL_FIELD49>0</IUWP2_ADDITIONAL_FIELD49>
+                    <IUWP2_ADDITIONAL_FIELD50>0</IUWP2_ADDITIONAL_FIELD50>
+                </rsAdditionalDetailsVO>
+            </itemSectionVOList>
+            <IUWP1_SB_OPT>G</IUWP1_SB_OPT>
+        </pol:FGUWPolicyVO>
+    </soapenv:Body>
+</soapenv:Envelope>

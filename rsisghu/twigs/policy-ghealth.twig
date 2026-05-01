@@ -168,13 +168,13 @@
    
                 <IUWP2_COVER_CD>AMG</IUWP2_COVER_CD>
                 <IUWP2_DED_CODE/>
-                <IUWP2_DESC1>[5 (i)],[16],[5 (ii)],[2a],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[5(ii)],[8]</IUWP2_DESC1>
+                <IUWP2_DESC1>{% for prod in proposal.data.clause_details %}{{(m == '0') ? '' : ',' }}{% if prod.endtNo|slice(9,15) != ''  %}[{{prod.endtNo|slice(9,15)}}]{% set m = m+1 %}{% endif %}{% endfor %}</IUWP2_DESC1> 
                 <IUWP2_DESC2></IUWP2_DESC2>
-				<IUWP2_DESC3></IUWP2_DESC3>
+				<IUWP2_DESC3>{{proposal.data.total_amount|number_format(0)}}</IUWP2_DESC3>
                 <IUWP2_DESC4></IUWP2_DESC4>
                 <IUWP2_DESC5>{{proposal.data.total_premium|number_format(0)}}</IUWP2_DESC5>
                 <IUWP2_DESC6></IUWP2_DESC6>
-                <IUWP2_DESC7></IUWP2_DESC7>
+                <IUWP2_DESC7>{{proposal.data.total_premium|number_format(0)}}</IUWP2_DESC7>
                 <IUWP2_DESC8></IUWP2_DESC8>
                 <IUWP2_DESC9>{{proposal.data.dem_mem_final_lives}}</IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
