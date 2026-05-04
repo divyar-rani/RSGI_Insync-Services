@@ -476,33 +476,29 @@ class twigbase {
         let jx = null;
         try {
             this.__fs_log(service, (subid||policyId)+'-req.txt', typeof xdata != 'string' ? JSON.stringify(xdata) : xdata, policy);
-            let start = performance.now();
+            let start = performance.now();			
             if (url) {
-                //ret = await this.ish.apost(url, xdata, headers, undefined, options);
-                // Thillai added on 08-02-2023 To allow Json and xml Request 
-                if (service.target.type == 'json'){
-                    if(service.name == 'dispatch_service' || service.name == 'pace-payment'){
-                        url = url+'?action=start&params='+xdata+'&createTask=false&parts=all';
-                        ret = await this.ish.apost(url, undefined, headers, undefined, options);
-                    } else {
-                    ret = await this.ish.apost(url, JSON.parse(xdata), headers, undefined, options);
-                    }
-                } else {
-                    ret = await this.ish.apost(url, xdata, headers, undefined, options);
-                }
-            } else {
+                //ret = await this.ish.sendFullProposalRequest( xdata);	
+			if (service.target.type == 'json'){
+				ret = await this.ish.apost(url, JSON.parse(xdata), headers, undefined, options);
+				}		    
+			else{      // To allow XML Request
+		    ret = await this.ish.apost(url, xdata, headers, undefined, options);
+		}
+            
+			} else {
                 if (service.target.type == 'json') ret = {};
                 else ret = "<xml></xml>";
             }
+			
+			console.log("----------- Ret ", ret);
             
             if (service.trace) console.log('invoke:', (policy.quote?.data.product_name||'')+'('+(policy.quote?.data.sub_product_name||'')+')', (performance.now()-start).toFixed(0), url);
             this.__fs_log(service, (subid||policyId)+'-res.txt', typeof ret != 'string' ? JSON.stringify(ret) : ret, policy);
-
             if (service.target.type == 'json') jx = typeof ret === 'string' ? JSON.parse(ret) : ret;
             else jx = await utils.parse_xml(ret);
-
             if (!jx) {
-                await this.ish.__log('error', 'failed to parse response', policy.endorsement_id, service.name);
+                await this.ish.__log('error', 'failed to parse response', policy.policy_id, service.name);
                 return false;
             }
 

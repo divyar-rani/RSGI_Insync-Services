@@ -40,16 +40,16 @@ const conf = {
 				target: {
 					method: 'POST',
 					headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
-					url: 'http://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
+					url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
 					errorPath: [
 						{
-							xfunc: '__get_fg_err_status', mandatory: true
+							xfunc: '__get_fg_endt_err_status', mandatory: true
 						}
 					],
 					ignoreErrors: false,
 					attributes: [
 						{
-							xfunc: '__get_fg_status',
+							xfunc: '__get_fg_endt_status',
 							name: 'fgen_endt_policy_no',
 							mandatory: true
 						}
@@ -66,16 +66,16 @@ const conf = {
 				target: {
 					method: 'POST',
 					headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
-					url: 'http://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
+					url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
 					errorPath: [
 						{
-							xfunc: '__get_fg_err_status', mandatory: true
+							xfunc: '__get_fg_endt_err_status', mandatory: true
 						}
 					],
 					ignoreErrors: false,
 					attributes: [
 						{
-							xfunc: '__get_fg_status',
+							xfunc: '__get_fg_endt_status',
 							name: 'fgen_endt_policy_no',
 							mandatory: true
 						}

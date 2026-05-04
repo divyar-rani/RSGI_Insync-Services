@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
     <soapenv:Header/>
-    <soapenv:Body>{% set global_map = {'Group' : 'GR','Mid Corporate' : 'MC','Affinity' : 'AA','SF' : 'SF','C.N.A' : 'CNA','CODAN' : 'CO','Global Network (RSA)' : 'GN','Globex Underwriting Services' : 'GBX','HDI Gerling' : 'HD','Helvetia' : 'HV','Intact Insurance Specialty Solutions' : 'IT','Liberty Mutual' : 'LM','POHJOLA INSURANCE LTD' : 'PO','R+V Re' : 'RUV','RSA' : 'RS','RUV' : 'RUV','Swiss Re' : 'SWRE','The Hanover Insurance Group' : 'HIG','Trygg Hansa' : 'TR','Vero Insurance' : 'VE','Vienna Insurance Group' : 'VIG','Retail Agency' : 'AA','Commercial': 'CM', 'AAR' : 'AA',,"AAR" : "A","Affinity Relationship" : "A","Banca" : "A","Commercial" : "MC","Global" : "Global","Group" : "GR","Key Broker" : "MC","National Broker" : "MC","Opportunity" : "AA","Priority-Agency/RB" : "AA","Priority-Dealer" : "AA","Priority-SME" : "SM","SF" : "AA","Strategic Broker" : "MC"} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK' } %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber' : 'A','Red':'R'}  %}{% set taxes =  { 'SGST' : 'ZSGST', 'CGST' : 'ZCGST','IGST' : 'ZIGST', 'UGST' : 'ZUTGST' } %}		
+    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'A','Banca':'A','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
       
         <pol:FGUWPolicyVO>
             <oprId>GMCPOLICY</oprId>
@@ -102,7 +102,7 @@
             <nomineeAddr2/>
             <nomineeAddr3/>
             <nomineeAddr4/>
-            <IUWP1_ENQ_KEY_2>{{quote.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
+            <IUWP1_ENQ_KEY_2>{{proposal.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
             <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR>
             <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
             <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
@@ -125,7 +125,7 @@
                 <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>
             {% else %}
                 <IUWP1_DELIVERY_MODE>NA</IUWP1_DELIVERY_MODE>
-            {%endif%}
+            {%endif%}            
             <IUWP1_CUSTOMERSEGMENT/>
             <clientVO>
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
@@ -365,7 +365,11 @@
             {% endif %} 
             {% endfor %}
             {# Zero or more repetitions: #}
-            <coinsurerVOList/>
+            
+         {#<coinsurerVOList>            
+            <IUWCO_NM></IUWCO_NM>            
+            <IUWCO_SHAREX></IUWCO_SHAREX>
+         </coinsurerVOList>  #}           
             <userTextVO>
                 <IUWP1_ATEXT1></IUWP1_ATEXT1>
                 <IUWP1_ATEXT2></IUWP1_ATEXT2>
