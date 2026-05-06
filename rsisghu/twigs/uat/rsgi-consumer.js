@@ -43,7 +43,7 @@ const conf = {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],
                 twigs: ['/mnt/ebs1/rsisghu/twigs/clientCreation.twig'],                
-                if: "((policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && (policy?.proposal?.data?.cust_buss_type !== 'Entity'))",
+                if: "(policy?.proposal?.data?.client_type?.trim() && policy?.proposal?.data?.customer_type?.trim() && policy?.proposal?.data?.cust_buss_type?.trim() && (policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && policy?.proposal?.data?.cust_buss_type !== 'Entity')",
                 disable_cache: true,
                 target: {
                     method: 'POST',

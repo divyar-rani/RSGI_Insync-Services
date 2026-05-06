@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
     <soapenv:Header/>
-    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'A','Banca':'A','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
+    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
       
         <pol:FGUWPolicyVO>
             <oprId>GMCPOLICY</oprId>
@@ -15,7 +15,7 @@
             <IUWP1_BR_CD>{{quote.data.branch_code}}</IUWP1_BR_CD>
             <isNewAgent>N</isNewAgent>
             <isNewClient>N</isNewClient> 
-            <IUWP1_CLI_CD>{{client_id}}</IUWP1_CLI_CD>
+            <IUWP1_CLI_CD>{{policy.data.customerno_id}}</IUWP1_CLI_CD>
             <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID>
             <IUWP1_DOM>URB</IUWP1_DOM>
             <IUWP1_TERR>{{proposal.data.proposer_comm_state_code}}</IUWP1_TERR> 
@@ -158,6 +158,12 @@
                 <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endfor %}
+            {% if proposal.data.sme_flag == "SME" %}
+            {% set funeral_premium = 0 %}            
+            {% else %}
+             {% set funeral_premium = proposal.data.funeral_expense_premium | default(0) %}    
+            {% endif %}
+
 				{% set covers = [
 					{"code": "APDPRM", "flag": proposal.data.addon_death, "premium": proposal.data.death_cover_premium, "rate": proposal.data.death_final_rate},
 					{"code": "APSPRM", "flag": proposal.data.addon_ptd, "premium": proposal.data.ptd_f_premium, "rate": proposal.data.ptd_base_rate},
@@ -168,9 +174,9 @@
 					{"code": "APGMB", "flag": proposal.data.addon_modification, "premium": proposal.data.modification_benefits_premium, "rate": ""},
 					{"code": "APGFT", "flag": proposal.data.addon_family_trans_benefit, "premium": proposal.data.family_trans_premium, "rate": ""},
 					{"code": "TRTROR", "flag": proposal.data.addon_repatriation_mortal_remains, "premium": proposal.data.repatriations_premium, "rate": ""},
-					{"code": "APMPRM", "flag": proposal.data.addon_medical_exp, "premium": proposal.data.medical_expense_premium, "rate": ""}
-					{# {"code": "","flag": proposal.data.addon_loss_clothing, "premium": 0,"rate":""},
-					{"code": "", "flag": proposal.data.addon_funeral_expenses, "premium": proposal.data.sme_flag == "SME" ? 0 : proposal.data.funeral_expense_premium,"rate":""}, 
+					{"code": "APMPRM", "flag": proposal.data.addon_medical_exp, "premium": proposal.data.medical_expense_premium, "rate": ""},
+                    {"code": "APCCE", "flag": proposal.data.addon_funeral_expenses, "premium": funeral_premium,"rate":""}                     
+					{# {"code": "","flag": proposal.data.addon_loss_clothing, "premium": 0,"rate":""},					
 					{"code": "", "flag": proposal.data.addon_loss_of_limbs, "premium": proposal.data.sme_flag == "SME" ? 0 : proposal.data.limbs_f_premium, "rate":proposal.data.limbs_base_rate},				
 					{"code": "", "flag": proposal.data.addon_national_cover, "premium": 0,"rate":""}, #} 	
 				] %}    
