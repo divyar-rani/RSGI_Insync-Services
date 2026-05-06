@@ -1,0 +1,11 @@
+<div *ngFor="let p of intervals" class="period-item" [class.period-item-select] = "p === selected" (click)="changePeriod(p)">{{p}}</div>
+<div class="mobile-break"></div>
+<mat-form-field style="width:1px;visibility:hidden; height: 1px;">
+    <input matInput [matDatepicker]="spicker" [(ngModel)]="calstart" (dateChange)="changePeriod('start')"><mat-datepicker #spicker></mat-datepicker>
+</mat-form-field>
+<div class="period-item-cal" (click)="spicker.open()" >{{perioddisp[0]}}<div class="material-icons-outlined cal-icon">calendar_month</div></div>
+
+<div class="material-icons-outlined cal-range" style="vertical-align: middle;">swap_horiz</div>
+
+<mat-form-field style="width:1px;visibility:hidden; height: 1px;"><input matInput [matDatepicker]="epicker" [(ngModel)]="calend" (dateChange)="changePeriod('end')"><mat-datepicker #epicker></mat-datepicker></mat-form-field>
+<div class="period-item-cal" (click)="epicker.open()" >{{perioddisp[1]}}<div class="material-icons-outlined cal-icon">calendar_month</div></div>

@@ -1,0 +1,14 @@
+<div class="summary-period">
+    <period-selector (periodChanged)="periodChanged($event)" [period]="''"></period-selector>
+</div>
+<div class="summary-container">
+    <div style="padding-bottom: .5em;">Statewise policy count</div>
+    <div *ngFor="let sum of summary" class="summary-item" (click)="showDetails(sum)">
+        <div class="summary-item-name" [class]="'summary-item-name-' + sum.name">{{sum.name | titlecase }}</div>
+        <div class="summary-item-total" [class]="'summary-item-total-' + sum.name">{{sum.total}}</div>
+    </div>
+    <div class="summary-item" *ngFor="let q of queue">
+        <div class="summary-item-name summary-item-name-sqs">{{q.name}}</div>
+        <div class="summary-item-total summary-item-totoal-sqs">{{q.ApproximateNumberOfMessages}} / {{q.ApproximateNumberOfMessagesNotVisible}}</div>
+    </div>
+</div>

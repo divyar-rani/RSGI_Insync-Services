@@ -168,7 +168,7 @@
    
                 <IUWP2_COVER_CD>AMG</IUWP2_COVER_CD>
                 <IUWP2_DED_CODE/>
-                <IUWP2_DESC1>{% for prod in proposal.data.clause_details %}{{(m == '0') ? '' : ',' }}{% if prod.endtNo|slice(9,15) != ''  %}[{{prod.endtNo|slice(9,15)}}]{% set m = m+1 %}{% endif %}{% endfor %}</IUWP2_DESC1> 
+                <IUWP2_DESC1>{% for prod in proposal.data.clause_details| default([]) %}{{(m == '0') ? '' : ',' }}{% if prod.endtNo|slice(9,15) != ''  %}[{{prod.endtNo|slice(9,15)}}]{% set m = m+1 %}{% endif %}{% endfor %}</IUWP2_DESC1> 
                 <IUWP2_DESC2></IUWP2_DESC2>
 				<IUWP2_DESC3>{{proposal.data.total_amount|number_format(0)}}</IUWP2_DESC3>
                 <IUWP2_DESC4></IUWP2_DESC4>

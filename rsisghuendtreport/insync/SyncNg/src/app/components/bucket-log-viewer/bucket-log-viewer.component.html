@@ -1,0 +1,18 @@
+<div style="padding: 0em 1em; margin:auto; max-width: 1024px;" *ngIf="profile">
+    <period-selector (periodChanged)="periodChanged($event)" [period]="period"></period-selector>
+
+    <div class="section-caption">Allocations <mat-icon  *ngIf="loading"><mat-spinner diameter="20"></mat-spinner></mat-icon></div>
+    <div *ngIf="summary.length>0">
+        <table class="summary-table">
+            <tr>
+                <th *ngFor="let col of summary[0]; let c=index;" [class.state-cell]="c!=0" [class.prod-cell]="c==0">{{col | uppercase}}</th>
+            </tr>
+            <ng-template ngFor let-row [ngForOf]="summary" let-r="index">
+                <tr *ngIf="r>0">
+                    <td *ngFor="let col of summary[r]; let c=index" (click)="goto(r, c)"  [class.state-cell]="c!=0" [class.prod-cell]="c==0">{{col}}</td>
+                </tr>
+            </ng-template>
+        </table>
+    </div>
+
+</div>

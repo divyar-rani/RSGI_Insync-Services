@@ -42,8 +42,8 @@ const conf = {
             {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],
-                twigs: ['/mnt/ebs1/rsisghu/twigs/clientCreation.twig'],
-                if: "((policy.proposal.data.client_type != 'Existing' || policy.proposal.data.customer_type == 'New') && (policy.proposal.data.cust_buss_type != 'Entity'))",
+                twigs: ['/mnt/ebs1/rsisghu/twigs/clientCreation.twig'],                
+                if: "((policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && (policy?.proposal?.data?.cust_buss_type !== 'Entity'))",
                 disable_cache: true,
                 target: {
                     method: 'POST',
@@ -67,7 +67,7 @@ const conf = {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],                
                 twigs: ['/mnt/ebs1/rsisghu/twigs/clientCreation.twig'],
-                if: "((policy.proposal.data.client_type != 'Existing' || policy.proposal.data.customer_type == 'New') && (policy.proposal.data.cust_buss_type == 'Entity'))",
+                if: "((policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && (policy?.proposal?.data?.cust_buss_type === 'Entity'))",
                 disable_cache: true,
                 sqs: { name: 'client' },                
                 target: {
@@ -168,7 +168,7 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/ren-gpa.twig'],
                 if: "( policy.proposal.data.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                sqs: { name: 'fgenRen' },
+                sqs: {},
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -195,7 +195,7 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/ren-ghealth.twig'],
                 if: "( policy.proposal.data.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                sqs: { name: 'fgenRen' },
+                sqs: {},
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -221,7 +221,7 @@ const conf = {
     },
 
   
-	insillion: {
+	/* insillion: {
         name: "insillion",
         sqs: {name: 'fgenRen'},		
         services: [
@@ -234,7 +234,7 @@ const conf = {
                 disable_cache: true
             }
         ],
-    }  
+    }  */
 
 }
 if (process.env.IS_TMP) conf.tmp = process.env.IS_TMP;

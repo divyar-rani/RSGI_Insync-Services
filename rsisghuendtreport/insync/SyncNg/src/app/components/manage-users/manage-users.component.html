@@ -1,0 +1,40 @@
+<div style="padding: 1em 1em;" *ngIf="profile">
+    <div class="caption">Users</div>
+    <div>
+        <table mat-table [dataSource]="dataSource" matSort class="utable">
+            <ng-container *ngFor="let col of colnames" [matColumnDef]="col">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{coldefs[col].name}} </th>
+                <td mat-cell *matCellDef="let row" (click)="rowClicked(row, col)" style="cursor: pointer;"> {{row[col]}} </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="dcolumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: dcolumns;"></tr>
+        
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="colnames.length" style="text-align: center;">No data matching the filter</td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <div class="user-add">
+        <div>
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="name">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Password</mat-label>
+                <input matInput [(ngModel)]="password">
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-stroked-button class="ibutton" (click)="addUser()">Add user</button>
+        </div>
+    </div>
+    <div>{{msg}}</div>
+
+</div>

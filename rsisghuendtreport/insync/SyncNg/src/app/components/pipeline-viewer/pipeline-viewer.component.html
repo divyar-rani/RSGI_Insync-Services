@@ -1,0 +1,74 @@
+<div class="form-group">
+    <label for="file">Choose config file</label>
+    <input type="file"
+           id="file"
+           (change)="handleFileInput($event)">
+</div>
+
+
+<div class="hv-wrapper" *ngIf="false">
+    <ng-template #NodeDetails let-node>
+        <div *ngIf="node.show">
+            <div class="node-q" *ngIf="node.q">{{ 'Q: '+ node.q}}</div>
+            <div class="node-product" *ngFor="let prod of node.products">{{prod}}</div>
+        </div>
+    </ng-template>
+    <ng-template #Node let-node>
+      <ng-container *ngIf="!node.children.length; else Component">
+        <div class="node-wrapper" [class]="'ntype-'+node.type" [class.diamond]="node.type=='or'"
+            (click)="node.show=!node.show">
+            {{ node.name }}
+            <ng-container *ngTemplateOutlet="NodeDetails; context: { $implicit: node }"></ng-container>
+        </div>
+      </ng-container>
+      <ng-template #Component>
+        <div class="node" [class]="'ntype-'+node.type">
+          <div class="node-parent">
+            <div class="node-wrapper" (click)="node.show=!node.show" [class.diamond]="node.type=='or'" [class.circle]="node.type=='and'">
+                <div>{{ node.name }}</div>
+                <ng-container *ngTemplateOutlet="NodeDetails; context: { $implicit: node }"></ng-container>
+            </div>
+          </div>
+          <div class="node-children">
+            <div class="node-child" *ngFor="let child of node.children">
+              <ng-container *ngTemplateOutlet="Node; context: { $implicit: child }"
+              ></ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ng-template>
+  
+    <ng-container *ngFor="let child of pipeline"
+      ><ng-container *ngTemplateOutlet="Node; context: { $implicit: child }"
+      ></ng-container
+    ></ng-container>
+</div>
+
+<div style="width: 100%; height: 800px;">
+  <ngx-graph class="chart-container" [showMiniMap]="true" [links]="links" [nodes]="nodes" 
+    [nodeWidth]="122" [nodeHeight]="70">
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node">
+        <svg:rect [attr.width]="120" [attr.height]="70" [attr.fill]="node.color" />
+        <foreignObject x="0" y="0" width="120" height="70">
+          <div style="display: flex; align-items: center; height: 70px;"><div style="padding: 1em 1em;">{{node.label}}</div></div>
+        </foreignObject>
+      </svg:g>
+    </ng-template>
+  </ngx-graph>
+
+  <div style="display: flex;">
+    <div style="padding-right: 1em;">
+      <div style="display: inline-block; width: 1em; height: 1em; background-color: #AAAAFF;"></div> Consumer
+    </div>
+    <div style="padding-right: 1em;">
+      <div style="display: inline-block; width: 1em; height: 1em; background-color: #AAEEAA;"></div> Service
+    </div>
+    <div style="padding-right: 1em;">
+      <div style="display: inline-block; width: 1em; height: 1em; background-color: #EEEEAA;"></div> Conditional service
+    </div>
+  </div>
+  
+
+</div>

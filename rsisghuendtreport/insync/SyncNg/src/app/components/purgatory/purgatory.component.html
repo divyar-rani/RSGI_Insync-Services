@@ -1,0 +1,20 @@
+<div style="padding: 1em 1em;">Polcies stuck in purgatory.
+    <mat-table [dataSource]="dataSource" matSort >
+        <ng-container *ngFor="let col of coldefs; let i = index" [matColumnDef]="col.disp">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{col.name}}</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="col.disp" (click)="rowClicked(row)">
+                <div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" [title]="row[col.disp]">{{row[col.disp]}}</div>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="colnames"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: colnames;"></mat-row>
+        <mat-menu #actionMenu>
+            <ng-template matMenuContent let-row="row">
+                <button mat-menu-item *ngFor="let act of row.actions" (click)="menuClicked(act, row)">
+                    <mat-icon>{{act.icon}}</mat-icon>{{act.name}}
+                </button>
+            </ng-template>
+        </mat-menu>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

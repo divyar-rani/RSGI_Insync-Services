@@ -194,7 +194,8 @@ class insync {
             // empty issue date and policy no are allowed for cases when
             // include_payment is defined
             //
-            if (policy.endorsement_date === 'null') policy.endorsement_date = null;
+            // if (policy.endorsement_date === 'null') policy.endorsement_date = null;
+            if (policy.endorsement_date === 'null') policy.endorsement_date = policy.c_ts;
 
             if (+policy.status == 8) {
                 // cancelled policy, just mark completed or push through cancellation consumer
@@ -329,7 +330,7 @@ class insync {
         let diff = moment().diff(mlts, 'hour');
         //let url = def.server + '/api/v1/policy/list2?fields=policy_id,issue_date,u_ts';
         /* ak:22-Dec-22: downlaod endorsement policy list */
-        let url = def.server + '/api/v2/endorsement/list2?fields=endorsement_id,endorsement_date,u_ts';
+        let url = def.server + '/api/v2/endorsement/list2?fields=endorsement_id,endorsement_no,endorsement_date,u_ts';
         
         // include all paid, cancelled policies
        // if (def.include_paid) url += '&policy.payment_id='+encodeURIComponent('!')+'&quote.status=^0,2,8';
@@ -347,7 +348,21 @@ class insync {
             url += '&u_ts=' + encodeURIComponent('('+l_ts);
             this.catching_up = false;
         }
-        let ret = await utils.iget(url, def);
+        //let ret = await utils.iget(url, def);
+
+        let reqData = {
+             'endorsement.status': 2,
+              'order': 'u_ts desc',
+              'schema': '1',
+              'fields': 'endorsement_id,policy_id,quote_id,policy_no,endorsement_no,u_ts,endorsement_date',
+              'u_ts': '('+l_ts
+            }
+
+        let ret = {};
+        ret = await utils.ipost(url, reqData, def);		
+        console.log("********************** reqDatareqData", ret);
+        // let ret = await utils.iget(url, def);
+
         if (!ret) {
             istatsd.event(['download.batch.failed']);
             if (def.trace) this.trace(def, 'failed to download next batch');
