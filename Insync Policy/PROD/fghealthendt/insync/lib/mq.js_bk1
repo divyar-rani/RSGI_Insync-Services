@@ -1,0 +1,148 @@
+const { SQSClient, ReceiveMessageCommand, SendMessageCommand, DeleteMessageCommand, GetQueueAttributesCommand } = require('@aws-sdk/client-sqs');
+const { STSClient, AssumeRoleCommand, GetCallerIdentityCommand } = require('@aws-sdk/client-sts');
+const conf = require('../config');
+
+class mq {
+  constructor() {
+    console.log('queue:', conf.sqs.region);
+    this.timer = null;
+    this.done  = false;
+    this.sqs = null;
+    this._setup_mq();
+  }
+
+  _setup_mq() {
+    if (conf.sqs.iamRole) {
+      this._do_sts_token();
+    } else {
+      this._sqs();
+    }
+  }
+
+ /* async _do_sts_token() {
+    await this.token(conf.sqs);
+    this._sqs();
+    setTimeout(() => this._do_sts_token(), 10 * 60 * 1000);
+  }*/
+
+	    async _do_sts_token() {
+        try {
+             await this.token(conf.sqs);
+        } catch(e) {
+            console.log('refresh-token:', e);
+        } finally {
+            if (!this.done)
+                this.timer = setTimeout(async () => {if (!this.done) this._do_sts_token()}, 30*60*1000);
+            else
+                this.timer = null;
+        }
+
+    }
+
+    // made it rentrant safe
+    async start() {
+        if (this.timer) return; // already started
+        await this._do_sts_token();
+    }
+
+    stop() {
+        this.done = true;
+        if (this.timer) clearTimeout(this.timer);
+    }
+
+ async _sqs() {
+    const creds = await this._assume_role(conf.sqs.iamRole, conf.sqs.region);
+	console.log("SQQ>>>>",creds,conf.sqs.region);
+    this.sqs = new SQSClient({
+      region: conf.sqs.region,
+      credentials: {
+        accessKeyId: creds.accessKeyId,
+        secretAccessKey: creds.secretAccessKey,
+        sessionToken: creds.sessionToken,
+      },
+    });
+   console.log("SQS Connect>>>>> ",this.sqs);
+  }
+
+  async _assume_role(roleArn, region) {
+    const sts = new STSClient({ region });
+    const command = new AssumeRoleCommand({
+      RoleArn: roleArn,
+      RoleSessionName: 'InsillionSTS',
+      DurationSeconds: 3600,
+    });
+    const ret = await sts.send(command);
+    return ret.Credentials;
+  }
+
+  async token(obj) {
+    if (!obj || !obj.iamRole) return;
+    try {
+      const creds = await this._assume_role(obj.iamRole, obj.region);
+      const sts = new STSClient({ credentials: creds, region: 'me-south-1' });
+      await sts.send(new GetCallerIdentityCommand({}));
+      obj.accessKeyId = creds.AccessKeyId;
+      obj.secretAccessKey = creds.SecretAccessKey;
+      obj.sessionToken = creds.SessionToken;
+      console.log('got new sqs token');
+    } catch (e) {
+      console.error('sqs:', e);
+    }
+  }
+
+  async fetch(qurl, count = 1) {
+    try {
+      const command = new ReceiveMessageCommand({
+        QueueUrl: qurl,
+        MaxNumberOfMessages: count,
+        MessageAttributeNames: ['All'],
+        WaitTimeSeconds: 20,
+      });
+      return await this.sqs.send(command);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
+  async post(def, data, qurl) {
+    try {
+      const command = new SendMessageCommand({
+        QueueUrl: qurl || def.sqs?.url || '',
+        MessageBody: data.policy_id,
+        MessageAttributes: {
+          policy_id: { DataType: 'String', StringValue: data.policy_id },
+        },
+      });
+      return await this.sqs.send(command);
+    } catch (e) {
+      console.error('mq:post:', e);
+      return false;
+    }
+  }
+
+  async delet(handle, url) {
+    try {
+      const command = new DeleteMessageCommand({ QueueUrl: url, ReceiptHandle: handle });
+      return await this.sqs.send(command);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
+  async pending(url) {
+    try {
+      const command = new GetQueueAttributesCommand({
+        QueueUrl: url || conf.sqs.url,
+        AttributeNames: ['ApproximateNumberOfMessages', 'ApproximateNumberOfMessagesNotVisible'],
+      });
+      return await this.sqs.send(command);
+    } catch (e) {
+      console.error('mq:pending:', e);
+      return false;
+    }
+  }
+}
+
+module.exports = new mq();

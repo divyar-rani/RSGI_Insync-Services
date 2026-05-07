@@ -1,0 +1,98 @@
+.summary-container {
+    display: block;
+    max-width: 1024px;
+    margin: auto;
+    margin-top: 2em;
+}
+
+.material-icons-outlined {
+    font-size: 20px;
+}
+::ng-deep {
+    .mat-form-field-wrapper {
+        padding-bottom: 0px;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+        padding-bottom: 0px;
+    }    
+}
+
+.summary-item {
+    display: inline-block;
+    margin-right: .5em;
+    margin-bottom: .5em;
+    cursor: pointer;
+}
+
+.summary-item-name {
+    font-size: 1.1em;
+    text-align: center;
+    padding: .6em .6em;
+    background-color: #FF2C80;
+    color: #FFF;
+    border-radius: .6em .6em 0em 0em;
+    min-width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.summary-item-total {
+    font-size: 1.4em;
+    text-align: center;
+    padding: 1em 0em;
+    border-radius: 0em 0em .6em .6em;
+    background-color: rgba(255, 44, 128, 0.3);
+    // border-bottom: 1px solid #AAA;
+    // border-left: 1px solid #AAA;
+    // border-right: 1px solid #AAA;
+}
+.summary-item-name-completed {
+    background-color: rgba(49, 206, 48, 1);
+    color: #FFF;
+}
+.summary-item-total-completed {
+    background-color: rgba(49, 206, 48, 0.3);
+}
+.summary-item-name-purgatory {
+    background-color: rgba(251, 100, 80, 1);
+    color: #FFF;
+}
+.summary-item-total-purgatory {
+    background-color: rgba(251, 100, 80, .3);
+}
+
+.summary-item-name-queued {
+    background-color: rgba(74, 88, 172, 1);
+    color: #FFF;
+}
+.summary-item-total-queued {
+    background-color: rgba(74, 88, 172, .3);
+}
+
+.summary-item-name-sqs {
+    background-color: rgba(36, 195, 234, 1);
+    color: #FFF;
+}
+.summary-item-totoal-sqs {
+    background-color: rgba(36, 195, 234, .3);
+}
+.summary-item-name-inflight {
+    background-color: rgba(255, 160, 0, 1);
+}
+.summary-item-total-inflight {
+    background-color: rgba(255, 160, 0, .3);
+}
+
+@media only screen and (max-width: 540px) {
+    .summary-item-name {
+        min-width: 85px;
+        max-width: 85px;
+        font-size: 1em;
+        padding: .6em .6em;   
+    }
+    .summary-item-total {
+        padding: .8em 0em 1em 0em;
+    }
+}

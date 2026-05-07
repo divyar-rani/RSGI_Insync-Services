@@ -1,0 +1,22 @@
+export AWS_ACCESS_KEY_ID="<ACCESS_KEY>" 
+export AWS_SECRET_ACCESS_KEY="<SECRET_KEY>"
+export ROLE_ARN="<ROLE>"
+#full path to the jar file
+export FULL_PATH_TO_JAR="fileb:///home/ec2-user/lambda/GSTwigService-AWS-fat.jar"
+export FUNCTION_NAME="godb-twig-transform-function"
+export DEPLOY_REGION="ap-south-1"
+
+#only to delete
+aws lambda delete-function --region $DEPLOY_REGION  --function-name $FUNCTION_NAME
+
+#only use the first time, to create the function
+aws lambda create-function --region $DEPLOY_REGION  --function-name $FUNCTION_NAME --runtime java8 --memory-size 3092 --timeout 120 --handler "com.godbtech.twig.ws.GSTransform" --role $ROLE_ARN --zip-file $FULL_PATH_TO_JAR
+
+#use the below to update the function if the jar file is modified.
+aws lambda update-function-code --region $DEPLOY_REGION  --function-name $FUNCTION_NAME --zip-file $FULL_PATH_TO_JAR
+
+#test to invoke if the created function works
+aws lambda invoke --region $DEPLOY_REGION --function-name $FUNCTION_NAME --payload '{"j": {"name": "GoDB"},"t": "Hello, {{ name }}!"}' /tmp/response.txt
+
+#response will be in /tmp/response.txt
+#cat /tmp/response.txt

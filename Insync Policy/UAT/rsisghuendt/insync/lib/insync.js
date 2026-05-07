@@ -190,12 +190,12 @@ class insync {
 
             let policy = ret.data[0];
             let prodname = policy.quote?.data.product_name || policy.proposal?.data.product_name || '';
-
             // empty issue date and policy no are allowed for cases when
             // include_payment is defined
             //
-            // if (policy.endorsement_date === 'null') policy.endorsement_date = null;
-            if (policy.endorsement_date === 'null') policy.endorsement_date = policy.c_ts;
+            //if (policy.endorsement_date === 'null' ) policy.endorsement_date = null;
+			if (policy.endorsement_date === 'null' || policy.endorsement_date === null) policy.endorsement_date = policy.c_ts;
+			console.log('*****************policy.endorsement_date ',policy.endorsement_date);
 
             if (+policy.status == 8) {
                 // cancelled policy, just mark completed or push through cancellation consumer
@@ -348,21 +348,8 @@ class insync {
             url += '&u_ts=' + encodeURIComponent('('+l_ts);
             this.catching_up = false;
         }
-        //let ret = await utils.iget(url, def);
-
-        let reqData = {
-             'endorsement.status': 2,
-              'order': 'u_ts desc',
-              'schema': '1',
-              'fields': 'endorsement_id,policy_id,quote_id,policy_no,endorsement_no,u_ts,endorsement_date',
-              'u_ts': '('+l_ts
-            }
-
-        let ret = {};
-        ret = await utils.ipost(url, reqData, def);		
-        console.log("********************** reqDatareqData", ret);
-        // let ret = await utils.iget(url, def);
-
+        let ret = await utils.iget(url, def);
+		console.log("************ Return ", ret);
         if (!ret) {
             istatsd.event(['download.batch.failed']);
             if (def.trace) this.trace(def, 'failed to download next batch');

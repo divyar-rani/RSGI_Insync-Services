@@ -1,0 +1,43 @@
+<div style="padding: 1em 1em;" *ngIf="profile">
+    <period-selector (periodChanged)="periodChanged($event)" [period]="'1d'"></period-selector>
+
+    <div>
+        <div class="caption">Revfeed</div>
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="selectAll()"
+                        [checked]="allSelected">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row; let r=index;">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="toggleSelected(row.index)"
+                        [checked]="selected[row.index]">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container *ngFor="let col of colnames" [matColumnDef]="col">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{coldefs[col].name}} </th>
+                <td mat-cell *matCellDef="let row" (click)="rowClicked(row)"> {{row[col]}} </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="dcolumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: dcolumns;"></tr>
+        
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="colnames.length+1" style="text-align: center;">No data found</td>
+            </tr>
+        </table>
+        <div style="display: grid; grid-template-columns: auto 1fr;">
+            <div> <button mat-flat-button class="ibutton" *ngIf="!noneSelected" (click)="revfeed()">Revfeed</button>
+                <span *ngIf="selCount>0" style="padding-left: 1em;">{{selCount}} selected</span>
+                <span *ngIf="selCount<=0" style="padding-left: 1em;">None selected</span>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" aria-label="Select page of users"></mat-paginator>
+        </div>
+    </div>
+
+    <div>{{msg}}</div>
+</div>

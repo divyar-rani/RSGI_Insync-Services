@@ -1,0 +1,24 @@
+<div style="padding: 0em 1em; margin: auto; width: 1024px;" *ngIf="profile">
+    <period-selector (periodChanged)="periodChanged($event)" [period]="period"></period-selector>
+
+    <div class="section-caption">Errors <mat-icon  *ngIf="loading"><mat-spinner diameter="20"></mat-spinner></mat-icon>
+        <small *ngIf="!loading && messages.length>0" style="cursor: pointer; color: #888; padding-left: 1em;" (click)="exportCSV()" >Export as CSV</small>
+        <small *ngIf="!loading && messages.length>0" style="cursor: pointer; color: #888; padding-left: 1em;" (click)="exportRaw()" >Export All as CSV</small>
+        <small *ngIf="!loading" style="color: #888; padding-left: 1em;"><mat-checkbox (click)="$event.stopPropagation()" (change)="toggleCompleted()">Exclude Completed</mat-checkbox></small>
+    </div>
+    <table>
+        <tr>
+            <th>Error message</th>
+            <th>Count</th>
+            <th>Module</th>
+            <th>Policies</th>
+        </tr>
+        <tr *ngFor="let m of messages">
+            <td>{{m.msg}}</td>
+            <td>{{m.count}}</td>
+            <td>{{m.mod}}</td>
+            <td>{{m.policyids}}</td>
+        </tr>
+    </table>
+    
+</div>

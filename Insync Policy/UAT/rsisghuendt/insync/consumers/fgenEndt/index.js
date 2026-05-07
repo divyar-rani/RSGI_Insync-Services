@@ -14,12 +14,14 @@ class fgenEndt extends twigbase {
         let value = policy.endorsement?.data?.policy_end_date ; 
         console.log("************* ", value);
         if (!isNaN(value)) {
+			console.log("************* isNaN", value);
             const baseDate = new Date(1899, 11, 30); // Excel base date
             baseDate.setDate(baseDate.getDate() + Number(value));
             policy.proposal.data.is_fg_policy_end_date =  utils._fix_date(baseDate.toISOString().split("T")[0]);
         }
         else{
-            policy.proposal.data.is_fg_policy_end_date = utils._fix_date(policy.endorsement?.data?.policy_end_date);
+			console.log("*************isNaN No ", value);
+            policy.proposal.data.is_fg_policy_end_date = utils._fix_date(value);
         }
 
         policy.proposal.data.is_fg_issue_date = utils._fix_date(policy.data.u_ts);

@@ -1,0 +1,54 @@
+.activity-wrapper {
+    display: block;
+    height: 100%;
+}
+.activity-container {
+    background-color: #333;
+    color: #FFF;
+    padding: 1em 1em;
+    overflow: auto;
+    height: 100%;
+    box-sizing: border-box;
+}
+.activity-item {
+    padding-bottom: .5em;
+}
+
+.activity-item-time {
+    display: inline-block;
+    color: #AAA;
+    font-size: 0.9em;
+}
+.activity-item-type {
+    display: inline-block;
+    font-size: 1em;
+    padding-left: 1em;
+}
+.activity-item-type-info {
+    
+    color: #AAF;
+    
+}
+.activity-item-type-error {
+    color: #F44;
+}
+.activity-item-msg {
+    display: inline-block;
+    color: #FFF;
+    padding-left: 1em;
+}
+.green {
+    color: #2f2;
+}
+.dark-green {
+    color: #3b3;
+}
+.red {
+    color: #f22;
+}
+.orange {
+    color: #e61;
+}
+.purple {
+    color: #808;
+}
