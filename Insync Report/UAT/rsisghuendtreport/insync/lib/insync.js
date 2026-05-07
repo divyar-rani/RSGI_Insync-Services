@@ -180,7 +180,6 @@ class insync {
         /* ak:22-Dec-22: downlaod endorsement data */
         let url = def.server + '/api/v2/endorsement/' + encodeURIComponent(policyId);
         let ret = await utils.iget(url, def);
-		
         if (!ret || ret.status != 0) {
             istatsd.event(['download.policy.failed']);
             await this._add_to_purgatory(def, policyId, ret ? ret.txt: 'Auth?', 'download');
@@ -190,13 +189,12 @@ class insync {
 
             let policy = ret.data[0];
             let prodname = policy.quote?.data.product_name || policy.proposal?.data.product_name || '';
-
             // empty issue date and policy no are allowed for cases when
             // include_payment is defined
             //
             // if (policy.endorsement_date === 'null') policy.endorsement_date = null;
-            if (policy.endorsement_date === 'null') policy.endorsement_date = policy.c_ts;
-
+            if (policy.endorsement_date === 'null' || policy.endorsement_date === null) policy.endorsement_date = policy.c_ts;
+			console.log('*****************policy.endorsement_date ',policy.endorsement_date);
             if (+policy.status == 8) {
                 // cancelled policy, just mark completed or push through cancellation consumer
             }
@@ -360,9 +358,8 @@ class insync {
 
         let ret = {};
         ret = await utils.ipost(url, reqData, def);		
-        console.log("********************** reqDatareqData", reqData);
         // let ret = await utils.iget(url, def);
-        console.log("**********************list2 retretret", ret);
+
         if (!ret) {
             istatsd.event(['download.batch.failed']);
             if (def.trace) this.trace(def, 'failed to download next batch');

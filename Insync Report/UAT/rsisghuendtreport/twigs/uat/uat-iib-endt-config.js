@@ -9,8 +9,8 @@ module.exports = {
 	    cutoff: '2026-01-01 00:00:00',
         tmp: '/mnt/ebs1/tmp/is_rsisghuendtreport',
         sqs: {
-            url: 'https://sqs.ap-south-1.amazonaws.com/920043513072/uat-report-entry',
-            ins: 'https://sqs.ap-south-1.amazonaws.com/920043513072/uat-report-insillion',
+            url: 'https://sqs.ap-south-1.amazonaws.com/920043513072/uat-rsgi-endt-client',
+            ins: 'https://sqs.ap-south-1.amazonaws.com/920043513072/uat-rsgi-endt-insillion',
         },
 		privs: {
 			attr: 75,

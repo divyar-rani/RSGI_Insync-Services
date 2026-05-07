@@ -6,7 +6,7 @@ const conf = {
 			funcName: 'godb-twig-transform-function'
 		}
 	},
-	delay: 3 * 1000,
+	delay: 3 * 1000, 
 	tmp: '/mnt/ebs1/tmp/is_rsisghuendt',
 	whitelist: ['ghealth', 'gpa'],
 	httpOptions: { rejectUnauthorized: false, timeout: 2 * 60 * 1000 },
