@@ -1,0 +1,21 @@
+<div class="change">
+    <div class="caption">Change password</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1em;">
+        <div>
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Current Password</mat-label>
+                <input matInput [(ngModel)]="opwd">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>New Password</mat-label>
+                <input matInput [(ngModel)]="npwd">
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-flat-button class="ibutton" (click)="changePassword()" [disabled]="npwd.length<=3">Change</button>
+        </div>
+    </div>
+    <div>{{msg}}</div>
+</div>

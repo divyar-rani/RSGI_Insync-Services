@@ -1,0 +1,789 @@
+<soapenv:Envelope
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:web="WebService_Medicare">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<web:WebService_Medicare>
+			<web:objPolicyDetails>
+				<!--Zero or more repetitions:-->
+				<web:MedicarePolicyDetail>
+					<web:PSUCustomer></web:PSUCustomer>
+					<web:PSUCustomer></web:PSUCustomer>
+					
+						<web:ExistingMedicarePolicyNumber></web:ExistingMedicarePolicyNumber>
+					
+					<web:ExistingSelfSI></web:ExistingSelfSI>
+					<web:AddQuesPolicyStartDate></web:AddQuesPolicyStartDate>
+					<web:AddQuesPolicyExpiryDate></web:AddQuesPolicyExpiryDate>
+					<web:Send_For_QC>No</web:Send_For_QC>
+               
+					
+					<web:IPDSV2>Yes</web:IPDSV2>
+					<web:Prev_Insurer_Name></web:Prev_Insurer_Name>
+					<web:Exp_Pol_Num></web:Exp_Pol_Num>
+				
+					<web:Prev_Pol_Start></web:Prev_Pol_Start>
+				
+				
+				
+					
+					<web:Prev_Pol_End></web:Prev_Pol_End>
+				
+               
+					
+					<web:Claim_Count></web:Claim_Count>
+					<web:Claim_Amt></web:Claim_Amt>
+			   
+					
+					<web:ProductCode>288803</web:ProductCode>
+				
+               
+					
+					<web:ProductName>Leisure Travel Accident</web:ProductName>
+					<web:ApplicationNo></web:ApplicationNo>
+					<web:AppReceivedDt></web:AppReceivedDt>
+					<web:PartnerAppNo></web:PartnerAppNo>
+					<web:PartnerAppDt></web:PartnerAppDt>
+					<web:ProposalDt></web:ProposalDt>
+					<web:PolicyInceptionDt></web:PolicyInceptionDt>
+			     
+					
+					<web:ProducerCode></web:ProducerCode>
+			   
+				
+					 
+					
+					<web:Sol_ID></web:Sol_ID>
+				
+				
+			   
+					<web:BranchCode></web:BranchCode>
+			   
+			   
+			  
+			   
+					
+					<web:FieldUserID></web:FieldUserID>
+			   
+			   
+					
+					<web:Proposal_Transaction_Type>NB</web:Proposal_Transaction_Type>
+				
+               
+					
+					
+			    <web:PolicyNumber></web:PolicyNumber>
+				
+				
+			   
+			    
+					
+					<web:ConfirmPayment>Y</web:ConfirmPayment>
+				
+               
+					
+					<web:EmployeeID></web:EmployeeID>
+					<web:PrintFlag>YES</web:PrintFlag>
+					<web:CustomerType></web:CustomerType>
+					<web:ClientCode></web:ClientCode>
+					<web:Optionforcalculation></web:Optionforcalculation>
+					<web:RenewalFlag></web:RenewalFlag>
+					<web:ServiceTaxExemptionCategory></web:ServiceTaxExemptionCategory>
+					<web:Remarks></web:Remarks>
+					<web:ProposerTitle></web:ProposerTitle>
+					<web:ProposerFirstName></web:ProposerFirstName>
+					<web:ProposerMiddleName></web:ProposerMiddleName>
+					<web:ProposerLastName></web:ProposerLastName>
+					<web:NameofCustomer></web:NameofCustomer>
+					<web:FatherHusbandName></web:FatherHusbandName>
+					<web:Nationality></web:Nationality>
+			   
+			   
+					
+					<web:Address1></web:Address1>
+					<web:Address2></web:Address2>
+					<web:Address3></web:Address3>
+			   
+               
+					
+					<web:City></web:City>
+					<web:Pincode></web:Pincode>
+					<web:State></web:State>
+					<web:Phone_Res></web:Phone_Res>
+					<web:Phone_Off></web:Phone_Off>
+					<web:Phone_Cell></web:Phone_Cell>
+					<web:Fax_Number></web:Fax_Number>
+					<web:Email_ID></web:Email_ID>
+					<web:ALTEmail_ID></web:ALTEmail_ID>
+			   
+			   
+					
+					<web:Gender>F</web:Gender>
+			   
+               
+					
+					<web:DateOfBirth></web:DateOfBirth>
+			   
+			    
+					
+					<web:MaritalStatus>N</web:MaritalStatus>
+				
+               
+               
+					
+					<web:Occupation></web:Occupation>
+					<web:Pan_No></web:Pan_No>
+					<web:Other_ID_No></web:Other_ID_No>
+					<web:Aadhar_Number></web:Aadhar_Number>
+					<web:HeightInfeet></web:HeightInfeet>
+					<web:HeightInInchs></web:HeightInInchs>
+					<web:BMI></web:BMI>
+					<web:OtherOccupation></web:OtherOccupation>
+					<web:PPCTestlevel></web:PPCTestlevel>
+					<web:ExpiringPolicySI></web:ExpiringPolicySI>
+					<web:PortabilityRequired></web:PortabilityRequired>
+					<web:MemberStatus></web:MemberStatus>
+					<web:AnyAdditionalInformationRecommended></web:AnyAdditionalInformationRecommended>
+					<web:MedicalDocumentAttached></web:MedicalDocumentAttached>
+					<web:RiskPremium></web:RiskPremium>
+					<web:EndorsementAmount></web:EndorsementAmount>
+					<web:MemberEntryDate></web:MemberEntryDate>
+					<web:RefundPremium></web:RefundPremium>
+					<web:Dateoflastconsultation></web:Dateoflastconsultation>
+					<web:TreatmentInpatientOutpatient></web:TreatmentInpatientOutpatient>
+					<web:PEDFlag></web:PEDFlag>
+					<web:AppointeeName></web:AppointeeName>
+					<web:RelationshipOfAppointeeWithNominee></web:RelationshipOfAppointeeWithNominee>
+					
+					<web:NomineeContribution>100</web:NomineeContribution>
+					<web:NomineeAppointeeAddress></web:NomineeAppointeeAddress>
+					<web:NomineGender></web:NomineGender>
+					<web:NomineeAddress></web:NomineeAddress>
+					<web:EducationQualification></web:EducationQualification>
+					<web:IsEmployeeOfAnOrganization></web:IsEmployeeOfAnOrganization>
+					<web:IsChildACustomer></web:IsChildACustomer>
+					<web:ParentCustomer></web:ParentCustomer>
+					<web:De_dup_ID></web:De_dup_ID>
+					<web:PriorityClient></web:PriorityClient>
+					<web:GrossIncomeInWords></web:GrossIncomeInWords>
+               
+               
+					
+					<web:PolicyEndDate></web:PolicyEndDate>
+					<web:EIANumber></web:EIANumber>
+					<web:Age>22</web:Age>
+					<web:IRName></web:IRName>
+					<web:DOBProof></web:DOBProof>
+					<web:CKYC></web:CKYC>
+					<web:AddressProof></web:AddressProof>
+					<web:GSTINEffectiveDate></web:GSTINEffectiveDate>
+					<web:AddressType></web:AddressType>
+					<web:PrefferedModeofcommunication></web:PrefferedModeofcommunication>
+					<web:Campaigncode></web:Campaigncode>
+					<web:Source_Of_Funds>OTHERS</web:Source_Of_Funds>
+					<web:GSTIN_Number></web:GSTIN_Number>
+               
+               
+					
+					<web:AutoDebit_Flag></web:AutoDebit_Flag>
+					<web:Bank_CreditCard_Dtls></web:Bank_CreditCard_Dtls>
+					<web:AutoRenewal_Facility>Y</web:AutoRenewal_Facility>
+			   
+               
+					
+					<web:Gross_Annual_Income></web:Gross_Annual_Income>
+					<web:Installment_Required>N</web:Installment_Required>
+					<web:Payment_Frequency>S</web:Payment_Frequency>
+					<web:Issuance_Mode>IPDS</web:Issuance_Mode>
+			   
+			   
+					
+					<web:Variaant>03</web:Variaant>
+			   
+               
+					
+					<web:Policy_Term></web:Policy_Term>
+					<web:Sum_Insured_Type></web:Sum_Insured_Type>
+			   
+					
+					
+					<web:Floater_Sum_Insured></web:Floater_Sum_Insured>
+				
+               
+			   
+					
+					<web:Room_Category>Single Private</web:Room_Category>		
+		
+		
+					
+					<web:Accidental_Death_Rider>N</web:Accidental_Death_Rider>
+		
+		
+		 
+					
+					<web:No_Validation_Flag>Y</web:No_Validation_Flag>
+		 
+		 
+		 
+		    
+					
+					<web:ISPOLICYHOLDER_AN_INSURED>N</web:ISPOLICYHOLDER_AN_INSURED>
+			
+               
+					
+					<web:Premium_Amount>16551</web:Premium_Amount>
+					<web:Application_Recd_Date></web:Application_Recd_Date>
+					<web:Receipt_Number></web:Receipt_Number>
+               
+               
+					
+					<web:PlanType></web:PlanType>
+					<web:SendForApproval></web:SendForApproval>
+					<web:Installment></web:Installment>
+					<web:InstallmentMode></web:InstallmentMode>
+					<web:OnetimeInstallment></web:OnetimeInstallment>
+					<web:TPACode></web:TPACode>
+					<web:TPAName></web:TPAName>
+					<web:CounterOfferResponse></web:CounterOfferResponse>
+               
+               
+					
+					<web:Mode_Of_Entry>SCROLL</web:Mode_Of_Entry>
+					<web:CD_ACC_Number></web:CD_ACC_Number>
+              
+               
+					
+					<web:Intermediary_Code></web:Intermediary_Code>
+					<web:Dealer_Code></web:Dealer_Code>
+					<web:Payer_Type></web:Payer_Type>
+					<web:Office_location></web:Office_location>
+					<web:Payer_Name></web:Payer_Name>
+					<web:Instrument_Recvd_Dt></web:Instrument_Recvd_Dt>
+					<web:Rec_Application_Number></web:Rec_Application_Number>
+               
+               
+					
+					<web:Receipt_Mode></web:Receipt_Mode>
+					<web:ChequeNo_DDNo_TransID></web:ChequeNo_DDNo_TransID>
+					<web:Bank_Name></web:Bank_Name>
+					<web:ChequeDT_DDDT_TransDT></web:ChequeDT_DDDT_TransDT>
+					<web:Receipt_Amount></web:Receipt_Amount>
+					<web:Auth_Code></web:Auth_Code>
+					<web:Business_Type></web:Business_Type>
+					<web:TariffCommission></web:TariffCommission>
+					<web:NonTariffCommission></web:NonTariffCommission>
+					<web:BusinessSharing></web:BusinessSharing>
+					<web:ChannelType></web:ChannelType>
+					<web:RPUCode></web:RPUCode>
+					<web:RI_Inward></web:RI_Inward>
+					<web:ParentCompanyName></web:ParentCompanyName>
+					<web:PUP></web:PUP>
+					<web:UWCompleted></web:UWCompleted>
+					<web:PolicyExpiryTime></web:PolicyExpiryTime>
+               
+			   
+					
+					<web:PolicyStartTime></web:PolicyStartTime>
+					<web:Proposal_Start_Date></web:Proposal_Start_Date>
+					<web:PolicyExpiryDate></web:PolicyExpiryDate>
+					<web:PartnerApplicationDate></web:PartnerApplicationDate>
+					<web:PolicyKey></web:PolicyKey>
+					<web:QuotationNumber>QT/22/7100024084</web:QuotationNumber>
+					<web:GST_Refund></web:GST_Refund>
+					<web:Relationship></web:Relationship>
+					<web:CustID_FinancierID_DealerID></web:CustID_FinancierID_DealerID>
+			   
+			    
+					
+					<web:Transaction_Type>01</web:Transaction_Type>
+				
+               
+              
+               
+					
+					<web:MID></web:MID>
+					<web:TID></web:TID>
+			   
+				
+					
+					<web:HouseBank_Acc_No>002176410002</web:HouseBank_Acc_No>
+               
+					
+					<web:DepositSlip_No></web:DepositSlip_No>
+			   
+				 
+					
+					<web:House_Bank>1907</web:House_Bank>
+				 
+               
+					
+					<web:Dat_Insert_date></web:Dat_Insert_date>
+					<web:Dat_Modify_date></web:Dat_Modify_date>
+					<web:Record_Number></web:Record_Number>
+			   
+			   
+					
+					<web:EMPLOYEE_DISCOUNT>Y</web:EMPLOYEE_DISCOUNT>
+			   
+               
+               
+					
+					<web:EMPLOYEE_NUMBER></web:EMPLOYEE_NUMBER>
+					<web:SGST></web:SGST>
+					<web:CGST></web:CGST>
+					<web:IGST></web:IGST>
+					<web:UGST></web:UGST>
+					<web:Kerela_sces></web:Kerela_sces>
+					<web:Stamp_Duty></web:Stamp_Duty>
+					<web:COL_Flag></web:COL_Flag>
+					<web:Account_Holder_Name></web:Account_Holder_Name>
+				</web:MedicarePolicyDetail>
+			</web:objPolicyDetails>
+			<web:objSPdtls>
+				<web:SPCertificateNo></web:SPCertificateNo>
+				<web:SPName></web:SPName>
+				<web:Producer></web:Producer>
+			</web:objSPdtls>
+			<web:objLoadingDis>
+         
+        
+         
+          
+         
+			
+			</web:objLoadingDis>
+			<web:objInsuredDetails>
+				<!--Zero or more repetitions:-->
+           
+               
+               
+			   
+			   
+			   
+			   
+         
+			
+			</web:objInsuredDetails>
+			<web:objOtherDetails>
+				<!--Zero or more repetitions:-->
+			
+		
+		
+			
+			
+		
+		   
+         
+			
+			</web:objOtherDetails>
+			<web:objportability>
+				<!--Zero or more repetitions:-->
+				<web:Portability_Details>
+					<web:MemberID></web:MemberID>
+					<web:Insuredname></web:Insuredname>
+					<web:SumInsured></web:SumInsured>
+					<web:ThirtyDaysWaitingPeriod></web:ThirtyDaysWaitingPeriod>
+					<web:TwoYearsWaitingPeriod></web:TwoYearsWaitingPeriod>
+					<web:PED4YearsWaitingPeriod></web:PED4YearsWaitingPeriod>
+					<web:AutoPopulatedFlag></web:AutoPopulatedFlag>
+					<web:CummulativeBonus></web:CummulativeBonus>
+				</web:Portability_Details>
+			</web:objportability>
+			<web:objexlusiondtls>
+				<!--Zero or more repetitions:-->
+		
+			
+			
+		
+			
+			
+			
+			
+		
+			
+			
+		
+			
+		
+				
+				
+		
+				
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+			
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+				
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+			
+			
+			
+			
+				
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			</web:objexlusiondtls>
+			<web:objprevinsured>
+				<!--Zero or more repetitions:-->
+				<web:Previous_Insured_Details>
+					<web:MemberID></web:MemberID>
+					<web:InsuredName></web:InsuredName>
+					<web:MembershipNumberOfPastPolicy></web:MembershipNumberOfPastPolicy>
+					<web:PreviousPolicyNumber></web:PreviousPolicyNumber>
+					<web:PreviousInsurer></web:PreviousInsurer>
+					<web:PreviousPolicyStartDate></web:PreviousPolicyStartDate>
+					<web:PreviousPolicyExpiryDate></web:PreviousPolicyExpiryDate>
+					<web:PreviousPolicySumInsured></web:PreviousPolicySumInsured>
+					<web:ClaimsLodgedInPastPolicies></web:ClaimsLodgedInPastPolicies>
+					<web:ClaimAmount></web:ClaimAmount>
+					<web:CumulativeBonus></web:CumulativeBonus>
+				</web:Previous_Insured_Details>
+			</web:objprevinsured>
+			<web:objcounterdtls> 
+				<!--Zero or more repetitions:-->
+				<web:Counter_Offer_Details>
+					<web:ConditionsExcluded></web:ConditionsExcluded>
+					<web:DurationofExclusion></web:DurationofExclusion>
+					<web:Rejected></web:Rejected>
+					<web:ReasonforAdditionalPremium></web:ReasonforAdditionalPremium>
+					<web:AdditionalPremium></web:AdditionalPremium>
+					<web:RefundPremium></web:RefundPremium>
+				</web:Counter_Offer_Details>
+			</web:objcounterdtls>
+			<web:objadditionaldtls>
+				<!--Zero or more repetitions:-->  
+			
+            
+				
+				<web:Additional_details>
+					<web:PayerName></web:PayerName>
+					<web:RelationshipWithProposer></web:RelationshipWithProposer>
+					<web:PaymentMode>instaPolicy</web:PaymentMode>
+					<web:PaymentAmount>16551</web:PaymentAmount>
+					<web:MemberName></web:MemberName>
+					<web:YearoneSI></web:YearoneSI>
+					<web:Year1CB></web:Year1CB>
+					<web:Year1Restore></web:Year1Restore>
+					<web:Year2SI></web:Year2SI>
+					<web:Year2CB></web:Year2CB>
+					<web:Year2Restore></web:Year2Restore>
+					<web:Year3SI></web:Year3SI>
+					<web:Year3CB></web:Year3CB>
+					<web:Year3Restore></web:Year3Restore>
+					<web:TypeOfRemarks></web:TypeOfRemarks>
+					<web:RefNo></web:RefNo>
+					<web:WIPCategory></web:WIPCategory>
+					<web:Remarks></web:Remarks>
+					<web:DateofRemarks></web:DateofRemarks>
+					<web:DateofResolution></web:DateofResolution>
+					<web:WIPStatus></web:WIPStatus>
+					<web:InsuredName></web:InsuredName>
+					<web:UnderwriterName></web:UnderwriterName>
+					<web:DateofFirstAttempt></web:DateofFirstAttempt>
+					<web:DateofSecondAttempt></web:DateofSecondAttempt>
+					<web:TeleUWStatus></web:TeleUWStatus>
+					<web:TeleUWQuestions></web:TeleUWQuestions>
+					<web:QuestionCodes></web:QuestionCodes>
+					<web:Questions></web:Questions>
+					<web:MemberAge></web:MemberAge>
+					<web:Answer></web:Answer>
+					<web:Height></web:Height>
+					<web:Weigh></web:Weigh>
+					<web:Substanceconsumed></web:Substanceconsumed>
+					<web:Frequency></web:Frequency>
+					<web:Quantity></web:Quantity>
+					<web:Quantityunit></web:Quantityunit>
+					<web:Condition></web:Condition>
+					<web:DiseaseCode></web:DiseaseCode>
+					<web:DiseaseName></web:DiseaseName>
+					<web:AgeatOnset></web:AgeatOnset>
+					<web:Durationofmedicalcondition></web:Durationofmedicalcondition>
+					<web:HaveyouundergoneanyDiagnostictest></web:HaveyouundergoneanyDiagnostictest>
+					<web:NameofTest></web:NameofTest>
+					<web:TestCode></web:TestCode>
+					<web:TestResultValue></web:TestResultValue>
+					<web:OperativeStatus></web:OperativeStatus>
+					<web:TypeofSurgery></web:TypeofSurgery>
+					<web:TreatmentStatus></web:TreatmentStatus>
+					<web:MedicationHistory></web:MedicationHistory>
+					<web:ModeofMedication></web:ModeofMedication>
+					<web:Progress></web:Progress>
+					<web:Complications></web:Complications>
+					<web:Comorbidity></web:Comorbidity>
+					<web:ProductCode></web:ProductCode>
+					<web:ProductName></web:ProductName>
+					<web:TPARemarks></web:TPARemarks>
+					<web:CoverGroups></web:CoverGroups>
+					<web:CoverCode></web:CoverCode>
+					<web:COVERGRPINDX></web:COVERGRPINDX>
+					<web:Applicable></web:Applicable>
+					<web:CoverSumInsured></web:CoverSumInsured>
+					<web:CoverPremium></web:CoverPremium>
+					<web:EndorsementAmt></web:EndorsementAmt>
+					<web:MMCPCode></web:MMCPCode>
+					<web:Commission></web:Commission>
+				</web:Additional_details>
+			
+         
+			
+			</web:objadditionaldtls>
+			<web:objAddData1>
+				<!--Zero or more repetitions:-->
+				<web:AdditionalData1>
+					<web:Admin_Non_Admin_flag></web:Admin_Non_Admin_flag>
+					<web:Rejection_reason></web:Rejection_reason>
+					<web:Rejection_Category></web:Rejection_Category>
+					<web:Document_attachment_flag></web:Document_attachment_flag>
+					<web:Sum_Insured_Type></web:Sum_Insured_Type>
+					<web:Insured_wise_premium></web:Insured_wise_premium>
+					<web:Discount></web:Discount>
+					<web:GST_amount></web:GST_amount>
+					<web:Net_Premium></web:Net_Premium>
+					<web:Loading></web:Loading>
+					<web:Total_Premium>16551</web:Total_Premium>
+					<web:Floater_discount></web:Floater_discount>
+					<web:PPC_Registration_No></web:PPC_Registration_No>
+					<web:Source_system_flag></web:Source_system_flag>
+					<web:NSTP_reasons></web:NSTP_reasons>
+					<web:POSP_Flag></web:POSP_Flag>
+					<web:Long_term_discount></web:Long_term_discount>
+					<web:Shared_accomodation_discount></web:Shared_accomodation_discount>
+					<web:Stage></web:Stage>
+					<web:RAS_Status></web:RAS_Status>
+					<web:Remarks></web:Remarks>
+					<web:Comments></web:Comments>
+					<web:UTR_Number></web:UTR_Number>
+					<web:UTR_Date></web:UTR_Date>
+					<web:CKYC_NUMBER></web:CKYC_NUMBER>
+					<web:UTR_Status></web:UTR_Status>
+					<web:IPDS_Proposal_no>PR/22/7100005801</web:IPDS_Proposal_no>
+			   
+			    
+					
+					<web:Self_not_included_flag>Yes</web:Self_not_included_flag>
+				
+               
+					
+					<web:Special_discount></web:Special_discount>
+					<web:CoInsurance_Type></web:CoInsurance_Type>
+					<web:Full_Commission_to_be_paid_by_the_leader></web:Full_Commission_to_be_paid_by_the_leader>
+					<web:Commission_On_service_tax_is_Recoverable_or_N></web:Commission_On_service_tax_is_Recoverable_or_N>
+					<web:Policy_No_of_the_Leader></web:Policy_No_of_the_Leader>
+					<web:STax_to_be_paid_by_the_Leader></web:STax_to_be_paid_by_the_Leader>
+					<web:URN_No></web:URN_No>
+					<web:Insurance_Company_Name></web:Insurance_Company_Name>
+              
+               
+					
+					<web:Office_location>01</web:Office_location>
+					<web:Branch_Office_Address_Line_1></web:Branch_Office_Address_Line_1>
+					<web:Branch_Office_Address_Line_2></web:Branch_Office_Address_Line_2>
+					<web:Share></web:Share>
+					<web:Co_Insurer_Type></web:Co_Insurer_Type>
+					<web:Admin_Non_Admin_Flag1></web:Admin_Non_Admin_Flag1>
+					<web:Administrative_Charges_percntage></web:Administrative_Charges_percntage>
+					<web:Deleted></web:Deleted>
+					<web:Previous_Insurer_Name></web:Previous_Insurer_Name>
+                
+               
+					
+					<web:Expiring_Policy_Number></web:Expiring_Policy_Number>
+					<web:Previous_Policy_Start_Date></web:Previous_Policy_Start_Date>
+					<web:Previous_Policy_Expiry_Date></web:Previous_Policy_Expiry_Date>
+					<web:Claim_Count></web:Claim_Count>
+					<web:Claim_Amount></web:Claim_Amount>
+					<web:Old_Data></web:Old_Data>
+					<web:Deleted_Prev></web:Deleted_Prev>
+					<web:Auto_Debit_Flag></web:Auto_Debit_Flag>
+					<web:Card_Type></web:Card_Type>
+					<web:Credit_Card_Number></web:Credit_Card_Number>
+					<web:Card_Expiry_Month></web:Card_Expiry_Month>
+					<web:Card_Expiry_Year></web:Card_Expiry_Year>
+					<web:Bank_Name></web:Bank_Name>
+					<web:Bank_Branch_Name></web:Bank_Branch_Name>
+					<web:Account_Holder_Name></web:Account_Holder_Name>
+					<web:Account_Type></web:Account_Type>
+					<web:Account_Number></web:Account_Number>
+					<web:Joint_Account_Holder_Name></web:Joint_Account_Holder_Name>
+					<web:Cancellation_Due_To_Claim></web:Cancellation_Due_To_Claim>
+					<web:Is_the_Original_Certificate_Surrendered></web:Is_the_Original_Certificate_Surrendered>
+					<web:Name_of_the_Insurance_Company></web:Name_of_the_Insurance_Company>
+					<web:Office_Code_and_Address></web:Office_Code_and_Address>
+					<web:Reason_for_Cancellation_Bank></web:Reason_for_Cancellation_Bank>
+					<web:Description_of_Cancellation_Reason></web:Description_of_Cancellation_Reason>
+					<web:Endorsement_Type></web:Endorsement_Type>
+					<web:Option_for_Mid_Term_Adjustment></web:Option_for_Mid_Term_Adjustment>
+					<web:MTA_Description></web:MTA_Description>
+					<web:Effective_date_of_MTA></web:Effective_date_of_MTA>
+					<web:Date_of_Request_for_Endorsement></web:Date_of_Request_for_Endorsement>
+					<web:Options_for_Cancellation_of_insurance_Retain_Cancellation_Premium></web:Options_for_Cancellation_of_insurance_Retain_Cancellation_Premium>
+					<web:PPC_Amount_to_Retain></web:PPC_Amount_to_Retain>
+					<web:SL_no></web:SL_no>
+					<web:Member_id></web:Member_id>
+					<web:Member_Name></web:Member_Name>
+					<web:Claim_No></web:Claim_No>
+					<web:Claim_status></web:Claim_status>
+					<web:Diagnosis></web:Diagnosis>
+					<web:Total_No_of_Installments></web:Total_No_of_Installments>
+					<web:Select_Currency></web:Select_Currency>
+					<web:No_of_Installments_Shown></web:No_of_Installments_Shown>
+					<web:Installment_From_Date></web:Installment_From_Date>
+					<web:Installment_To_Date></web:Installment_To_Date>
+					<web:SEQ_No></web:SEQ_No>
+					<web:INST_Due_Date></web:INST_Due_Date>
+					<web:INST></web:INST>
+					<web:INST_Amount></web:INST_Amount>
+					<web:Ex_Rate></web:Ex_Rate>
+					<web:Service_Sale_Tax_GST_Amt></web:Service_Sale_Tax_GST_Amt>
+					<web:Total_Amount></web:Total_Amount>
+					<web:Currency></web:Currency>
+					<web:Paid_Status></web:Paid_Status>
+					<web:To_Collect></web:To_Collect>
+					<web:Policy_No></web:Policy_No>
+					<web:Name_of_Disease></web:Name_of_Disease>
+					<web:Operative_status></web:Operative_status>
+					<web:Type_of_surgery></web:Type_of_surgery>
+					<web:Treatment_status></web:Treatment_status>
+					<web:Complications></web:Complications>
+					<web:Product_Code>Leisure Travel Accident</web:Product_Code>
+					<web:Product_Name>Leisure Travel Accident</web:Product_Name>
+					<web:Condition></web:Condition>
+					<web:Disease_Code></web:Disease_Code>
+					<web:Comorbidity></web:Comorbidity>
+					<web:Outcome></web:Outcome>
+					<web:per_of_Loading></web:per_of_Loading>
+					<web:Exclusion></web:Exclusion>
+					<web:Effective_Date></web:Effective_Date>
+					<web:End_Date></web:End_Date>
+					<web:Product_Name1></web:Product_Name1>
+					<web:Condition1></web:Condition1>
+					<web:Disease_Code1></web:Disease_Code1>
+					<web:Name_of_Disease1></web:Name_of_Disease1>
+					<web:Status></web:Status>
+					<web:Age_at_Onset_From></web:Age_at_Onset_From>
+					<web:Age_at_Onset_To></web:Age_at_Onset_To>
+					<web:Duration_of_medical_condition_From></web:Duration_of_medical_condition_From>
+					<web:Duration_of_medical_condition_To></web:Duration_of_medical_condition_To>
+					<web:Medication_History></web:Medication_History>
+					<web:Mode_of_Medication></web:Mode_of_Medication>
+					<web:Progress></web:Progress>
+					<web:Complications1></web:Complications1>
+					<web:Comorbidity1></web:Comorbidity1>
+					<web:Outcome1></web:Outcome1>
+					<web:percentage_of_Loading></web:percentage_of_Loading>
+					<web:Exclusion1></web:Exclusion1>
+					<web:Effective_Date1></web:Effective_Date1>
+					<web:End_Date1></web:End_Date1>
+				</web:AdditionalData1>
+			</web:objAddData1>
+			<web:UserId>TASKUSER</web:UserId>
+		</web:WebService_Medicare>
+	</soapenv:Body>
+</soapenv:Envelope>
+

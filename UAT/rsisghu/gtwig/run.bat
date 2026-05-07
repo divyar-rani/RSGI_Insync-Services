@@ -1,0 +1,2 @@
+java -Xms64m -Xmx4096m -jar jetty-runner.jar --port 8080 --config config.xml --path /gstwig GSTwigService.war
+pause

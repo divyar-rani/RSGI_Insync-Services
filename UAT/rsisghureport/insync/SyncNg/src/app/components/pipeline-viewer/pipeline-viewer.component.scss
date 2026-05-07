@@ -1,0 +1,206 @@
+$bottom-margin: 50px;
+$line-width: 2px;
+$line-color: rgba(#AAA, 0.7);
+$bg-color: #efefe2;
+$half-margin: 25px;
+h2 {
+    text-align: center;
+    color: #de5454;
+    margin: 50px;
+    i {
+      display: block;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+  
+  hr {
+    margin: 50px 0;
+    border: none;
+    height: 1px;
+    // background-color: $bg-color;
+  }
+  
+  :host {
+    background: $bg-color;
+    font-family: 'Poppins', sans-serif;
+    display: block;
+  }
+  
+  .node-wrapper {
+    margin: 0;
+    background-color: #fff;
+    color: #de5454;
+    padding: 30px;
+    border-radius: 7px;
+    min-width: 70px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(#cc8367, 0.22);
+  }
+  
+//   .diamond:after {
+//     position: absolute;
+//     top: 10px;
+//     left: 10px;
+//     content: '';
+//     height: calc(100% - 22px);  /* -22px is 2 * 10px gap on either side - 2px border on either side */
+//     width: calc(100% - 22px);  /* -22px is 2 * 10px gap on either side - 2px border on either side */
+//     border: 1px solid orange;
+//     transform: rotateX(45deg) rotateZ(45deg);
+// }
+
+.hv-wrapper {
+    display: flex;
+    margin-bottom: 3em;
+    padding-bottom: 3em;
+    .node {
+      display: flex;
+      flex-direction: column;
+      margin: auto;
+      cursor: pointer;
+      .node-parent {
+        margin-bottom: $bottom-margin;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        .node-wrapper {
+          font-weight: bold;
+          // color: #de5454;
+        }
+        &:after {
+          position: absolute;
+          content: '';
+          width: $line-width;
+          height: calc($bottom-margin / 2);
+          bottom: 0;
+          left: 50%;
+          background-color: $line-color;
+          transform: translateY(100%);
+        }
+      }
+
+
+      .diamond {
+        position: relative;
+        height: 80px;
+        width: 80px;
+        line-height: 80px;
+        text-align: center;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        padding: 5px;
+      }
+      .diamond:before {
+        position: absolute;
+        content: '';
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        transform: rotateX(45deg) rotateZ(45deg);
+        // box-shadow: 0px 0px 12px gray;
+        border: 1px solid $line-color;
+      }
+      .circle {
+        border-radius: 50%;
+        height: 80px;
+        width: 80px;
+        line-height: 80px;
+        padding: 5px;
+      }
+    
+      .ntype-or {color: #6611FF !important;}
+      .ntype-and {color: #66FF11 !important;}
+      .ntype-node {color: #999 !important;}
+      .ntype-end {color: #080 !important;}
+
+      .node-q {color: #080 !important;
+        font-size: 0.8em;}
+      .node-product {color: #222 !important; 
+        background-color: #EEE;
+        padding: 0.1em .5em;
+        font-size: 0.8em;
+        font-weight: normal;
+        margin-right: .5em;
+        margin-bottom: .5em;
+        border-radius: 0.3em;
+      }
+      .node-children {
+        display: flex;
+        justify-content: center;
+        .node-child {
+          padding: 0 15px;
+          position: relative;
+  
+          &:only-child:after {
+            display: none;
+          }
+  
+          &:before,
+          &:after {
+            content: '';
+            position: absolute;
+            background-color: $line-color;
+            left: 0;
+          }
+  
+          &:before {
+            left: 50%;
+            top: 0;
+            transform: translateY(-100%);
+            width: $line-width;
+            height: calc($bottom-margin / 2);
+          }
+  
+          &:after {
+            top: -$half-margin;
+            transform: translateY(-100%);
+            height: $line-width;
+            width: 100%;
+          }
+  
+          &:first-child:after {
+            left: 50%;
+            width: 50%;
+          }
+  
+          &:last-child:after {
+            width: calc(50% + 1px);
+          }
+        }
+      }
+    }
+  
+    // Reverse View
+    // Flexbox makes the magic here. We just reverse flex-direction
+    // and move the linse to the opposite side. That`s it
+    &.reverse {
+      .hv-item {
+        flex-direction: column-reverse;
+        .hv-item-parent {
+          margin-top: $bottom-margin;
+          margin-bottom: 0;
+          &:after {
+            top: 0;
+            transform: translateY(-100%);
+          }
+        }
+        .hv-item-child {
+          display: flex;
+          align-items: flex-end;
+          &:before {
+            top: auto;
+            bottom: 0;
+            transform: translateY(100%);
+          }
+  
+          &:after {
+            top: auto;
+            bottom: -$half-margin;
+            transform: translateY(100%);
+          }
+        }
+      }
+    }
+  }
+  

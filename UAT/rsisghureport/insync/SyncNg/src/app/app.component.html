@@ -1,0 +1,81 @@
+<div class="app-container">
+  <mat-toolbar class="toolbar">
+    <button mat-icon-button class="app-icon" [matMenuTriggerFor]="topmenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span routerLink="home" class="title">InSync</span> <small *ngIf="profile" routerLink="home" style="cursor: pointer;">{{profile.server}}</small>
+    <button mat-icon-button *ngIf="!paused" (click)="pause()">
+      <mat-icon fontSet="material-icons-outlined" style="color: #0E0;">directions_run</mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="paused" (click)="resume()">
+      <mat-icon class="blink" fontSet="material-icons-outlined" style="color: #FE0;">motion_photos_paused</mat-icon>
+    </button>
+    <span class="spacer"></span>
+
+    <mat-select placeholder="Product" [(ngModel)]="product" *ngIf="filterProduct"
+      style="width: 200px; font-size: 12px;" 
+      (selectionChange)="productChanged()">
+      <mat-option *ngFor="let prod of products" [value]="prod.product_id">{{prod.product_name}}</mat-option>
+    </mat-select>
+
+    
+    <a mat-button *ngIf="profile" routerLink="summary" class="toolbar-item">Summary</a>
+    <a mat-button *ngIf="profile" routerLink="compare" class="toolbar-item">Compare</a>
+    <a mat-button  *ngIf="profile" routerLink="manage" class="toolbar-item">Manage</a>
+    <a mat-button  *ngIf="profile" [matMenuTriggerFor]="logmenu" class="toolbar-item">Logs</a>
+    
+
+    <input class="tb-input" [(ngModel)]="user" placeholder="User name" style="margin-right: 1em; width: 100px;" *ngIf="!profile">
+    <input class="tb-input" type="password" [(ngModel)]="pwd" placeholder="Password" style=" width: 100px;" *ngIf="!profile">
+
+    <button mat-icon-button *ngIf="!profile">
+      <mat-icon fontSet="material-icons-outlined" (click)="authenticate()">login</mat-icon>
+    </button>
+    <button mat-icon-button class="toolbar-button" *ngIf="profile">
+      <span [matMenuTriggerFor]="profilemenu" >{{profile.email}}</span>
+    </button>
+    <button mat-icon-button *ngIf="profile">
+      <mat-icon fontSet="material-icons-outlined" (click)="logout()">logout</mat-icon>
+    </button>
+
+    <mat-menu #profilemenu >
+      <button mat-menu-item *ngIf="profile" routerLink="profile">Profile</button>
+      <button mat-menu-item *ngIf="!profile">Guest</button>
+      <button mat-menu-item *ngIf="profile" routerLink="org">Users</button>
+      <button mat-menu-item *ngIf="profile" (click)="logout()">Logout</button>
+      <button mat-menu-item >{{version}}</button>
+    </mat-menu>
+
+    <mat-menu #logmenu >
+      <button mat-menu-item *ngIf="profile" routerLink="logs">All</button>
+      <button mat-menu-item *ngIf="profile" routerLink="error-logs">Errors</button>
+      <button mat-menu-item *ngIf="profile" routerLink="buckets">Buckets</button>
+      <button mat-menu-item *ngIf="profile" routerLink="revfeed">Revfeed</button>
+      <button mat-menu-item *ngIf="profile" routerLink="twig-test">Twig Test</button>
+      <button mat-menu-item *ngIf="profile" routerLink="pipeline-viewer">Pipeline</button>
+    </mat-menu>
+
+
+    <mat-menu #topmenu >
+      <button mat-menu-item *ngIf="profile" routerLink="summary" >Summary</button>
+      <button mat-menu-item *ngIf="profile" routerLink="compare" >Compare</button>
+      <button mat-menu-item *ngIf="profile" routerLink="manage" >Manage</button>
+      <button mat-menu-item *ngIf="profile" routerLink="logs" >Logs</button>
+      <button mat-menu-item *ngIf="profile" routerLink="error-logs" >Error Logs</button>
+      <button mat-menu-item *ngIf="profile" routerLink="buckets">Buckets</button>
+    </mat-menu>
+
+
+  </mat-toolbar>
+  <!-- <div style="padding-top: 0em; padding-bottom: 2em;" *ngIf="profile">
+    <router-outlet></router-outlet>
+  </div> -->
+  <ng-template [ngIf]="!profile">
+    Login expired!
+  </ng-template>
+  <ng-template [ngIf]="profile">
+    <router-outlet></router-outlet>
+  </ng-template>
+  <div style="padding-bottom: 2em;"></div>
+  <div class="footer"> Copyright (c) Go-DB Tech 2021</div>
+</div>

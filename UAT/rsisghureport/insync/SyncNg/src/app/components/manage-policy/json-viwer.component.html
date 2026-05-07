@@ -1,0 +1,14 @@
+<div style="max-height: 500px; height: 500px;">
+    <div class="caption">Policy 
+        <span class="material-icons-outlined" style="cursor: pointer; font-size: 1.1em; padding-left: .8em;" (click)="copyPolicyToClipboard(false)">content_copy</span>
+        <span class="material-icons-outlined" style="cursor: pointer; font-size: 1.1em; padding-left: .8em;" (click)="copyPolicyToClipboard(true)">copy_all</span>
+    </div>
+    <div class="json-container" *ngIf="isjson">
+        <ngx-json-viewer [json]="data.jdata" [expanded]="false"></ngx-json-viewer>
+    </div>
+    <div class="json-container" *ngIf="isxml">
+        <div style="white-space: pre;">
+            {{data.jdata}}
+        </div>
+    </div>
+</div>

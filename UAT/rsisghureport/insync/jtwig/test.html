@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<form method="post" action="http://localhost:8080/gstwig/api/v1/transform">
+  <label>Twig</label><br>
+  <textarea name="t">{% if name=='GoDB&Company' %}Yes{% else %}No{% endif %}
+
+{{ name }}
+
+{{ address }}</textarea><br>
+  <label>Json</label><br>
+  <textarea id="j" name="j">{"name" : "GoDB&Company", "address" : "Hello There"}</textarea><br><br>
+  <label>Twig File Name(Optional)</label><br>
+  <textarea id="f" name="f">GSTest.twig</textarea><br><br>
+  <label>Escape(Optional)</label><br>
+  <textarea id="e" name="e">1</textarea><br><br>
+  <label>Escape Only keys(Optional, can be multiple)</label><br>
+  <textarea id="e_a" name="e_a">name</textarea><br><br>
+  <textarea id="e_a" name="e_a">address</textarea><br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+
+</body>
+</html>
+
