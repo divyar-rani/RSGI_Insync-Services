@@ -98,10 +98,10 @@
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{quote.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
             <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR>
-            <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
-            <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
+            <IUWP1_DED_TXT1>{{proposal.data.urn_no}}</IUWP1_DED_TXT1>
+            <IUWP1_DED_TXT2>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
-            <IUWP1_DED_TXT4></IUWP1_DED_TXT4>
+            <IUWP1_DED_TXT4>{{proposal.data.email}}</IUWP1_DED_TXT4>
             <IUWP1_DED_TXT5></IUWP1_DED_TXT5>
             <IUWP1_COINS_DET></IUWP1_COINS_DET>
             <IUWP1_COINS_TP></IUWP1_COINS_TP>
@@ -117,8 +117,8 @@
             <IUWP1_OTH_INT_PTY_CD3>{{proposal.data.imd_approving_uw}}</IUWP1_OTH_INT_PTY_CD3>
             <IUWP1_OTH_INT_PTY_CD4>{{proposal.data.imd_trading_uw}}</IUWP1_OTH_INT_PTY_CD4>
             <IUWP1_CLI_ADDR_1>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_1>
-            <IUWP1_CLI_ADDR_2>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_2>
-            <IUWP1_CLI_ADDR_3>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_3>
+            <IUWP1_CLI_ADDR_2>{{slice((proposal.data.proposer_comm_addressline2 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_2>
+            <IUWP1_CLI_ADDR_3>{{slice((proposal.data.proposer_comm_addressline3 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_3>
             <IUWP1_CLI_ADDR_4></IUWP1_CLI_ADDR_4>
             <IUWP1_CUSTOMERSEGMENT/>
             <clientVO>
@@ -150,36 +150,43 @@
                 <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                 <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                 <IUWP4_RT_U>{{tax.rate}}</IUWP4_RT_U>
-                <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
+                <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(0) }}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endfor %}
 
-            {% if proposal.data.tpa_code != '' and proposal.data.ps_tpa_amt != '' %}                
+            {% if proposal.data.addon_tpa_cashless == 'Yes' %}                
                 <policyCoverageVOList>
                 <IUWP4_COVG_CD>ZTPAFE</IUWP4_COVG_CD>
                 <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                 <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
-                <IUWP4_RT_U></IUWP4_RT_U>
-                <primeIUWP4_NEW_INCR_PREM>{{ps_tpa_amt}}</primeIUWP4_NEW_INCR_PREM>
+                <IUWP4_RT_U>{{proposal.data.addon_tpa_perc}}</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.ps_tpa_amt|number_format(0)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endif %}
 
-            <itemSectionVOList>
-   
+            {% if proposal.data.cobroking |length > 0 %}
+                <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZOVCM</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>{{proposal.data.bk_bw_tot_comm}}</IUWP4_RT_U>
+                </policyCoverageVOList>    
+            {% endif %}
+
+            <itemSectionVOList>   
                 <IUWP2_COVER_CD>AMG</IUWP2_COVER_CD>
                 <IUWP2_DED_CODE/>
                 <IUWP2_DESC1>{% for prod in proposal.data.clause_details| default([]) %}{{(m == '0') ? '' : ',' }}{% if prod.endtNo|slice(9,15) != ''  %}[{{prod.endtNo|slice(9,15)}}]{% set m = m+1 %}{% endif %}{% endfor %}</IUWP2_DESC1> 
                 <IUWP2_DESC2></IUWP2_DESC2>
-				<IUWP2_DESC3>{{proposal.data.total_amount|number_format(0)}}</IUWP2_DESC3>
-                <IUWP2_DESC4></IUWP2_DESC4>
-                <IUWP2_DESC5>{{proposal.data.total_premium|number_format(0)}}</IUWP2_DESC5>
-                <IUWP2_DESC6></IUWP2_DESC6>
-                <IUWP2_DESC7>{{proposal.data.total_premium|number_format(0)}}</IUWP2_DESC7>
-                <IUWP2_DESC8></IUWP2_DESC8>
+				<IUWP2_DESC3>CDAG020227</IUWP2_DESC3> {# CD AccountNumber #}
+                <IUWP2_DESC4>{{proposal.data.ps_uw_fin_load_disc_prem |number_format(0)}}</IUWP2_DESC4> {# Anticipated Premium #}
+                <IUWP2_DESC5>{{proposal.data.ps_prem_bac|number_format(0)}}</IUWP2_DESC5> {# ACTUAL PREMIUM  #}
+                <IUWP2_DESC6>0</IUWP2_DESC6>
+                <IUWP2_DESC7>{{proposal.data.ps_prem_bac|number_format(0)}}</IUWP2_DESC7> {# Technical Premium #}               
                 <IUWP2_DESC9>{{proposal.data.dem_mem_final_lives}}</IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
-                <IUWP2_DESC11>0</IUWP2_DESC11>
-                <IUWP2_DESC12></IUWP2_DESC12>
+                <IUWP2_DESC11>{{ (proposal.data.ps_prem_bac - proposal.data.ps_prem_bac)|number_format(0) }}</IUWP2_DESC11> {# ACTUAL PREMIUM - TECHNICAL PREMIUM #}
+                <IUWP2_DESC12>{{proposal.data.proposer_gst}}</IUWP2_DESC12>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
                 <IUWP2_SECT_NO>01</IUWP2_SECT_NO>
@@ -187,11 +194,16 @@
                 <IUWP2_ZIP_CD>{{proposal.data.proposer_comm_pincode}}</IUWP2_ZIP_CD> 
 				<IUWP2_WAR>{{proposal.data.proposer_comm_state}}</IUWP2_WAR>
                 <primeIUWP2_INCR_SI>{{proposal.data.final_max_si}}</primeIUWP2_INCR_SI>
-                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.premium_value|number_format(2)}}</primeIUWP2_INCR_ACT_PREM>
-                <IUWP2_INT_CD>C109</IUWP2_INT_CD>
+                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.ps_prem_bac|number_format(0)}}</primeIUWP2_INCR_ACT_PREM>  {# Actual Premium #}
+                <IUWP2_INCR_ACT_PREM>{{proposal.data.ps_uw_fin_load_disc_prem|number_format(0)}}</IUWP2_INCR_ACT_PREM> {# Anticipated claim cost #}                 
+                <IUWP2_INT_CD>H026</IUWP2_INT_CD> {# Industry category #}
                 <IUWP2_RSK_CAT>AM0</IUWP2_RSK_CAT>
                 <IUWP2_SI_TP>G</IUWP2_SI_TP>
-                <IUWP2_BAS_RT>E</IUWP2_BAS_RT>
+                {% if proposal.data.type_of_varient == 'Top-up policy' %}
+                <IUWP2_BAS_RT>F</IUWP2_BAS_RT>
+                {% else %}
+                <IUWP2_BAS_RT>8</IUWP2_BAS_RT>
+                {% endif %}
                 <IUWP2_EMLX>{{proposal.data.email}}</IUWP2_EMLX>
                 <rsPaVO>
                 {%if proposal.data.tpa_code == '' %}<IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}<IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>{% endif %}
@@ -199,7 +211,7 @@
 					<IUWP2_PA_ID_DOCN>{{proposal.data.dem_mem_final_lives}}</IUWP2_PA_ID_DOCN>
                     <IUWP2_PA_ID_DTY>NB</IUWP2_PA_ID_DTY>
                     <IUWP2_PA_OCCUP_INS>{{proposal.data.industry_cat}}</IUWP2_PA_OCCUP_INS>
-                    <IUWP2_PA_BENFY_BR_NAME>{{proposal.data.imd_name}}</IUWP2_PA_BENFY_BR_NAME>
+                    <IUWP2_PA_BENFY_BR_NAME>{{proposal.data.ps_bc_premium |number_format(0)}}</IUWP2_PA_BENFY_BR_NAME> {% total burning cost%}
                     <isBenfClient>N</isBenfClient>
                     <isInsuredClient>N</isInsuredClient>
                     <isInsuredNominee>N</isInsuredNominee>
@@ -209,14 +221,14 @@
                     <IUWP2_PA_TRADE>1000</IUWP2_PA_TRADE>
                     <membershipNo/>
                     <uwBenfVO/>
-                    <IUWP2_PA_OCCUP_CL>C104</IUWP2_PA_OCCUP_CL>													   
+                    <IUWP2_PA_OCCUP_CL>C101</IUWP2_PA_OCCUP_CL>													   
                 </rsPaVO>
                 <rsAdditionalDetailsVO>
 					<IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
                     <IUWP2_ADDITIONAL_FIELD5/>
                     <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
                     <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_cat}}</IUWP2_ADDITIONAL_FIELD8>
-                    <IUWP2_ADDITIONAL_FIELD9>Zap_SME_Plan 40</IUWP2_ADDITIONAL_FIELD9>					  
+                    <IUWP2_ADDITIONAL_FIELD9></IUWP2_ADDITIONAL_FIELD9>					  
 					<IUWP2_ADDITIONAL_FIELD10>{{slice(proposal.data.first_name,0,30)}}</IUWP2_ADDITIONAL_FIELD10>
 					<IUWP2_ADDITIONAL_FIELD11>{{proposal.data.email}}</IUWP2_ADDITIONAL_FIELD11>
 					<IUWP2_ADDITIONAL_FIELD12>{{proposal.data.mobile_no}}</IUWP2_ADDITIONAL_FIELD12>
@@ -237,7 +249,7 @@
                 <IUWP3_COVG_CD>HSDPRM</IUWP3_COVG_CD>
                 <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>				
                 <IUWP3_RT_U>0</IUWP3_RT_U>
-                <primeIUWP3_INCR_PREM>{{proposal.data.total_premium|number_format(0)}}</primeIUWP3_INCR_PREM>
+                <primeIUWP3_INCR_PREM>{{proposal.data.ps_prem_bac|number_format(0)}}</primeIUWP3_INCR_PREM>
                 <primeIUWP3_INCR_SI>{{proposal.data.final_max_si}}</primeIUWP3_INCR_SI>
             </coverageVOList>  
 
@@ -266,7 +278,12 @@
             {% endif %} 
             {% endif %} 
             {% endfor %}
-           <coinsurerVOList/>
+        {# {% for cobroker in proposal.data.cobroking %} 
+         <coinsurerVOList>
+            <IUWCO_NM>{{cobroker.imd_oa_agent}}</IUWCO_NM>
+            <IUWCO_SHAREX>{{cobroker.share}}</IUWCO_SHAREX>
+         </coinsurerVOList>
+        {% endfor %} #}
             <userTextVO>
                 <IUWP1_ATEXT1></IUWP1_ATEXT1>
                 <IUWP1_ATEXT2></IUWP1_ATEXT2>
