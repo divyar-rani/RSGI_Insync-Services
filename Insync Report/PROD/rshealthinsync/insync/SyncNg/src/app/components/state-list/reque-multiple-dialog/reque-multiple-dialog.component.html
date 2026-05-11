@@ -1,0 +1,13 @@
+<div *ngIf="!processing">
+    Do you want to reprocess {{pids.length}} policies?
+    <button mat-flat-button class="ibutton" (click)="startProcess()">Yes</button> <button mat-flat-button class="ibutton" (click)="close()">No</button>
+</div>
+
+<div *ngIf="processing">
+    <div style="font-size: 1.5em;">
+        Queued {{processed}} of {{pids.length}} policies.
+    </div>
+    <div style="padding-top: 1em;">
+        <button mat-flat-button class="ibutton" (click)="close()">Close</button>
+    </div>
+</div>

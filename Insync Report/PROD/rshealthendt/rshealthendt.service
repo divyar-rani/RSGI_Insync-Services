@@ -14,12 +14,12 @@ Environment=IS_SERVER_ID=is_rshealthendt
 Environment=IS_TMP=/mnt/ebs1/tmp/is_rshealthendt
 Environment=IS_JSTORE=//mnt/ebs1/tmp/rsgi_json_store/
 
-#Environment=IS_INSILLION_SERVER=https://rsghpu.royalsundaram.net
-Environment=IS_INSILLION_SERVER=http://localhost:8000
+Environment=IS_INSILLION_SERVER=https://rshealth.royalsundaran.in
+#Environment=IS_INSILLION_SERVER=http://localhost:8000
 Environment=IS_INSILLION_USER=admin
-Environment=IS_INSILLION_MPWD=ff83113d50bd8a1c0dc818b19c0383f8
+Environment=IS_INSILLION_MPWD=addebeee50d525ebeff5796a35b20735
 
-Environment=CUST_CONFIG=/mnt/ebs1/rshealthendt/twigs/uat/rsgi-config.js
+Environment=CUST_CONFIG=/mnt/ebs1/rshealthendt/twigs/prod/prod-iib-endt-config.js
 
 
 

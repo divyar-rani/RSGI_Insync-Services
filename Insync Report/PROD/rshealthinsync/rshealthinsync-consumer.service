@@ -13,9 +13,10 @@ Environment=IS_DB_NAME=rshealthinsync
 Environment=IS_SERVER_ID=is_rshealthinsync
 Environment=IS_TMP=/mnt/ebs1/tmp/is_rshealthinsync
 
-Environment=IS_INSILLION_SERVER=http://localhost:8000
+#Environment=IS_INSILLION_SERVER=http://localhost:8000
+Environment=IS_INSILLION_SERVER=https://rshealth.royalsundaran.in
 Environment=IS_INSILLION_USER=admin
-Environment=IS_INSILLION_MPWD=ff83113d50bd8a1c0dc818b19c0383f8
+Environment=IS_INSILLION_MPWD=addebeee50d525ebeff5796a35b20735
 
 Environment=IS_ORCL_DB_HOST=10.46.31.130
 Environment=IS_ORCL_DB_PORT=1521
@@ -36,7 +37,7 @@ Environment=IS_S3_IAMROLE=arn:aws:iam::920043513072:role/Insillion-Prod-Role
 
 Type=simple
 User=nobody
-ExecStart=/usr/bin/node --max-old-space-size=2048 /mnt/ebs1/rshealthinsync/insync/consumers/run.js /mnt/ebs1/rshealthinsync/twigs/uat/rsgi-endt-workers.js
+ExecStart=/usr/bin/node --max-old-space-size=2048 /mnt/ebs1/rshealthinsync/insync/consumers/run.js /mnt/ebs1/rshealthinsync/twigs/prod/prod-iib-rsgi-workers.js
 #ExecStart=/usr/bin/node --max-old-space-size=2048 [[insync-folder]]/consumers/consumer1/index.js
 
 

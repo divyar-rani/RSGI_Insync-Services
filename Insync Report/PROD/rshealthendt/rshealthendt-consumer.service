@@ -25,7 +25,7 @@ Environment=IS_S3_IAMROLE=arn:aws:iam::920043513072:role/Insillion-Prod-Role
 
 Type=simple
 User=nobody
-ExecStart=/usr/bin/node --max-old-space-size=2048 /mnt/ebs1/rshealthendt/insync/consumers/run.js /mnt/ebs1/rshealthendt/twigs/uat/rsgi-workers.js
+ExecStart=/usr/bin/node --max-old-space-size=2048 /mnt/ebs1/rshealthendt/insync/consumers/run.js /mnt/ebs1/rshealthendt/twigs/prod/prod-iib-endt-workers.js
 
 
 Restart=always

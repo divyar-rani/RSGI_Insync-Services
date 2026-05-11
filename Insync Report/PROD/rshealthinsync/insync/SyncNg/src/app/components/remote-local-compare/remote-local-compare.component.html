@@ -1,0 +1,44 @@
+<div style="padding: 0em 1em;">
+    
+    <div style="width: 720px; margin: auto;">
+        <mat-form-field appearance="outline">
+            <mat-label>Issue date</mat-label>
+            <input matInput [matDatepicker]="spicker" [(ngModel)]="calstart" (dateChange)="changePeriod()"><mat-datepicker #spicker></mat-datepicker>
+        </mat-form-field>
+        <div class="period-item-cal" (click)="spicker.open()" ><div class="material-icons-outlined">calendar_month</div></div>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+
+    </div>
+
+    
+    <div style="width: 720px; margin: auto;">
+        <div class="section-caption">Compare - Local vs Remote issued policies
+            <small style="color: #888;">Found {{details.remoteCount}} policies in Remote, {{details.localCount}} policies Local.</small>
+        </div>
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container *ngFor="let col of colnames;" [matColumnDef]="col">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{coldefs[col].name}} </th>
+                <td mat-cell *matCellDef="let row" (click)="rowClicked(row)" [class.action-cell]="col=='action'"> 
+                    <ng-template [ngIf]="col=='action'">
+                        <div style="cursor: pointer;" (click)="updateJson(row)" *ngIf="!row.current">Update JSON</div>
+                    </ng-template>
+                    <ng-template [ngIf]="col!='action'">{{row[col]}} </ng-template>
+                    
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="colnames"></tr>
+            <tr mat-row *matRowDef="let row; columns: colnames;"></tr>
+        
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="colnames.length" style="text-align: center;">No data matching the filter "{{input.value}}"</td>
+            </tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" aria-label="Select page of users"></mat-paginator>
+    </div>    
+</div>

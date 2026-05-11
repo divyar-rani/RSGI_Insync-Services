@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-toolbar-single-row {
+    height: auto;
+}
+@media only screen and (max-width: 540px) {
+    .mat-toolbar-single-row {
+        padding: 0px 0px !important;
+    }
+}

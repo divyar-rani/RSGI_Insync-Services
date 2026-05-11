@@ -1,0 +1,67 @@
+<div style="margin:auto; max-width: 1024px;" *ngIf="profile">
+    <div class="summary-period">
+        <period-selector (periodChanged)="periodChanged($event)" [period]="start"></period-selector>
+        <div style="display: inline-block;">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRefresh()">Auto refresh</mat-checkbox>
+        </div>
+    </div>
+
+    <div class="section-caption">
+        PIPELINE STATUS <span class="material-icons-outlined" style="cursor: pointer; font-size: 1.1em; padding-left: .8em;" (click)="copyReportToClipboard()">content_copy</span>
+        <mat-icon  *ngIf="loading"><mat-spinner diameter="20"></mat-spinner></mat-icon>
+        <mat-checkbox style="padding-left: 2em;" (click)="$event.stopPropagation()" (change)="toggleShow()">Show all</mat-checkbox>
+    </div>
+    
+    <div *ngIf="summary.length>0">
+        <table class="summary-table">
+            <tr>
+                <th *ngFor="let col of summary[0]; let c=index;" [class.state-cell]="c!=0" [class.prod-cell]="c==0">{{col | uppercase}}</th>
+            </tr>
+            <ng-template ngFor let-row [ngForOf]="summary" let-r="index">
+                <tr *ngIf="r>0">
+                    <td *ngFor="let col of summary[r]; let c=index" (click)="goto(r, c)"  [class.state-cell]="c!=0" [class.prod-cell]="c==0">{{col}}</td>
+                </tr>
+            </ng-template>
+        </table>
+    </div>
+
+    <div class="percentile-container">
+        <div>
+            <div class="section-caption">Completion TAT ({{counts.completed}})</div>
+            <div *ngFor="let c of completed" class="percentile-item">
+                <div>{{c.desc}} completed under {{c.fvalue}}</div>
+            </div>
+        </div>
+        <div>
+            <div class="section-caption">Pending cases ({{counts.pending}})</div>
+            <div *ngFor="let c of pending" class="percentile-item">
+                <div>{{c.desc}} pending for {{c.fvalue}} or more ({{c.count}})</div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="paid.length>1">
+        <div class="section-caption">
+            PAYMENTS
+        </div>
+    
+        <table class="summary-table">
+            <tr>
+                <th *ngFor="let col of paid[0]; let c=index;" [class.state-cell]="c!=0" [class.prod-cell]="c==0">{{col | uppercase}}</th>
+            </tr>
+            <ng-template ngFor let-row [ngForOf]="paid" let-r="index">
+                <tr *ngIf="r>0">
+                    <td *ngFor="let col of paid[r]; let c=index" [class.state-cell]="c!=0" [class.prod-cell]="c==0">{{col}}</td>
+                </tr>
+            </ng-template>
+        </table>
+
+        <div style="margin: 1em 1em 0em 1em; padding: 1em 1em; border-left: 3px solid #AAA; color: #666;">
+            Note: This section includes policies that are paid but not yet issued (due to partial payment or otherwise). Those incomplete policies are 
+            not counted in "Pipeline status" section at the top.
+    
+        </div>
+    </div>
+
+
+</div>

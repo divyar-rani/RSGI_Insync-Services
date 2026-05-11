@@ -1,0 +1,93 @@
+.manage-wrapper {
+    max-width: 1024px;
+    margin: auto;
+    padding-top: 0.5em;
+}
+.pstate {
+}
+
+.table-state {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+.table-state th {
+    background: #757de8;
+    color: #FFF;
+    font-weight: normal;
+}
+.table-state td,th {
+    text-align: left;
+    border-bottom: 1px solid #BBB;
+    padding: 0.5em 0.5em;
+}
+.table-log {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+.table-log th {
+    background: #757de8;
+    color: #FFF;
+    font-weight: normal;
+}
+
+.table-log td,th {
+    text-align: left;
+    border-bottom: 1px solid #BBB;
+    padding: 0.5em 0.5em;
+    font-size: 0.9em;
+}
+.table-log tr > td:last-of-type {
+    font-size: 0.8em;
+}
+
+.caption {
+    font-size: 1.2em;
+    padding-top: 3em;
+    padding-bottom: .5em;
+    // color: rgba(255, 76, 10, .8);
+    color: #757de8;
+    font-weight: 800;
+}
+.json-container {
+    overflow: auto;
+}
+.attrs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+.attr-name {
+    text-align: right;
+}
+.attr-value {
+    
+}
+.attrs-editor {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto auto auto;
+    padding: 1em 1em;
+    gap: 1em;
+}
+.requeue {
+
+    padding: 1em 1em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+    border: 1px solid #AAA;
+    border-radius: .5em;
+    margin: 1em;
+
+}
+
+::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px 0.6em 0px !important;}
+::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-0.9em) scale(.75);
+    width: 133.33333%;
+}
+::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0.3em;
+}
+

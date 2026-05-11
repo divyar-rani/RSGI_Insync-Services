@@ -1,0 +1,17 @@
+<div class="container" *ngIf="script">
+    <div>
+        <ngs-code-editor style="height: 100%;" theme="vs-dark" [codeModel]="twigModel" [options]="options" (valueChanged)="twigChanged($event)"></ngs-code-editor>
+    </div>
+    <div>
+        <ngs-code-editor style="height: 100%;" theme="vs-dark" [codeModel]="jsonModel" [options]="options" (valueChanged)="jsonChanged($event)"></ngs-code-editor>
+    </div>
+
+    <div style="grid-column: 1/ span 2">
+        <!-- <mat-icon  *ngIf="loading"><mat-spinner diameter="20"></mat-spinner></mat-icon>
+        <span class="material-icons-outlined" style="cursor: pointer; font-size: 1.1em; padding-left: .8em;" (click)="copyPolicyToClipboard(true)">copy_all</span> -->
+        <div style="height: 100%;">
+            <ngs-code-editor style="height: 100%;" theme="vs-dark" [codeModel]="xmlModel" #xml [readOnly]="true" [options]="options"></ngs-code-editor>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="!script">Loading Monaco editor, please wait...</div>

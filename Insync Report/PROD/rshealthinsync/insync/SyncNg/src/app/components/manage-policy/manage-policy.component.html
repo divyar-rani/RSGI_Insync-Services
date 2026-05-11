@@ -1,0 +1,239 @@
+<div class="manage-wrapper" *ngIf="profile">
+    <div>
+        <div style="display: inline-block; width: 140px;">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Policy ID</mat-label>
+                <input matInput [(ngModel)]="policyId">
+            </mat-form-field>
+        </div>
+        <div style="display: inline-block; width: 140px; padding-left: 1em;">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Policy No</mat-label>
+                <input matInput [(ngModel)]="policyNo">
+            </mat-form-field>
+        </div>
+        <div style="display: inline-block; width: 140px; padding-left: 1em;">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Proposal No</mat-label>
+                <input matInput [(ngModel)]="proposalNo">
+            </mat-form-field>
+        </div>
+
+        <button mat-flat-button class="ibutton" (click)="loadPolicy()" [disabled]="loading"><mat-icon  *ngIf="loading"><mat-spinner diameter="20"></mat-spinner></mat-icon>Fetch</button>
+        <button mat-flat-button class="ibutton" (click)="OoB()">Add to queue</button>
+        <button mat-flat-button class="ibutton" (click)="revfeed()" *ngIf="policy && policy.state && policy.state.sync_state=='completed'">Reverse Feed</button>
+        <button mat-stroked-button class="ibutton" (click)="goBack()">Back</button>
+    </div>
+
+    <div>{{msg}}</div>
+    <div *ngIf="policy && policy.policy && policy.policy.policy_id">
+
+        <div *ngIf="policy.state && policy.state.sync_state!='completed'" class="requeue">
+            <button mat-flat-button class="ibutton" (click)="requeue()">Requeue</button>
+            <div>
+            Reque would take approximately 20 seconds (depending on the load) to be picked up and executed. 
+            Unless you see additional error logs, do not requeue again.
+            </div>
+        </div>
+        
+
+        <div class="caption">Status</div>
+        <div *ngIf="policy.state" class="pstate">
+            <table class="table-state">
+                <tr>
+                    <th>State</th>
+                    <th>Completed At</th>
+                    <th>Policy NO</th>
+                    <th>Product</th>
+                    <th>Retries</th>
+                    <th>TS ({{zone}})</th>
+                </tr>
+                <tr>
+                    <td>{{policy.state.sync_state}}</td>
+                    <td>{{policy.state.completed_at_local}}</td>
+                    <td>{{policy.state.policy_no}}</td>
+                    <td>{{policy.state.product_name}}</td>
+                    <td>{{policy.state.retry_count}}</td>
+                    <td>{{policy.state.c_ts_local}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="policy.attrs">
+            <div class="caption">Attributes </div>
+            <div style="color: #66A; padding: 1em 1em; box-sizing: border-box;">Attributes are the properties gathered from the successfull backend system API call's response and stored against the policy. 
+                When the policy data has been manually updated in the backend, procure such data and put it here. Once all attributes for a stage 
+                in the pipeline is added here (manually or automatically), that stage is will not be invoked again, even when added to queue repeatedly.
+                Do not edit/modify the stage that has already crossed.
+                <div>
+                <button mat-flat-button color="warn" style="margin-left: 10px;" (click)="editAttr=true" *ngIf="!editAttr && policy.state && policy.state.sync_state!='completed'">Edit</button>
+                </div>
+            </div>
+            <div *ngFor="let item of policy.attrs| keyvalue" class="attrs">
+                <div class="attr-name">{{item.key}}</div>
+                <div class="attr-value">{{item.value}}</div>
+            </div>
+
+            <div *ngIf="policy.state && policy.state.sync_state!='completed'">
+                <div *ngIf="editAttr">
+                    <div class="caption">Add/Update Attributes</div>
+                    <div style="color: red; font-weight: 800;">Changing values directly should be done only when you are absolutely sure that the values are correct!
+                        Updating values directly causes the stage to be skipped and proceeds to the subsequent stages, result of which may be uncertain.
+                        Do not forget to requeue after you have completed updating all attributes of a stage.
+                    </div>
+                    <div  class="attrs-editor">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Attribute name</mat-label>
+                            <input matInput [(ngModel)]="attrName">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Attribute value</mat-label>
+                            <input matInput [(ngModel)]="attrValue">
+                        </mat-form-field>
+                        <button mat-button (click)="saveAttribute()">Save</button>
+                        <button mat-button (click)="resetAttribute()">Reset</button>
+                        <button mat-button (click)="editAttr=false">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="policy.purgatory">
+            <div class="caption">Purgatory</div>
+            <table class="table-state">
+                <tr>
+                    <th>Reason</th>
+                    <th>Cause</th>
+                    <th>TS</th>
+                </tr>
+                <tr>
+                    <td>{{policy.purgatory.reason}}</td>
+                    <td>{{policy.purgatory.cause}}</td>
+                    <td>{{policy.state.c_ts}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="policy.logs" style="padding-top: 1em;">
+            <div class="caption">Logs</div>
+            <table class="table-log">
+                <tr>
+                    <th>Type</th>
+                    <th>Module</th>
+                    <th>Message</th>
+                    <th>TS ({{zone}})</th>
+                </tr>
+                <tr *ngFor="let log of policy.logs; let r=index;">
+                    <ng-template [ngIf]="logMore || r<10">
+                    <td>{{log.type}}</td>
+                    <td>{{log.mod_name}}</td>
+                    <td>{{log.message}}</td>
+                    <td>{{log.u_ts_local}}</td>
+                    </ng-template>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: right; cursor: pointer;">
+                        <div *ngIf="logMore" (click)="logMore=false">Less</div>
+                        <div *ngIf="!logMore" (click)="logMore=true">More ({{policy.logs.length}})</div>
+                    </td>
+                </tr>
+                <tr *ngIf="policy.logs.length==0">
+                    <td colspan="4" style="text-align: center;">No log entry found</td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="policy.history" style="padding-top: 1em;">
+            <div class="caption">Modification history</div>
+            <table class="table-log">
+                <tr>
+                    <th>Author</th>
+                    <th>IP</th>
+                    <th>TS ({{zone}})</th>
+                    <th>Action</th>
+                </tr>
+                <tr *ngFor="let h of policy.history">
+                    <td>{{h.author}}</td>
+                    <td>{{h.ip}}</td>
+                    <td>{{h.u_ts_local}}</td>
+                    <td><span (click)="viewJson(h)" style="cursor: pointer;">View</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="policy.transformed" style="padding-top: 1em;">
+            <div class="caption">Transformation history</div>
+            <table class="table-log">
+                <tr>
+                    <th>Author</th>
+                    <th>IP</th>
+                    <th>TS</th>
+                    <th>Action</th>
+                </tr>
+                <tr *ngFor="let h of policy.transformed">
+                    <td>{{h.author}}</td>
+                    <td>{{h.ip}}</td>
+                    <td>{{h.u_ts}}</td>
+                    <td><button mat-button (click)="viewData(h)">View Data</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="fields && fields.fields" style="padding-top: 1em;">
+            <div class="caption">Editable fields</div>
+            <div *ngIf="!policy.state || policy.state.sync_state=='completed'">Sync completed</div>
+            <table class="table-log" *ngIf="policy.state && policy.state.sync_state!='completed'">
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                <tr *ngFor="let f of fields.fields">
+                    <td>{{f.name}}<div><small>{{f.jpath}}</small></div></td>
+                    <td style="width: 80%;">
+                        <div *ngIf="editField == f.name">
+                            <mat-form-field appearance="outline">
+                                <mat-label>New value</mat-label>
+                                <input matInput [(ngModel)]="f.new_value">
+                            </mat-form-field>
+                            <div style="cursor: pointer; font-size: 1.2em; display: inline-block; padding-left: 1em; padding-right: 1em;" (click)="updateFieldValue(f)">Set</div>
+                            <div style="cursor: pointer; font-size: 1.2em; display: inline-block;" (click)="editField=''">Cancel</div>
+                        </div>
+                        <div *ngIf="editField != f.name" (click)="editField=f.name" style="cursor: pointer; height: 100%;">
+                            <span class="material-icons-outlined" style="font-size: 1.2em; padding-right: 1em;">edit</span> {{f.value}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="padding: 1em 0em 2em 0em;" *ngIf="policy && debug.length>0">
+        <div class="caption">Debug</div>
+        <ng-template ngFor let-item [ngForOf]="debug">
+            <div style="padding-top: 1em;" *ngIf="item.files.length>0">
+                <div style="font-weight: 800;">{{item.mod}}</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: .5em; padding-left: 1em;">
+                    <div *ngFor="let file of item.files">
+                        <span (click)="viewDebugLog(item.mod, file)" style="cursor: pointer; margin-right: .5em;">{{file}}</span>
+                        <span (click)="dnldDebugLog(item.mod, file)" class="material-icons-outlined" style="cursor: pointer; font-size: 1.2em; padding-right: 1em;">download</span>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    
+    <div style="padding-bottom: 1em;" *ngIf="policy && balance.length>0">
+        <div class="caption">Balance Sync</div>
+        <div *ngFor="let item of balance" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1em;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+                <div style="font-weight: 800; text-align: right;">{{item.payment_details_id}}</div>
+                <div style="font-weight: normal;">{{item.u_ts}}</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="policy && policy.reverse">Updated Insillion meta data upto <b>{{policy.reverse.last_update}}</b></div>
+
+    <div style="padding-bottom: 2em;"></div>
+</div>
