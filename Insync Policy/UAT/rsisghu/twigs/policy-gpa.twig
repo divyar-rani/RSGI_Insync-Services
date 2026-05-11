@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
     <soapenv:Header/>
-    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
+    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Short term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
       
         <pol:FGUWPolicyVO>
             <oprId>GMCPOLICY</oprId>
@@ -158,6 +158,17 @@
                 <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endfor %}
+
+            {% if proposal.data.calc_tpa_fees != 0 %}                
+                <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZTPAFE</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>{{proposal.data.actual_tpa_commision}}</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.calc_tpa_fees|number_format(0)}}</primeIUWP4_NEW_INCR_PREM>
+                </policyCoverageVOList>                
+            {% endif %}
+
             {% if proposal.data.sme_flag == "SME" %}
             {% set funeral_premium = 0 %}            
             {% else %}
@@ -197,7 +208,7 @@
                 <IUWP2_DESC12></IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
                 <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
-                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.premium_value}}</primeIUWP2_INCR_ACT_PREM>                 
+                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.net_premium}}</primeIUWP2_INCR_ACT_PREM>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
                 <IUWP2_OTH_INT_PTY_CD/>
