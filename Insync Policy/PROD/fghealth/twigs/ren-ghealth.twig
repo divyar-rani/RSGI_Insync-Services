@@ -8,12 +8,8 @@
             <oprId>GMCPOLICY</oprId>
             <polNo>{{policy_no}}</polNo>
             <endtNo>000</endtNo>
-			{% if proposal.data.policy_transaction_type == 'New Business' %}
-            <IUWP1_ENDT_REAS>00</IUWP1_ENDT_REAS>
-            {% else %}
-                <IUWP1_ENDT_REAS>12</IUWP1_ENDT_REAS>
-            {%endif%}
             <IUWP1_PRD_CD>AMG</IUWP1_PRD_CD>
+            <IUWP1_ENDT_REAS>12</IUWP1_ENDT_REAS>
             <IUWP1_CAT_CD>D</IUWP1_CAT_CD>
             {% for item in payment.details %}{% set party_id = item.data.exist_party_id|upper %}          
             <IUWP1_ACC_CD>{{party_id}}</IUWP1_ACC_CD>{% endfor %}
@@ -64,7 +60,7 @@
             {% else %}
                 <IUWP1_DELIVERY_MODE>NA</IUWP1_DELIVERY_MODE>
             {%endif%}
-            <IUWP1_RN_CD>00</IUWP1_RN_CD>
+            <IUWP1_RN_CD>12</IUWP1_RN_CD>
             <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
             <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>            
             <IUWP1_DECLN_NO/>			

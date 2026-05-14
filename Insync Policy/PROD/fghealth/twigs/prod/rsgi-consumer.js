@@ -103,8 +103,8 @@ const conf = {
                 twigs: ['/mnt/ebs1/fghealth/twigs/policy-gpa.twig'],
                 if: "(policy.proposal.data.policy_transaction_type === 'New Business' || policy.proposal.data.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
-                //sqs: { name: 'fgenPolicy' },
-				sqs: {},
+                sqs: { name: 'fgenPolicy' },
+				//sqs: {},
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -131,8 +131,8 @@ const conf = {
                 twigs: ['/mnt/ebs1/fghealth/twigs/policy-ghealth.twig'],
                 if: "(policy.proposal.data.policy_transaction_type === 'New Business' || policy.proposal.data.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
-                //sqs: { name: 'fgenPolicy' },
-				sqs: {},
+                sqs: { name: 'fgenPolicy' },
+				//sqs: {},
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -157,7 +157,7 @@ const conf = {
         ],
     },
 
-    /* fgenRen: {
+    fgenRen: {
         name: "fgenRen",
         sqs: { name: 'fgenPolicy' },
         preprocess: { nulls_to_empty: true, skip_yes_no: true },
@@ -218,7 +218,7 @@ const conf = {
             },
 
         ],
-    }, */
+    }, 
 
   
 	/* insillion: {
