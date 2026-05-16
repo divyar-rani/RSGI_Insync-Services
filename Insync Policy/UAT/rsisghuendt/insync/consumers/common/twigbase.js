@@ -491,7 +491,7 @@ class twigbase {
                 else ret = "<xml></xml>";
             }
 			
-			console.log("----------- Ret ", ret);
+			// console.log("----------- Ret ", ret);
             
             if (service.trace) console.log('invoke:', (policy.quote?.data.product_name||'')+'('+(policy.quote?.data.sub_product_name||'')+')', (performance.now()-start).toFixed(0), url);
             this.__fs_log(service, (subid||policyId)+'-res.txt', typeof ret != 'string' ? JSON.stringify(ret) : ret, policy);
