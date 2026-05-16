@@ -176,7 +176,7 @@
                 <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                 <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                 <IUWP4_RT_U>{{proposal.data.actual_tpa_commision}}</IUWP4_RT_U>
-                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.calc_tpa_fees|number_format(0)}}</primeIUWP4_NEW_INCR_PREM>
+                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.calc_tpa_fees|number_format(2)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endif %}
             {% if proposal.data.total_loading != 0 %}
@@ -185,7 +185,7 @@
                 <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                 <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                 <IUWP4_RT_U></IUWP4_RT_U>
-                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.total_loading|number_format(0)}}</primeIUWP4_NEW_INCR_PREM>
+                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.total_loading|number_format(2)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                 
             {% endif %}
             {% if proposal.data.total_discount != 0 %}

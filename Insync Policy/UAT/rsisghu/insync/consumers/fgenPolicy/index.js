@@ -33,48 +33,75 @@ class fgenPolicy extends twigbase {
     }
 
     //FAILURE
-    async __get_fg_err_status(service, jx, policyId, subid, attr) {
-		let xpath = 'soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO';
-		let val = await utils.jpath_value(jx, xpath, service.target.strobjs);
-		if (val.status === 'FAIL' || val.errorDetailVOList?.errorDesc != '') {
-			const errorDesc = val.errorDetailVOList?.errorDesc || '';
-			if (errorDesc.toLowerCase().includes('policy already exists')) {
-				return null;
-			}
-			let errors = [];
+async __get_fg_err_status(service, jx, policyId, subid, attr) {
 
-			if (val.errorMsg) {
-				errors.push({
-					error_code: val.errorMsg,
-					error_desc: val.errorMsg
-				});
-			} else if (val.errorDetailVOList) {
-				// If array of errors
-				if (Array.isArray(val.errorDetailVOList)) {
-					val.errorDetailVOList.forEach(err => {
-						errors.push({
-							error_code: err.errorCode || null,
-							error_desc: err.errorDesc || null
-						});
-					});
-				} else {
-					errors.push({
-						error_code: val.errorDetailVOList.errorCode || null,
-						error_desc: val.errorDetailVOList.errorDesc || null
-					});
-				}
-			}
+    let xpath = 'soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO';
+    let val = await utils.jpath_value(jx, xpath, service.target.strobjs);
+    if (!val) {
+        let faultXpath = 'soapenv:Envelope.soapenv:Body.soapenv:Fault';
+        let fault = await utils.jpath_value(jx, faultXpath, service.target.strobjs);
 
-			return val.errorMsg ? val.errorMsg : JSON.stringify(val.errorDetailVOList);
-		}
-		return null;
+        if (fault) {
+            let code = fault.Code?.Value || fault['soapenv:Code']?.['soapenv:Value'];
+            let message = fault.Reason?.Text || fault['soapenv:Reason']?.['soapenv:Text'];
+
+            code = Array.isArray(code) ? code[0] : code;
+            message = Array.isArray(message) ? message[0] : message;
+
+            console.log("FAULT ERROR", code, message);
+            return `${code || 'FAULT'} - ${message || 'Unknown SOAP Fault'}`;
+        }
+
+        return 'Invalid response from FG';
     }
+    let status = Array.isArray(val.status) ? val.status[0] : val.status;
+    let errorMsg = Array.isArray(val.errorMsg) ? val.errorMsg[0] : val.errorMsg;
+    let errorDetail = val.errorDetailVOList;
+
+    if (status === 'FAIL' || (errorDetail && errorDetail.errorDesc) || errorMsg) {
+
+        const errorDesc = errorDetail?.errorDesc || '';
+
+        if (errorDesc.toLowerCase().includes('policy already exists')) {
+            return null;
+        }
+
+        let errors = [];
+
+        if (errorMsg) {
+            errors.push({
+                error_code: errorMsg,
+                error_desc: errorMsg
+            });
+        } else if (errorDetail) {
+            if (Array.isArray(errorDetail)) {
+                errorDetail.forEach(err => {
+                    errors.push({
+                        error_code: err.errorCode || null,
+                        error_desc: err.errorDesc || null
+                    });
+                });
+            } else {
+                errors.push({
+                    error_code: errorDetail.errorCode || null,
+                    error_desc: errorDetail.errorDesc || null
+                });
+            }
+        }
+
+        console.log("final-errors", errorMsg ? errorMsg : JSON.stringify(errorDetail));
+		return val.errorMsg ? val.errorMsg : JSON.stringify(val.errorDetailVOList);
+        // return val;
+    }
+
+    return null;
+}
     //SUCCESS  
     async __get_fg_status(service, jx, policyId, subid, attr) {
 
 		let xpath = 'soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO';
 		let val = await utils.jpath_value(jx, xpath, service.target.strobjs);
-		if (val.status == 'SUCCESS' || (val.status == 'FAIL' && (val.errorDetailVOList.errorDesc.toLowerCase().includes('policy already exists')))) {
+		if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc.toLowerCase().includes('policy already exists')))) {
 			const errorCode_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorCode);
 			const errorDesc_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorDesc);
 			let policy_no = await utils.jpath_value(jx, "soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO.polNo", service.target.strobjs);
