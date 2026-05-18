@@ -101,7 +101,7 @@ const conf = {
                 name: 'gpa-fgenPolicy',
                 products: ['gpa'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/policy-gpa.twig'],
-                if: "(policy.proposal.data.policy_transaction_type === 'New Business' || policy.proposal.data.policy_transaction_type === 'Market Renewal')",
+                if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business')",
                 disable_cache: true,
                 sqs: { name: 'fgenPolicy' },
 				//sqs: {},
@@ -129,7 +129,7 @@ const conf = {
                 name: 'ghealth-fgenPolicy',
                 products: ['ghealth'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/policy-ghealth.twig'],
-                if: "(policy.proposal.data.policy_transaction_type === 'New Business' || policy.proposal.data.policy_transaction_type === 'Market Renewal')",
+                if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business' )",
                 disable_cache: true,
                 sqs: { name: 'fgenPolicy' },
 				//sqs: {},
@@ -166,7 +166,7 @@ const conf = {
                 name: 'gpa-fgenRen',
                 products: ['gpa'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/ren-gpa.twig'],
-                if: "( policy.proposal.data.policy_transaction_type === 'Our Renewal')",
+                if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
                 sqs: {},
                 target: {
@@ -190,10 +190,37 @@ const conf = {
                 }
             },
             {
+                name: 'gpa-fgenMRen',
+                products: ['gpa'],
+                twigs: ['/mnt/ebs1/fghealth/twigs/market-ren-gpa.twig'],
+                if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
+                disable_cache: true,
+                sqs: {},
+                target: {
+                    method: 'POST',
+                    headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+                    url: 'https://fgapi.royalsundaram.in/FirstGenV7/services/doHealthNewBusiness?wsdl',
+                    errorPath: [
+                        {
+                            xfunc: '__get_fg_ren_err_status',
+                            mandatory: true
+                        }
+                    ],
+                    ignoreErrors: true,
+                    attributes: [
+                        {
+                            xfunc: '__get_fg_ren_status',
+                            name: 'fgen_ren_policy_no',
+                            mandatory: true
+                        }
+                    ]
+                }
+            },
+            {
                 name: 'ghealth-fgenRen',
                 products: ['ghealth'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/ren-ghealth.twig'],
-                if: "( policy.proposal.data.policy_transaction_type === 'Our Renewal')",
+                if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
                 sqs: {},
                 target: {
@@ -216,6 +243,35 @@ const conf = {
                     ]
                 }
             },
+			{
+                name: 'ghealth-fgenMRen',
+                products: ['ghealth'],
+                twigs: ['/mnt/ebs1/fghealth/twigs/ren-ghealth.twig'],
+                if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
+                disable_cache: true,
+                sqs: {},
+                target: {
+                    method: 'POST',
+                    headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+                    url: 'https://fgapi.royalsundaram.in/FirstGenV7/services/doHealthNewBusiness?wsdl',
+                    errorPath: [
+                        {
+                            xfunc: '__get_fg_ren_err_status',
+                            mandatory: true
+                        }
+                    ],
+                    ignoreErrors: true,
+                    attributes: [
+                        {
+                            xfunc: '__get_fg_ren_status',
+                            name: 'fgen_ren_policy_no',
+                            mandatory: true
+                        }
+                    ]
+                }
+            },
+
+        
 
         ],
     }, 

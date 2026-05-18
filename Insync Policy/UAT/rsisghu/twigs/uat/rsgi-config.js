@@ -25,14 +25,14 @@ module.exports = {
             "gpa": {
                 custom_fields: {
 					cust1: "proposal.created_by",
-					cust2: "proposal.data.transaction_type",
+					cust2: "proposal.data.policy_transaction_type",
                     cust3: "proposal.data.t_source",
                 },
             },
 			"ghealth": {
                 custom_fields: {
                     cust1: "proposal.created_by",
-					cust2: "proposal.data.transaction_type",
+					cust2: "proposal.data.policy_transaction_type",
                     cust3: "proposal.data.t_source",
                 },
             }
@@ -45,12 +45,22 @@ module.exports = {
         },
 		edit: {
             "ghealth": {
-                fields: [{name:'PolicyId', jpath:'quote.data.policy_id', type:'string'}],
-				fields: [{name:'clientID', jpath:'policy.data.customerno_id', type:'string'}]
+                fields: [{name:'imd_channel', jpath:'proposal.data.imd_channel', type:'string'}],
+				fields: [{name:'imd_sub_channel', jpath:'proposal.data.imd_sub_channel', type:'string'}],
+                fields: [{name:'imd_oa_agent', jpath:'proposal.data.imd_oa_agent', type:'string'}],
+                fields: [{name:'imd_sales_rep', jpath:'proposal.data.imd_sales_rep', type:'string'}],
+                fields: [{name:'imd_approving_uw', jpath:'proposal.data.imd_approving_uw', type:'string'}],
+                fields: [{name:'imd_trading_uw', jpath:'proposal.data.imd_trading_uw', type:'string'}],
+                fields: [{name:'imd_code', jpath:'proposal.data.imd_code', type:'string'}]                
             },
               "gpa": {
-                fields: [{name:'PolicyId', jpath:'quote.data.policy_id', type:'string'}],
-				fields: [{name:'clientID', jpath:'policy.data.customerno_id', type:'string'}]
+                fields: [{name:'imd_channel', jpath:'proposal.data.imd_channel', type:'string'}],
+				fields: [{name:'imd_sub_channel', jpath:'proposal.data.imd_sub_channel', type:'string'}],
+                fields: [{name:'imd_oa_agent', jpath:'proposal.data.imd_oa_agent', type:'string'}],
+                fields: [{name:'imd_sales_rep', jpath:'proposal.data.imd_sales_rep', type:'string'}],
+                fields: [{name:'imd_approving_uw', jpath:'proposal.data.imd_approving_uw', type:'string'}],
+                fields: [{name:'imd_trading_uw', jpath:'proposal.data.imd_trading_uw', type:'string'}],
+                fields: [{name:'imd_code', jpath:'proposal.data.imd_code', type:'string'}]      
             }
         }
     }

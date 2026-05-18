@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
    <soapenv:Header/>
-   <soapenv:Body>{% set global_map = {'Group' : 'GR','Mid Corporate' : 'MC','Affinity' : 'AA','SF' : 'SF','C.N.A' : 'CNA','CODAN' : 'CO','Global Network (RSA)' : 'GN','Globex Underwriting Services' : 'GBX','HDI Gerling' : 'HD','Helvetia' : 'HV','Intact Insurance Specialty Solutions' : 'IT','Liberty Mutual' : 'LM','POHJOLA INSURANCE LTD' : 'PO','R+V Re' : 'RUV','RSA' : 'RS','RUV' : 'RUV','Swiss Re' : 'SWRE','The Hanover Insurance Group' : 'HIG','Trygg Hansa' : 'TR','Vero Insurance' : 'VE','Vienna Insurance Group' : 'VIG','Retail Agency' : 'AA','Commercial': 'CM', 'AAR' : 'AA'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK' } %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber' : 'A','Red':'R'}  %}{% set taxes =  { 'SGST' : 'ZSGST', 'CGST' : 'ZCGST','IGST' : 'ZIGST', 'UGST' : 'ZUTGST' } %}{% set endt_reas = {"Non-Premium bearing" : "10","Premium bearing": "09","Policy cancellation": "18","Reinstate with changes": "09","Payment Installment":"09"} %}		
+   <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Short term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}{% set endt_reas = {"Non-Premium bearing" : "10","Premium bearing": "09","Policy cancellation": "18","Reinstate with changes": "09","Payment Installment":"09"} %}		
       <pol:FGUWPolicyVO>
             <oprId>GMCPOLICY</oprId>
             <polNo>{{policy_no}}</polNo>
@@ -18,7 +18,7 @@
             <IUWP1_NM></IUWP1_NM>
             <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID>         
             <IUWP1_DOM>URB</IUWP1_DOM>
-            <IUWP1_TERR>{{proposal.data.proposer_comm_state_code}}</IUWP1_TERR> 
+            <IUWP1_TERR>{{proposal.data.branch_state_code}}</IUWP1_TERR>  
             {% set issue_date = eproposal.u_ts  %}{% set issued_month = slice(issue_date, 5, 2)%}
             {% if ( issued_month < 4) %}
             <IUWP1_UWYR>{{slice(issue_date, 0, 4) - 1}}</IUWP1_UWYR>
@@ -27,7 +27,7 @@
             {%endif%}
 			{% if proposal.data.imd_channel == 'Global' %}
             <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_subchannel] }}</IUWP1_BUS_TP>{% else %}
-            <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_channel] | default('AA') }}</IUWP1_BUS_TP>{% endif %}
+            <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_channel] }}</IUWP1_BUS_TP>{% endif %}
             <IUWP1_ORACC_CD>{{proposal.data.imd_oa_agent}}</IUWP1_ORACC_CD>	
             <IUWP1_TERM>{{policy_term[proposal.data.tenure_type]}}</IUWP1_TERM>
             <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
@@ -43,7 +43,7 @@
             <IUWP1_DECLN_NO></IUWP1_DECLN_NO>
             <IUWP1_COV_NOTE_NO></IUWP1_COV_NOTE_NO>
             <IUWP1_REFUND_TYPE></IUWP1_REFUND_TYPE> <!-- Divya To Check-->
-            <IUWP1_ENDT_NO_REFUNDED>{{endtNo-1}}</IUWP1_ENDT_NO_REFUNDED> <!-- Divya To Check-->
+            <IUWP1_ENDT_NO_REFUNDED></IUWP1_ENDT_NO_REFUNDED> <!-- Divya To Check-->
             <IUWP1_EIN_NO></IUWP1_EIN_NO>
             <isNewGuardian/>
             <guardianUpdateFlag/>
@@ -71,10 +71,12 @@
             <IUWP1_OTH_INT_PTY_CD2>{{proposal.data.imd_sales_rep}}</IUWP1_OTH_INT_PTY_CD2>
             <IUWP1_OTH_INT_PTY_CD3>{{proposal.data.imd_approving_uw}}</IUWP1_OTH_INT_PTY_CD3>
             <IUWP1_OTH_INT_PTY_CD4>{{proposal.data.imd_trading_uw}}</IUWP1_OTH_INT_PTY_CD4>
-            <IUWP1_CLI_ADDR_1>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_1>
-            <IUWP1_CLI_ADDR_2>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_2>
-            <IUWP1_CLI_ADDR_3>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_3>
-            <IUWP1_CLI_ADDR_4></IUWP1_CLI_ADDR_4>
+            {% set data =(proposal.data.proposer_comm_addressline1 | default('')) ~ ' ' ~(proposal.data.proposer_comm_addressline2 | default('')) ~ ' ' ~(proposal.data.proposer_comm_addressline3 | default('')) ~ ' ' ~(proposal.data.proposer_comm_addressline4 | default(''))%}
+            {% set data = data | replace({"&":"and"}) %}
+            <IUWP1_CLI_ADDR_1>{{ data | slice(0,30) }}</IUWP1_CLI_ADDR_1>
+            <IUWP1_CLI_ADDR_2>{{ data | slice(30,30) }}</IUWP1_CLI_ADDR_2>
+            <IUWP1_CLI_ADDR_3>{{ data | slice(60,30) }}</IUWP1_CLI_ADDR_3>
+            <IUWP1_CLI_ADDR_4>{{ data | slice(90,30) }}</IUWP1_CLI_ADDR_4>
             <receiptNumber/>
             <voucherAmount/>
             <bankCode/>
@@ -102,7 +104,7 @@
             <nomineeAddr3/>
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{proposal.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
-            <IUWP1_POL_WARR>{{policy.is_taxinvoice_id}}</IUWP1_POL_WARR>               
+            <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR>               
             <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
             <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
@@ -123,7 +125,7 @@
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
                 <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>
                 <IUWPC_OTHRNAME2/>
-                <IUWPC_SURNAME2/>
+                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
                 {% if (proposal.data.cust_buss_type == 'Entity' )%}<IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
                 {% else %}<IUWPC_CLI_TP>I</IUWPC_CLI_TP>{%endif%} 
                 <IUWPC_HM_PHONE/>
@@ -168,7 +170,7 @@
                 <IUWP2_DESC12></IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
                 <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
-                <primeIUWP2_INCR_ACT_PREM>{{premium_value.data.premium_value}}</primeIUWP2_INCR_ACT_PREM>                 
+                <primeIUWP2_INCR_ACT_PREM>{{eproposal.data.premium_value}}</primeIUWP2_INCR_ACT_PREM>                 
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
                 <IUWP2_OTH_INT_PTY_CD/>
@@ -183,10 +185,7 @@
                 <IUWP2_INT_CD/>
                 <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
                 <rsPaVO>
-                {%if proposal.data.tpa_code == '' %}
-                    <IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}
                     <IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>
-                {% endif %}
                     <isNewInsured>N</isNewInsured>
                     <isInsuredClient>N</isInsuredClient>
                     <isInsuredNominee>N</isInsuredNominee>
@@ -234,8 +233,8 @@
                     <IUWP2_ADDITIONAL_FIELD4>0</IUWP2_ADDITIONAL_FIELD4>
                     <IUWP2_ADDITIONAL_FIELD5>0</IUWP2_ADDITIONAL_FIELD5>
                     <IUWP2_ADDITIONAL_FIELD6>0</IUWP2_ADDITIONAL_FIELD6>
-                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7>
-                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8>
+                    <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
+                    <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_type}}</IUWP2_ADDITIONAL_FIELD8>
                     <IUWP2_ADDITIONAL_FIELD9>0</IUWP2_ADDITIONAL_FIELD9>
                     <IUWP2_ADDITIONAL_FIELD10>{{slice(proposal.data.first_name,0,30)}}</IUWP2_ADDITIONAL_FIELD10>
                     <IUWP2_ADDITIONAL_FIELD11>{{proposal.data.email}}</IUWP2_ADDITIONAL_FIELD11>
@@ -279,43 +278,7 @@
                     <IUWP2_ADDITIONAL_FIELD49>0</IUWP2_ADDITIONAL_FIELD49>
                     <IUWP2_ADDITIONAL_FIELD50>0</IUWP2_ADDITIONAL_FIELD50>
                 </rsAdditionalDetailsVO>
-                {# Zero or more repetitions: #}
-				{% for cover in covers %}
-					{% if cover.flag == 'Yes' and cover.code %}
-
-						{% set premium_raw = cover.premium %}
-
-						{% if proposal.data.sme_flag == 'SME' %}
-							{% if cover.code != 'APDPRM'
-								and cover.code != 'APGTPR'
-								and cover.code != 'APMPRM' %}
-								{% set premium_raw = 0 %}
-							{% endif %}
-						{% endif %}
-
-						{% if cover.rate == '' or cover.rate == 0 or cover.rate == '0' %}
-							{% set c_rate = 0 %}
-						{% else %}
-							{% set c_rate = cover.rate|number_format(2) %}
-						{% endif %}
-
-						{# Premium #}
-						{% if premium_raw == '' or premium_raw == 0 or premium_raw == '0' %}
-							{% set c_premium = 0 %}
-						{% else %}
-							{% set c_premium = premium_raw|number_format(2) %}
-						{% endif %}
-
-						<coverageVOList>
-							<IUWP3_COVG_CD>{{ cover.code }}</IUWP3_COVG_CD>
-							<IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
-							<IUWP3_RT_U>{{ c_rate }}</IUWP3_RT_U>
-							<primeIUWP3_INCR_PREM>{{ c_premium }}</primeIUWP3_INCR_PREM>
-							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si }}</primeIUWP3_INCR_SI>
-						</coverageVOList>
-
-					{% endif %}
-				{% endfor %}
+                {# Zero or more repetitions: #}		
             </itemSectionVOList>
             {# Zero or more repetitions: #}
             {% for detail in payment.details %} 

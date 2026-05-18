@@ -13,13 +13,13 @@
             <IUWP1_CAT_CD>D</IUWP1_CAT_CD>
             {% for item in payment.details %}{% set party_id = item.data.exist_party_id|upper %}          
             <IUWP1_ACC_CD>{{party_id}}</IUWP1_ACC_CD>{% endfor %}
-            <IUWP1_BR_CD>{{quote.data.branch_code}}</IUWP1_BR_CD>
+            <IUWP1_BR_CD>{{proposal.data.branch_code}}</IUWP1_BR_CD>
             <isNewAgent>N</isNewAgent>
             <isNewClient>N</isNewClient> 
             <IUWP1_CLI_CD>{{client_id}}</IUWP1_CLI_CD>
             <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID>
             <IUWP1_DOM>URB</IUWP1_DOM>
-            <IUWP1_TERR>{{proposal.data.proposer_comm_state_code}}</IUWP1_TERR> 
+            <IUWP1_TERR>{{proposal.data.branch_state_code}}</IUWP1_TERR>  
 			<IUWP1_QUOT_NO>{{proposal_no}}</IUWP1_QUOT_NO>
 			{% set issue_date = proposal.data.issue_date  %}
             {% set issued_month = slice(issue_date, 5, 2)%}
@@ -30,7 +30,7 @@
             {%endif%}
 			{% if proposal.data.imd_channel == 'Global' %}
             <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_subchannel] }}</IUWP1_BUS_TP>{% else %}
-            <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_channel] | default('AA') }}</IUWP1_BUS_TP>{% endif %}
+            <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_channel] }}</IUWP1_BUS_TP>{% endif %}
             <IUWP1_ORACC_CD>{{proposal.data.imd_oa_agent}}</IUWP1_ORACC_CD>			
             <IUWP1_TERM>01</IUWP1_TERM>
             <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
@@ -117,15 +117,15 @@
             <IUWP1_OTH_INT_PTY_CD3>{{proposal.data.imd_approving_uw}}</IUWP1_OTH_INT_PTY_CD3>
             <IUWP1_OTH_INT_PTY_CD4>{{proposal.data.imd_trading_uw}}</IUWP1_OTH_INT_PTY_CD4>
             <IUWP1_CLI_ADDR_1>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_1>
-            <IUWP1_CLI_ADDR_2>{{slice((proposal.data.proposer_comm_addressline2 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_2>
-            <IUWP1_CLI_ADDR_3>{{slice((proposal.data.proposer_comm_addressline3 | replace({"&":"and"})),0,30)}}</IUWP1_CLI_ADDR_3>
-            <IUWP1_CLI_ADDR_4></IUWP1_CLI_ADDR_4>
+            <IUWP1_CLI_ADDR_2>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),30,60)}}</IUWP1_CLI_ADDR_2>
+            <IUWP1_CLI_ADDR_3>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),60,90)}}</IUWP1_CLI_ADDR_3>
+            <IUWP1_CLI_ADDR_4>{{slice((proposal.data.proposer_comm_addressline1 | replace({"&":"and"})),90,120)}}</IUWP1_CLI_ADDR_4>
             <IUWP1_CUSTOMERSEGMENT/>
             <clientVO>
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
                 <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>
                 <IUWPC_OTHRNAME2/>
-                <IUWPC_SURNAME2/>
+                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
                 {% if (proposal.data.cust_buss_type == 'Entity' )%}<IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
                 {% else %}<IUWPC_CLI_TP>I</IUWPC_CLI_TP>{%endif%} 
                 <IUWPC_HM_PHONE/>

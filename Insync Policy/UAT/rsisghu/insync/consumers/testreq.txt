@@ -79,7 +79,7 @@
                 <IUWPC_OTHRNAME2/>
                 <IUWPC_SEX/>
                 <IUWPC_STATE_CD>TN</IUWPC_STATE_CD>
-                <IUWPC_SURNAME2/>
+                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
                 <IUWPC_TRADE>1000</IUWPC_TRADE>
             </clientVO>
             <userTextVO>
@@ -203,8 +203,8 @@
                 <rsAdditionalDetailsVO>
                     <IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
                     <IUWP2_ADDITIONAL_FIELD5/>
-                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7>
-                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8>
+                    <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
+                    <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_cat}}</IUWP2_ADDITIONAL_FIELD8>
                     <IUWP2_ADDITIONAL_FIELD9/>
                     <IUWP2_ADDITIONAL_FIELD10>SINGARAVEL</IUWP2_ADDITIONAL_FIELD10>
                     <IUWP2_ADDITIONAL_FIELD11>singaravel99.ss@gmail.com</IUWP2_ADDITIONAL_FIELD11>

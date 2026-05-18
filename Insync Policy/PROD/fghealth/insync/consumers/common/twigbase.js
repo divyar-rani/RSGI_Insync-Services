@@ -181,14 +181,12 @@ class twigbase {
 
     async process_next() {
         let start = performance.now();
-        let pids = await this.ish.fetch(1);
-		console.log("********************** Divya process_next",pids);
+        let pids = await this.ish.fetch(1);		
         this.stats = {'fetch': (performance.now()-start), api: 0, trans: 0, process: 0, download: 0, preproc: 0};        
 
         for (let pid of pids) {
             start = performance.now();
             let policy = await this.ish.policy(pid);        // no exception will be thrown
-			console.log("********************** Divya twigbase",policy.proposal.data);
             this.stats.download = performance.now()-start;
 
             if (!policy) {
@@ -212,7 +210,6 @@ class twigbase {
             try {
                 let time = performance.now();
                 if (await this.__process_policy(policy) !== null) {
-					console.log("********************** Divya __process_policy", await this.ish.mark(pid));
                     //await this.ish.mark(pid);
                 } else {
                     await this.ish.reschedule(policy.policy_id, 10*60, 'rescheduled', this.constructor.name);
@@ -493,7 +490,7 @@ class twigbase {
                 else ret = "<xml></xml>";
             }
 			
-			console.log("----------- Ret ", ret);
+			// console.log("----------- Ret ", ret);
             
             if (service.trace) console.log('invoke:', (policy.quote?.data.product_name||'')+'('+(policy.quote?.data.sub_product_name||'')+')', (performance.now()-start).toFixed(0), url);
             this.__fs_log(service, (subid||policyId)+'-res.txt', typeof ret != 'string' ? JSON.stringify(ret) : ret, policy);
@@ -720,7 +717,7 @@ class twigbase {
                 service.oproducts = service.products.reduce((a, x) => {a[x]=true; return a;}, {});
                 service.twigs = service.twigs || [];
                 service.iffunc = () => true;
-				console.log("Divya ******************** ",service.name);
+				// console.log("Divya ******************** ",service.name);
                 if (service.if) service.iffunc = new Function('policy', 'data', 'attrs', 'return ' + service.if);
             }
 

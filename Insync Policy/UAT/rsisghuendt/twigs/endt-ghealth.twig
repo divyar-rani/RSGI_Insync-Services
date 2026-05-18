@@ -15,7 +15,7 @@
             <endtNo>000</endtNo>
             <IUWP1_ENDT_REAS>00</IUWP1_ENDT_REAS>
             <IUWP1_CAT_CD>D</IUWP1_CAT_CD>
-            <IUWP1_BR_CD>{{quote.data.branch_code}}</IUWP1_BR_CD>
+            <IUWP1_BR_CD>{{proposal.data.branch_code}}</IUWP1_BR_CD>
             <isNewAgent>N</isNewAgent>
             <isNewClient>N</isNewClient> 
            {# <IUWP1_CLI_CD>{{eproposal.data.imd_code|upper}}</IUWP1_CLI_CD>           
@@ -133,7 +133,7 @@
                 <IUWPC_OTHRNAME2/>
                 <IUWPC_SEX/>
                  <IUWPC_STATE_CD>{{eproposal.data.proposer_comm_state_code}}</IUWPC_STATE_CD> 				
-                <IUWPC_SURNAME2/>
+                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
                 <IUWPC_TRADE>1000</IUWPC_TRADE>
             </clientVO>
             <userTextVO>
@@ -255,8 +255,8 @@
                 <rsAdditionalDetailsVO>
                     <IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
                     <IUWP2_ADDITIONAL_FIELD5/>
-                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7>
-                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8>
+                    <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
+                    <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_cat}}</IUWP2_ADDITIONAL_FIELD8>
                     <IUWP2_ADDITIONAL_FIELD9/>							  
                     <IUWP2_ADDITIONAL_FIELD10>{{eproposal.data.first_name}}</IUWP2_ADDITIONAL_FIELD10>
                     <IUWP2_ADDITIONAL_FIELD11>{{eproposal.data.email}}</IUWP2_ADDITIONAL_FIELD11>

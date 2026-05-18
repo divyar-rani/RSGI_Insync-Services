@@ -239,7 +239,7 @@
                 <IUWP2_DESC12></IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
                 <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
-                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.net_premium}}</primeIUWP2_INCR_ACT_PREM>
+                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.nb_total_premium |number_format(2) }}</primeIUWP2_INCR_ACT_PREM>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
                 <IUWP2_OTH_INT_PTY_CD/>
@@ -349,7 +349,7 @@
                 </rsAdditionalDetailsVO>
                 {# Zero or more repetitions: #}
 				{% for cover in covers %}
-					{% if cover.flag == 'Yes' and cover.code %}
+					{% if cover.flag == 'Yes' or cover.flag == true %}
 
 						{% set premium_raw = cover.premium %}
 

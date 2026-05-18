@@ -200,7 +200,7 @@ class insync {
             if (policy.issue_date === 'null' || policy.issue_date === null) policy.issue_date = null;
 			
             //Added by DivyaRani to restrict cases from other sources except InsureX
-            if ( policy.proposal?.data?.t_source != 'InsureX' ) {
+            if ( policy.proposal?.data?.is_migration == 'Yes' ||  policy.proposal?.data?.t_source == '') {
                 await this._add_to_purgatory(def, policyId, 'Not An InsureX Policy', policy.proposal?.data?.t_source);
                 return;
             }
