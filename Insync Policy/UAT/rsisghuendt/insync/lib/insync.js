@@ -194,19 +194,13 @@ class insync {
             // include_payment is defined
             //
             //if (policy.endorsement_date === 'null' ) policy.endorsement_date = null;
-			if ((policy.endorsement_date === 'null' || policy.endorsement_date === null) && (policy.endorsement_no != '' && policy.endorsement_no != null )) policy.endorsement_date = policy.c_ts;
+			if (policy.endorsement_date === 'null' || policy.endorsement_date === null) policy.endorsement_date = policy.c_ts;
 			console.log('*****************policy.endorsement_date ',policy.endorsement_date);
 
             if (+policy.status == 8) {
                 // cancelled policy, just mark completed or push through cancellation consumer
             }
 
-            //Added by DivyaRani to restrict cases from other sources except InsureX
-            if ( !policy.proposal?.data?.t_source ) {
-                await this._add_to_purgatory(def, policyId, 'Not An InsureX Policy', policy.proposal?.data?.t_source);
-                return;
-            }
-            
             // do not process policies issued before cut-off date (useful for transitions)
             //
             //if (def.cutoff && policy.issue_date && moment(policy.issue_date || policy.c_ts).isBefore(moment(def.cutoff))) {
@@ -234,9 +228,9 @@ class insync {
 
             let res = null;
             if (p) {
-                res = await db.exec("update is_policy set policy_no=?, product_name=?, issue_date=?, proposal_no=? where policy_id=?", [policy.endorsement_no||null, prodname, policy.endorsement_date, policy.propoal_no||'', policyId]);
+                res = await db.exec("update is_policy set policy_no=?, product_name=?, issue_date=?, proposal_no=? where policy_id=?", [policy.policy_no||null, prodname, policy.endorsement_date, policy.propoal_no||'', policyId]);
             } else {
-                let params = [policyId, policy.endorsement_no, prodname, policy.product_id, policy.endorsement_date, policy.proposal_no, def.name];
+                let params = [policyId, policy.policy_no, prodname, policy.product_id, policy.endorsement_date, policy.proposal_no, def.name];
                 res = await db.exec("insert into is_policy(policy_id, policy_no, product_name, product_id, issue_date, sync_state, proposal_no, def_name) values (?,?,?,?,?,'downloaded',?,?)", params);
             }
 

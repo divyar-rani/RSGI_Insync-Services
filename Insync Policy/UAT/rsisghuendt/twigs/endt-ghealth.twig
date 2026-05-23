@@ -33,7 +33,7 @@
 			{% if proposal.data.imd_channel == 'Global' %}
             <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_subchannel] }}</IUWP1_BUS_TP>{% else %}
             <IUWP1_BUS_TP>{{ global_map[proposal.data.imd_channel] }}</IUWP1_BUS_TP>{% endif %}
-            {% if proposal.data.imd_oa_agent != '' %}<IUWP1_ORACC_CD>{{proposal.data.imd_oa_agent}}</IUWP1_ORACC_CD>{% else %}<IUWP1_ORACC_CD>{{proposal.data.imd_oa_broker_code}}</IUWP1_ORACC_CD>	{% endif %}            		
+            {% if proposal.data.imd_oa_agent != '' %}<IUWP1_ORACC_CD>{{proposal.data.imd_oa_agent}}</IUWP1_ORACC_CD>{% else %}<IUWP1_ORACC_CD>{{proposal.data.imd_oa_broker_code}}</IUWP1_ORACC_CD>	{% endif %}			
             <IUWP1_TERM>{{policy_term[eproposal.data.tenure_type]}}</IUWP1_TERM>
             <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
             <IUWP1_INSTL_MODE>A</IUWP1_INSTL_MODE>

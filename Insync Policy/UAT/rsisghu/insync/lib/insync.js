@@ -199,6 +199,7 @@ class insync {
             //
             if (policy.issue_date === 'null' || policy.issue_date === null) policy.issue_date = null;
 			
+
             if (+policy.status == 8) {
                 // cancelled policy, just mark completed or push through cancellation consumer
             }
@@ -227,13 +228,13 @@ class insync {
                 return;
             } 
 
+
             //Added by DivyaRani to restrict cases from other sources except InsureX
             if ( policy.proposal?.data?.is_migration == 'Yes' ||  !policy.proposal?.data?.t_source ) {
                 await this._add_to_purgatory(def, policyId, 'Not An InsureX Policy', policy.proposal?.data?.t_source);
                 return;
             }
-				            
-													
+			
             let res = null;
             if (p) {
                 res = await db.exec("update is_policy set policy_no=?, product_name=?, issue_date=?, proposal_no=? where policy_id=?", [policy.policy_no||null, prodname, policy.issue_date, policy.propoal_no||'', policyId]);

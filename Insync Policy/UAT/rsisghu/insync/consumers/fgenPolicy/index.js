@@ -6,31 +6,32 @@ const { error } = require('../common/db');
 
 class fgenPolicy extends twigbase {
 
-	async __add_additional_data(policy) {
-		let endorsement_no = '000';
+    async __add_additional_data(policy) {
+        let endorsement_no = '000';
 
-		policy.proposal.data.is_fg_policy_no = policy.policy_no.slice(0, 10) + policy.policy_no.slice(-2) + endorsement_no;
-
+        policy.proposal.data.is_fg_policy_no = policy.policy_no.slice(0, 10) + policy.policy_no.slice(-2) + endorsement_no;
+		
 		policy.proposal.data.is_fg_policy_start_date = utils._fix_date(policy.proposal.data.policy_start_date);
 		policy.proposal.data.is_fg_policy_end_date = utils._fix_date(policy.proposal.data.policy_end_date);
-		policy.proposal.data.is_fg_issue_date = utils._fix_date(policy.data.issue_date);
-		policy.proposal.data.is_fg_proposal_date = utils._fix_date(policy.proposal.proposal_date);
-		policy.proposal.data.is_fg_acc_date = new Date(policy.proposal.data.is_fg_policy_start_date) > new Date(policy.proposal.data.is_fg_issue_date) ? policy.proposal.data.is_fg_policy_start_date : policy.proposal.data.is_fg_issue_date;
-		// console.log("Proposal data Check ", policy.proposal.data.is_fg_policy_no,' -> ',policy.proposal.data.is_is_fg_policy_start_date,' -> ',policy.proposal.data.is_fg_policy_end_date ,' -> ',policy.proposal.data.is_fg_issue_date,' -> ',policy.proposal.data.is_fg_proposal_date,' -> ',policy.proposal.data.is_fg_acc_date);
-	}
+        policy.proposal.data.is_fg_issue_date = utils._fix_date(policy.data.issue_date);
+        policy.proposal.data.is_fg_proposal_date = utils._fix_date(policy.proposal.proposal_date);
+        policy.proposal.data.is_fg_acc_date = new Date(policy.proposal.data.is_fg_policy_start_date) > new Date(policy.proposal.data.is_fg_issue_date) ? policy.proposal.data.is_fg_policy_start_date : policy.proposal.data.is_fg_issue_date;
+        // console.log("Proposal data Check ", policy.proposal.data.is_fg_policy_no,' -> ',policy.proposal.data.is_is_fg_policy_start_date,' -> ',policy.proposal.data.is_fg_policy_end_date ,' -> ',policy.proposal.data.is_fg_issue_date,' -> ',policy.proposal.data.is_fg_proposal_date,' -> ',policy.proposal.data.is_fg_acc_date);
+    }
 
-	async _process_service(service, policy) {
-
-		if (await this.__check_service_status(service, policy)) return true;
-
-		await this.__add_additional_data(policy);
-		let ndata = await this.__transform_all(service, policy);
-		if (ndata === null) return false;
-		if (!(await this.__call_service(service, policy, ndata[ndata.length - 1]))) {
-			return false;
-		}
-		return true;
-	}
+    async _process_service(service, policy) {
+		
+        if (await this.__check_service_status(service, policy)){ 
+		 console.log("Return true***************** ",service.name,  policy.policy_id); return true};
+		
+        await this.__add_additional_data(policy);
+        let ndata = await this.__transform_all(service, policy);
+        if (ndata === null) return false;
+        if (!(await this.__call_service(service, policy, ndata[ndata.length - 1]))) {
+            return false;
+        }
+        return true;
+    }
 
 	//FAILURE
 	async __get_fg_err_status(service, jx, policyId, subid, attr) {
@@ -62,7 +63,7 @@ class fgenPolicy extends twigbase {
 
 			const errorDesc = errorDetail?.errorDesc || '';
 
-			if (errorDesc.toLowerCase().includes('policy already exists')) {
+			if (errorDesc?.toLowerCase().includes('policy already exists')) {
 				return null;
 			}
 
@@ -101,7 +102,7 @@ class fgenPolicy extends twigbase {
 
 		let xpath = 'soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO';
 		let val = await utils.jpath_value(jx, xpath, service.target.strobjs);
-		if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc?.toLowerCase()?.includes('policy already exists')))) {
+		if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc?.toLowerCase().includes('policy already exists')))) {
 			const errorCode_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorCode);
 			const errorDesc_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorDesc);
 			let policy_no = await utils.jpath_value(jx, "soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO.polNo", service.target.strobjs);
@@ -111,6 +112,7 @@ class fgenPolicy extends twigbase {
 		return null;
 
 	}
+	
 }
 
 (new fgenPolicy('fgenPolicy')).run(workerData);

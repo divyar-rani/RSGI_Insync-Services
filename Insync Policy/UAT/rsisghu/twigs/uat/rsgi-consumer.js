@@ -168,7 +168,6 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-gpa.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                sqs: { name: 'fgenRen' },
                 //sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
@@ -196,8 +195,8 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-gpa.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
-                sqs: {},
-                //sqs: { name: 'fgenRen' },
+                //sqs: {},
+                sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -224,8 +223,8 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-ghealth.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                // sqs: {},
-                sqs: { name: 'fgenRen' },
+                //sqs: {},
+                //sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -252,7 +251,7 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-ghealth.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
-                sqs: {},
+                sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -278,20 +277,19 @@ const conf = {
     },
 
   
-	/* insillion: {
+	 insillion: {
         name: "insillion",
         sqs: {name: 'fgenRen'},		
         services: [
             {
-                name: 'revfeed',
-                if: "(fgen_policy_no != '')",
+                name: 'revfeed',                
                 products: ['all'],
                 twigs: [],
                 sqs: {},
                 disable_cache: true
             }
         ],
-    }  */
+    }  
 
 }
 if (process.env.IS_TMP) conf.tmp = process.env.IS_TMP;

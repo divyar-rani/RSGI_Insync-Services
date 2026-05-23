@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+const axios = require('axios');
+let data = '<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
     <soapenv:Header/>
     <soapenv:Body>
@@ -6,7 +7,7 @@
             <oprId>GMCPOLICY</oprId>
             <polNo>APG0000593000100</polNo>
             <IUWP1_ENQ_KEY_2>34AABCR7106G1ZO</IUWP1_ENQ_KEY_2>
-            <IUWP1_POL_WARR>APG000058300001</IUWP1_POL_WARR>
+            <IUWP1_POL_WARR>APG000059300001</IUWP1_POL_WARR>
             <IUWP1_LINK_FLD>APGX42570001751</IUWP1_LINK_FLD>
             <endtNo>000</endtNo>
             <IUWP1_PRD_CD>APG</IUWP1_PRD_CD>
@@ -79,7 +80,7 @@
                 <IUWPC_OTHRNAME2/>
                 <IUWPC_SEX/>
                 <IUWPC_STATE_CD>TN</IUWPC_STATE_CD>
-                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
+                <IUWPC_SURNAME2/>
                 <IUWPC_TRADE>1000</IUWPC_TRADE>
             </clientVO>
             <userTextVO>
@@ -203,8 +204,8 @@
                 <rsAdditionalDetailsVO>
                     <IUWP2_ADDITIONAL_FIELD1>0</IUWP2_ADDITIONAL_FIELD1>
                     <IUWP2_ADDITIONAL_FIELD5/>
-                    <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
-                    <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_cat}}</IUWP2_ADDITIONAL_FIELD8>
+                    <IUWP2_ADDITIONAL_FIELD7>0</IUWP2_ADDITIONAL_FIELD7>
+                    <IUWP2_ADDITIONAL_FIELD8>0</IUWP2_ADDITIONAL_FIELD8>
                     <IUWP2_ADDITIONAL_FIELD9/>
                     <IUWP2_ADDITIONAL_FIELD10>SINGARAVEL</IUWP2_ADDITIONAL_FIELD10>
                     <IUWP2_ADDITIONAL_FIELD11>singaravel99.ss@gmail.com</IUWP2_ADDITIONAL_FIELD11>
@@ -225,4 +226,22 @@
             <IUWP1_SB_OPT>G</IUWP1_SB_OPT>
         </pol:FGUWPolicyVO>
     </soapenv:Body>
-</soapenv:Envelope>
+</soapenv:Envelope>';
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthNewBusiness?wsdl',
+  headers: { 
+    'Content-Type': 'application/soap+xml'
+  },
+  data : data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});

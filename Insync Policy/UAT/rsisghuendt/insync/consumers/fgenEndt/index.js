@@ -7,8 +7,8 @@ const { error } = require('../common/db');
 class fgenEndt extends twigbase {
 
     async __add_additional_data(policy) {        
-        policy.endt_no = policy?.endorsement_no?.split('-')[1];
-		policy.proposal.data.is_fg_policy_no = policy.policy_no?.slice(0, 10) + policy.policy_no?.slice(-2) + endorsement_no;
+        policy.proposal.data.endt_no = policy?.endorsement_no?.split('-')[1];
+		policy.proposal.data.is_fg_policy_no = policy.policy_no?.slice(0, 10) + policy.policy_no?.slice(-2) + policy.proposal.data.endt_no;
 
 		policy.proposal.data.is_fg_policy_start_date = utils._fix_date(policy.proposal.data.policy_start_date);
 		policy.proposal.data.is_fg_policy_end_date = utils._fix_date(policy.proposal.data.policy_end_date);

@@ -20,7 +20,8 @@ class fgenRen extends twigbase {
     }
 
     async _process_service(service, policy) {
-        if (await this.__check_service_status(service, policy)) return true;;
+
+        if (await this.__check_service_status(service, policy)) { console.log("Return true***************** ",service.name,  policy.policy_id); return true};
         await this.__add_additional_data(policy);
         let ndata = await this.__transform_all(service, policy);
         if (ndata === null) return false;
@@ -59,7 +60,7 @@ class fgenRen extends twigbase {
 
             const errorDesc = errorDetail?.errorDesc || '';
 
-            if (errorDesc.toLowerCase().includes('policy already exists')) {
+            if (errorDesc?.toLowerCase().includes('policy already exists')) {
                 return null;
             }
 
@@ -97,7 +98,7 @@ class fgenRen extends twigbase {
     async __get_fg_ren_status(service, jx, policyId, subid, attr) {
         let xpath = 'soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO';
         let val = await utils.jpath_value(jx, xpath, service.target.strobjs);
-        if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc.toLowerCase().includes('policy already exists')))) {
+        if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc?.toLowerCase().includes('policy already exists')))) {
             const errorCode_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorCode);
             const errorDesc_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorDesc);
             let policy_no = await utils.jpath_value(jx, "soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO.polNo", service.target.strobjs);
