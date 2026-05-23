@@ -105,7 +105,7 @@
             <nomineeAddr3/>
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{proposal.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
-            <IUWP1_POL_WARR>{{ slice(proposer_expiring_policy_no, 0, 10) ~ slice(proposer_expiring_policy_no, length(proposer_expiring_policy_no) - 2, 2) ~ '000' }}</IUWP1_POL_WARR>
+            <IUWP1_POL_WARR>{{ slice(proposal.data.proposer_expiring_policy_no, 0, 10) ~ slice(proposal.data.proposer_expiring_policy_no, proposal.data.proposer_expiring_policy_no|length-2, 2) ~ '000' }}</IUWP1_POL_WARR>
             <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
             <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
@@ -276,7 +276,7 @@
                 <IUWP2_INT_CD/>
                 <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
                 <rsPaVO>
-                    <IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>
+                    {%if proposal.data.tpa_code == '' %}<IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}<IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>{% endif %}
                     <isNewInsured>N</isNewInsured>
                     <isInsuredClient>N</isInsuredClient>
                     <isInsuredNominee>N</isInsuredNominee>

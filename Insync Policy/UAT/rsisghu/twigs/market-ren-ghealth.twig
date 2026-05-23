@@ -54,12 +54,7 @@
             <channel/>
             <panNumber>{{proposal.data.proposer_pan}}</panNumber>           
             {%if (proposal.data.policy_transaction_type == 'New Business') and (proposal.data.existing_client == 'Existing') and (payment.data.exist_party_id != '') %}
-                <IUWP1_DELIVERY_MODE>EN</IUWP1_DELIVERY_MODE>
-            {% elseif proposal.data.policy_transaction_type == 'New Business'  or proposal.data.policy_transaction_type == 'Market Renewal'%}
-                <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>
-            {% else %}
-                <IUWP1_DELIVERY_MODE>NA</IUWP1_DELIVERY_MODE>
-            {%endif%}
+            <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>
             <IUWP1_RN_CD>00</IUWP1_RN_CD>
             <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
             <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>            

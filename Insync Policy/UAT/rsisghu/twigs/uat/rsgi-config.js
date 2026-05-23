@@ -36,7 +36,6 @@ module.exports = {
                     cust3: "proposal.data.t_source",
                 },
             }
-
         },
 		
         product_names: {
@@ -45,22 +44,28 @@ module.exports = {
         },
 		edit: {
             "ghealth": {
-                fields: [{name:'imd_channel', jpath:'proposal.data.imd_channel', type:'string'}],
-				fields: [{name:'imd_sub_channel', jpath:'proposal.data.imd_sub_channel', type:'string'}],
-                fields: [{name:'imd_oa_agent', jpath:'proposal.data.imd_oa_agent', type:'string'}],
-                fields: [{name:'imd_sales_rep', jpath:'proposal.data.imd_sales_rep', type:'string'}],
-                fields: [{name:'imd_approving_uw', jpath:'proposal.data.imd_approving_uw', type:'string'}],
-                fields: [{name:'imd_trading_uw', jpath:'proposal.data.imd_trading_uw', type:'string'}],
-                fields: [{name:'imd_code', jpath:'proposal.data.imd_code', type:'string'}]                
+                fields: [
+				{name:'imd_channel', jpath:'proposal.data.imd_channel', type:'string'},
+				{name:'imd_sub_channel', jpath:'proposal.data.imd_sub_channel', type:'string'},
+                {name:'imd_oa_agent', jpath:'proposal.data.imd_oa_agent', type:'string'},
+                {name:'imd_sales_rep', jpath:'proposal.data.imd_sales_rep', type:'string'},
+                {name:'imd_approving_uw', jpath:'proposal.data.imd_approving_uw', type:'string'},
+                {name:'imd_trading_uw', jpath:'proposal.data.imd_trading_uw', type:'string'},
+                {name:'imd_code', jpath:'proposal.data.imd_code', type:'string'},
+				{name:'cust_buss_type', jpath:'proposal.data.cust_buss_type', type:'string'}
+				]				
             },
               "gpa": {
-                fields: [{name:'imd_channel', jpath:'proposal.data.imd_channel', type:'string'}],
-				fields: [{name:'imd_sub_channel', jpath:'proposal.data.imd_sub_channel', type:'string'}],
-                fields: [{name:'imd_oa_agent', jpath:'proposal.data.imd_oa_agent', type:'string'}],
-                fields: [{name:'imd_sales_rep', jpath:'proposal.data.imd_sales_rep', type:'string'}],
-                fields: [{name:'imd_approving_uw', jpath:'proposal.data.imd_approving_uw', type:'string'}],
-                fields: [{name:'imd_trading_uw', jpath:'proposal.data.imd_trading_uw', type:'string'}],
-                fields: [{name:'imd_code', jpath:'proposal.data.imd_code', type:'string'}]      
+                fields: [
+				{name:'imd_channel', jpath:'proposal.data.imd_channel', type:'string'},
+				{name:'imd_sub_channel', jpath:'proposal.data.imd_sub_channel', type:'string'},
+                {name:'imd_oa_agent', jpath:'proposal.data.imd_oa_agent', type:'string'},
+                {name:'imd_sales_rep', jpath:'proposal.data.imd_sales_rep', type:'string'},
+                {name:'imd_approving_uw', jpath:'proposal.data.imd_approving_uw', type:'string'},
+                {name:'imd_trading_uw', jpath:'proposal.data.imd_trading_uw', type:'string'},
+                {name:'imd_code', jpath:'proposal.data.imd_code', type:'string'},
+				{name:'cust_buss_type', jpath:'proposal.data.cust_buss_type', type:'string'}				
+				]      
             }
         }
     }

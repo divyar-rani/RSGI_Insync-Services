@@ -6,28 +6,16 @@ const { error } = require('../common/db');
 
 class fgenEndt extends twigbase {
 
-    async __add_additional_data(policy) {
-        let endorsement_no = '000';
+    async __add_additional_data(policy) {        
+        policy.endt_no = policy?.endorsement_no?.split('-')[1];
+		policy.proposal.data.is_fg_policy_no = policy.policy_no?.slice(0, 10) + policy.policy_no?.slice(-2) + endorsement_no;
 
-        policy.proposal.data.is_fg_policy_start_date = utils._fix_date(policy.endorsement?.data?.endorsement_start_date);
-        //policy.proposal.data.is_fg_policy_end_date = utils._fix_date(policy.endorsement?.data?.policy_end_date);
-        let value = policy.endorsement?.data?.policy_end_date ;
-        if (!isNaN(value)) {			
-            const baseDate = new Date(1899, 11, 30); // Excel base date
-            baseDate.setDate(baseDate.getDate() + Number(value));
-            policy.proposal.data.is_fg_policy_end_date =  utils._fix_date(baseDate.toISOString().split("T")[0]);
-        }
-        else{
-            policy.proposal.data.is_fg_policy_end_date = utils._fix_date(value);
-        }
-
-        policy.proposal.data.is_fg_issue_date = utils._fix_date(policy.data.u_ts);
-        policy.proposal.data.is_fg_proposal_date = utils._fix_date(policy?.eproposal?.eproposal_date);
-        policy.proposal.data.is_fg_acc_date = new Date(policy.proposal.data.is_fg_policy_start_date) > new Date(policy.proposal.data.is_fg_issue_date) ? policy.proposal.data.is_fg_policy_start_date : policy.proposal.data.is_fg_issue_date;
-
-        const val = policy.endorsement_no;
-        const result = val.slice(0, 10) + val.split('-')[0].slice(-2) + val.split('-')[1];
-        policy.proposal.data.is_taxinvoice_id = result;
+		policy.proposal.data.is_fg_policy_start_date = utils._fix_date(policy.proposal.data.policy_start_date);
+		policy.proposal.data.is_fg_policy_end_date = utils._fix_date(policy.proposal.data.policy_end_date);
+		policy.proposal.data.is_fg_issue_date = utils._fix_date(policy?.endorsement_date);
+		policy.proposal.data.is_fg_proposal_date = utils._fix_date(policy?.endorsement_date);
+		policy.proposal.data.is_fg_acc_date = new Date(policy.proposal.data.is_fg_policy_start_date) > new Date(policy.proposal.data.is_fg_issue_date) ? policy.proposal.data.is_fg_policy_start_date : policy.proposal.data.is_fg_issue_date;
+		
     }
 
     async _process_service(service, policy) {
@@ -118,6 +106,5 @@ class fgenEndt extends twigbase {
             return null;
         }
     }
-}
 
 (new fgenEndt('fgenEndt')).run(workerData);

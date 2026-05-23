@@ -37,7 +37,7 @@
             <IUWP1_OLD_POL_NO></IUWP1_OLD_POL_NO>
             <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
             <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>
-            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP1_INCR_SI> {# Incremental SI / Total SI#}
+            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si|number_format(0)}}</primeIUWP1_INCR_SI> {# Incremental SI / Total SI#}
             <IUWP1_POL_CREF_NO></IUWP1_POL_CREF_NO>
             <IUWP1_PLAN_NO></IUWP1_PLAN_NO>
             <IUWP1_DECLN_NO></IUWP1_DECLN_NO>
@@ -238,7 +238,7 @@
                 <IUWP2_DESC11></IUWP2_DESC11>
                 <IUWP2_DESC12></IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
-                <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
+                <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si|number_format(0)}}</primeIUWP2_INCR_SI>
                 <primeIUWP2_INCR_ACT_PREM>{{proposal.data.nb_total_premium |number_format(2) }}</primeIUWP2_INCR_ACT_PREM>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
@@ -254,7 +254,7 @@
                 <IUWP2_INT_CD/>
                 <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
                 <rsPaVO>
-                    <IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>
+                    {%if proposal.data.tpa_code == '' %}<IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}<IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>{% endif %}
                     <isNewInsured>N</isNewInsured>
                     <isInsuredClient>N</isInsuredClient>
                     <isInsuredNominee>N</isInsuredNominee>
@@ -379,7 +379,7 @@
 							<IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
 							<IUWP3_RT_U>{{ c_rate }}</IUWP3_RT_U>
 							<primeIUWP3_INCR_PREM>{{ c_premium }}</primeIUWP3_INCR_PREM>
-							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si }}</primeIUWP3_INCR_SI>
+							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si|number_format(0) }}</primeIUWP3_INCR_SI>
 						</coverageVOList>
 
 					{% endif %}

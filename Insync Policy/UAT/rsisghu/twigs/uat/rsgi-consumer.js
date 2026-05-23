@@ -43,7 +43,7 @@ const conf = {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],
                 twigs: ['/mnt/ebs1/rsisghu/twigs/clientCreation.twig'],                
-                if: "(policy?.proposal?.data?.client_type?.trim() && policy?.proposal?.data?.customer_type?.trim() && policy?.proposal?.data?.cust_buss_type?.trim() && (policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && policy?.proposal?.data?.cust_buss_type !== 'Entity')",
+                if: "((policy?.proposal?.data?.client_type == 'Existing' || policy?.proposal?.data?.customer_type === 'New') && policy?.proposal?.data?.cust_buss_type == 'Individual')",
                 disable_cache: true,
                 target: {
                     method: 'POST',
@@ -67,7 +67,7 @@ const conf = {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],                
                 twigs: ['/mnt/ebs1/rsisghu/twigs/clientCreation.twig'],
-                if: "((policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && (policy?.proposal?.data?.cust_buss_type === 'Entity'))",
+                if: "((policy?.proposal?.data?.client_type != 'Existing' || policy?.proposal?.data?.customer_type != 'New') && policy?.proposal?.data?.cust_buss_type != 'Individual')",
                 disable_cache: true,
                 sqs: { name: 'client' },                
                 target: {
@@ -103,8 +103,8 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/policy-gpa.twig'],
                 if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business' )",
                 disable_cache: true,
-                //sqs: { name: 'fgenPolicy' },
-				sqs: {},
+                sqs: { name: 'fgenPolicy' },
+				//sqs: {},
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -131,8 +131,8 @@ const conf = {
                 twigs: ['/mnt/ebs1/rsisghu/twigs/policy-ghealth.twig'],
                 if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business')",
                 disable_cache: true,
-                //sqs: { name: 'fgenPolicy' },
-				sqs: {},
+                sqs: { name: 'fgenPolicy' },
+				//sqs: {},
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -165,14 +165,15 @@ const conf = {
             {
                 name: 'gpa-fgenRen',
                 products: ['gpa'],
-                twigs: ['/mnt/ebs1/rsisghu/twigs/ren-gpa.twig'],
+                twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-gpa.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                sqs: {},
+                sqs: { name: 'fgenRen' },
+                //sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
-                    url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthRenewal?wsdl',
+                    url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthNewBusiness?wsdl',
                     errorPath: [
                         {
                             xfunc: '__get_fg_ren_err_status',
@@ -196,6 +197,7 @@ const conf = {
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
                 sqs: {},
+                //sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -219,14 +221,15 @@ const conf = {
             {
                 name: 'ghealth-fgenRen',
                 products: ['ghealth'],
-                twigs: ['/mnt/ebs1/rsisghu/twigs/ren-ghealth.twig'],
+                twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-ghealth.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                sqs: {},
+                // sqs: {},
+                sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
-                    url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthRenewal?wsdl',
+                    url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthNewBusiness?wsdl',
                     errorPath: [
                         {
                             xfunc: '__get_fg_ren_err_status',
@@ -246,7 +249,7 @@ const conf = {
             {
                 name: 'ghealth-fgenMRen',
                 products: ['ghealth'],
-                twigs: ['/mnt/ebs1/rsisghu/twigs/ren-ghealth.twig'],
+                twigs: ['/mnt/ebs1/rsisghu/twigs/market-ren-ghealth.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
                 sqs: {},

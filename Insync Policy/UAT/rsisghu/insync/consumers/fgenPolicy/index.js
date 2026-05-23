@@ -101,7 +101,7 @@ class fgenPolicy extends twigbase {
 
 		let xpath = 'soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO';
 		let val = await utils.jpath_value(jx, xpath, service.target.strobjs);
-		if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc.toLowerCase().includes('policy already exists')))) {
+		if (val?.status == 'SUCCESS' || (val?.status == 'FAIL' && (val?.errorDetailVOList?.errorDesc?.toLowerCase()?.includes('policy already exists')))) {
 			const errorCode_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorCode);
 			const errorDesc_exe = val?.errorMsg ? val?.errorMsg : JSON.stringify(val?.errorDetailVOList?.errorDesc);
 			let policy_no = await utils.jpath_value(jx, "soapenv:Envelope.soapenv:Body.ns2:FGUWResponseVO.polNo", service.target.strobjs);

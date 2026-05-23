@@ -172,9 +172,9 @@ class stats extends base {
         let modules = await fs.promises.readdir(folder);
         for (let mod of modules) {
             let sub = path.join(folder, mod, policy.endorsement_id.substring(policy.endorsement_id.length-2));
-		console.log("sub",sub);
-		console.log("policy_id_sub",policy.policy_id.substring(policy.policy_id.length-2));
-		console.log("endorsment_id_sub",policy.endorsement_id.substring(policy.endorsement_id.length-2));
+		//console.log("sub",sub);
+		//console.log("policy_id_sub",policy.policy_id.substring(policy.policy_id.length-2));
+		//console.log("endorsment_id_sub",policy.endorsement_id.substring(policy.endorsement_id.length-2));
             if (!fs.existsSync(sub)) continue;
             ret[mod] = await this.__find_files(sub, policy)
         }

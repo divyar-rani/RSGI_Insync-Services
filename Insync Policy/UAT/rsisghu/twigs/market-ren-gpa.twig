@@ -121,13 +121,7 @@
             <IUWP1_LINK_FLD>{{proposal_no}}</IUWP1_LINK_FLD>
             <custSegment/>
             <IUWP1_QUOT_NO>{{quote_id}}</IUWP1_QUOT_NO>
-            {%if (proposal.data.policy_transaction_type == 'New Business') and (proposal.data.existing_client == 'Existing') and (payment.data.exist_party_id != '') %}
-                <IUWP1_DELIVERY_MODE>EN</IUWP1_DELIVERY_MODE>
-            {% elseif proposal.data.policy_transaction_type == 'New Business'  or proposal.data.policy_transaction_type == 'Market Renewal'%}
-                <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>
-            {% else %}
-                <IUWP1_DELIVERY_MODE>NA</IUWP1_DELIVERY_MODE>
-            {%endif%}            
+            <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>            
             <IUWP1_CUSTOMERSEGMENT/>
             <clientVO>
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
@@ -226,29 +220,21 @@
 
             {% else %}
 
-                {% set limbs_premium = proposal.data.ren_limbs_premium | default(0) %}
-                {% set ttd_total_premium = (proposal.data.ren_ttd_premium | default(0)) + limbs_premium %}
-
-                {% if proposal.data.addon_medical_expense_type | lower == 'standard' %}
-                    {% set medex_premium = proposal.data.ren_std_med_premium | default(0) %}
-                {% elseif proposal.data.addon_medical_expense_type | lower == 'delinked' %}
-                    {% set medex_premium = proposal.data.ren_delink_premium | default(0) %}
-                {% else %}
-                    {% set medex_premium = proposal.data.ren_both_premium | default(0) %}
-                {% endif %}
-
+                {% set limbs_premium = proposal.data.ren_limbs_f_premium | default(0) %}
+                {% set ttd_total_premium = (proposal.data.ren_final_ttd_premium | default(0)) + limbs_premium %}
+				{% set medex_premium = proposal.data.ren_medical_expense_premium | default(0) %}                
                 {% set covers = [
-                    {"code": "APDPRM", "flag": proposal.data.addon_death, "premium": proposal.data.ren_death_premium, "rate": ""},
-                    {"code": "APSPRM", "flag": proposal.data.addon_ptd, "premium": proposal.data.ren_ptd_premium, "rate": ""},
-                    {"code": "APPPRM", "flag": proposal.data.addon_ppd, "premium": proposal.data.ren_ppd_premium, "rate": ""},
+                    {"code": "APDPRM", "flag": proposal.data.addon_death, "premium": proposal.data.ren_death_cover_premium, "rate": ""},
+                    {"code": "APSPRM", "flag": proposal.data.addon_ptd, "premium": proposal.data.ren_ptd_f_premium, "rate": ""},
+                    {"code": "APPPRM", "flag": proposal.data.addon_ppd, "premium": proposal.data.ren_ppd_f_premium, "rate": ""},
                     {"code": "APGTPR", "flag": proposal.data.addon_ttd or proposal.data.addon_loss_of_limbs, "premium": ttd_total_premium, "rate": ""},
                     {"code": "APMPRM", "flag": proposal.data.addon_medical_exp, "premium": medex_premium, "rate": ""},
-                    {"code": "APEDG", "flag": proposal.data.addon_child_benefits, "premium": 0, "rate": ""},
-                    {"code": "ACLOD", "flag": proposal.data.addon_ambulance, "premium": 0, "rate": ""},
-                    {"code": "APGMB", "flag": proposal.data.addon_modification, "premium": 0, "rate": ""},
-                    {"code": "APGFT", "flag": proposal.data.addon_family_trans_benefit, "premium": 0, "rate": ""},
-                    {"code": "TRTROR", "flag": proposal.data.addon_repatriation_mortal_remains, "premium": 0, "rate": ""},
-                    {"code": "APCCE", "flag": proposal.data.addon_funeral_expenses, "premium": 0, "rate": ""}
+                    {"code": "APEDG", "flag": proposal.data.addon_child_benefits, "premium": proposal.data.ren_child_education_premium, "rate": ""},
+                    {"code": "ACLOD", "flag": proposal.data.addon_ambulance, "premium": proposal.data.ren_ambulance_premium, "rate": ""},
+                    {"code": "APGMB", "flag": proposal.data.addon_modification, "premium": proposal.data.ren_modification_benefits_premium, "rate": ""},
+                    {"code": "APGFT", "flag": proposal.data.addon_family_trans_benefit, "premium": proposal.data.ren_family_trans_premium, "rate": ""},
+                    {"code": "TRTROR", "flag": proposal.data.addon_repatriation_mortal_remains, "premium": proposal.data.ren_repatriations_premium, "rate": ""},
+                    {"code": "APCCE", "flag": proposal.data.addon_funeral_expenses, "premium": proposal.data.ren_funeral_expense_premium, "rate": ""}
                 ] %}
             {% endif %}
             <itemSectionVOList>
@@ -282,7 +268,7 @@
                 <IUWP2_INT_CD/>
                 <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
                 <rsPaVO>
-                    <IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>
+                    {%if proposal.data.tpa_code == '' %}<IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}<IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>{% endif %}
                     <isNewInsured>N</isNewInsured>
                     <isInsuredClient>N</isInsuredClient>
                     <isInsuredNominee>N</isInsuredNominee>
@@ -381,13 +367,13 @@
 
 						{% set premium_raw = cover.premium %}
 
-						{% if proposal.data.sme_flag == 'SME' %}
+						{# {% if proposal.data.sme_flag == 'SME' %}
 							{% if cover.code != 'APDPRM'
 								and cover.code != 'APGTPR'
 								and cover.code != 'APMPRM' %}
 								{% set premium_raw = 0 %}
 							{% endif %}
-						{% endif %}
+						{% endif %} #}
 
 						{% if cover.rate == '' or cover.rate == 0 or cover.rate == '0' %}
 							{% set c_rate = 0 %}

@@ -3,7 +3,7 @@ module.exports = {
         name: 'endorsement',
         include_paid: false,
         token: '',
-        batch_interval: 30*1000,
+        batch_interval: 30 * 1000,
         trace: true,
         pause: false,
         cutoff: '2026-01-01 10:00:00',
@@ -14,18 +14,22 @@ module.exports = {
         },
 
         product_names: {
-            "Group Health Insurance" : "ghealth",
+            "Group Health Insurance": "ghealth",
             "Group Personal Accident": "gpa"
         },
-		
-        		edit: {
-            "ghealth": {
-                fields: [{name:'PolicyId', jpath:'quote.data.policy_id', type:'string'}],
-				fields: [{name:'clientID', jpath:'policy.data.customerno_id', type:'string'}]
+
+        edit: {
+            "gpa": {
+                custom_fields: {
+                    cust1: "proposal.created_by",             
+                    cust2: "proposal.data.t_source",
+                },
             },
-              "gpa": {
-                fields: [{name:'PolicyId', jpath:'quote.data.policy_id', type:'string'}],
-				fields: [{name:'clientID', jpath:'policy.data.customerno_id', type:'string'}]
+            "ghealth": {
+                custom_fields: {
+                    cust1: "proposal.created_by",
+                    cust2: "proposal.data.t_source",
+                },
             }
         },
 
@@ -41,6 +45,6 @@ module.exports = {
 
         edit: {
         }
-        
+
     }
 }

@@ -199,12 +199,6 @@ class insync {
             //
             if (policy.issue_date === 'null' || policy.issue_date === null) policy.issue_date = null;
 			
-            //Added by DivyaRani to restrict cases from other sources except InsureX
-            if ( policy.proposal?.data?.is_migration == 'Yes' ||  policy.proposal?.data?.t_source == '') {
-                await this._add_to_purgatory(def, policyId, 'Not An InsureX Policy', policy.proposal?.data?.t_source);
-                return;
-            }
-
             if (+policy.status == 8) {
                 // cancelled policy, just mark completed or push through cancellation consumer
             }
@@ -233,7 +227,12 @@ class insync {
                 return;
             } 
 
-
+            //Added by DivyaRani to restrict cases from other sources except InsureX
+            if ( policy.proposal?.data?.is_migration == 'Yes' ||  !policy.proposal?.data?.t_source ) {
+                await this._add_to_purgatory(def, policyId, 'Not An InsureX Policy', policy.proposal?.data?.t_source);
+                return;
+            }
+				            
 													
             let res = null;
             if (p) {
