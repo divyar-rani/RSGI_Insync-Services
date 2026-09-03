@@ -32,10 +32,37 @@ const conf = {
 		preprocess: { nulls_to_empty: true, true_string: 'True', false_string: 'False', xmlescape: true, in_date_format: 'DD/MM/YYYY' },
 		services: [
 			{
-				name: 'ghealth-fgenEndt',
+				name: 'ghi-prem',
 				products: ['ghealth'],
-				twigs: ['/mnt/ebs1/rsisghuendt/twigs/endt-ghealth.twig'],
-				sqs: {},
+				if: "(policy?.eproposal?.data?.endorsement_type == 'Premium bearing' || policy?.eproposal?.data?.endorsement_type == 'Installment Collection') ",
+				twigs: ['/mnt/ebs1/rsisghuendt/twigs/ghi-prem.twig'],
+				//sqs: {name: 'fgenEndt'},
+				disable_cache: true,
+				target: {
+					method: 'POST',
+					headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+					url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
+					errorPath: [
+						{
+							xfunc: '__get_fg_endt_err_status', mandatory: true
+						}
+					],
+					ignoreErrors: false,
+					attributes: [
+						{
+							xfunc: '__get_fg_endt_status',
+							name: 'fgen_endt_policy_no',
+							mandatory: true
+						}
+					]
+				}
+			},
+			{
+				name: 'ghi-non-prem',
+				products: ['ghealth'],
+				if: "policy?.eproposal?.data?.endorsement_type == 'Non-Premium bearing'",
+				twigs: ['/mnt/ebs1/rsisghuendt/twigs/ghi-non-prem.twig'],
+				//sqs: {name: 'fgenEndt'},
 				disable_cache: true,
 				target: {
 					method: 'POST',
@@ -58,9 +85,92 @@ const conf = {
 			},
 
 			{
-				name: 'gpa-fgenEndt',
+				name: 'ghi-cancel',
+				products: ['ghealth'],
+				if: "policy?.eproposal?.data?.endorsement_type == 'Policy cancellation' || policy?.eproposal?.data?.endorsement_type == 'Reinstate with changes'",
+				twigs: ['/mnt/ebs1/rsisghuendt/twigs/ghi-cancel-prem.twig'],
+				//sqs: {name: 'fgenEndt'},
+				sqs: {},
+				disable_cache: true,
+				target: {
+					method: 'POST',
+					headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+					url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
+					errorPath: [
+						{
+							xfunc: '__get_fg_endt_err_status', mandatory: true
+						}
+					],
+					ignoreErrors: false,
+					attributes: [
+						{
+							xfunc: '__get_fg_endt_status',
+							name: 'fgen_endt_policy_no',
+							mandatory: true
+						}
+					]
+				}
+			},
+
+						
+			{
+				name: 'gpa-prem',
 				products: ['gpa'],
-				twigs: ['/mnt/ebs1/rsisghuendt/twigs/endt-gpa.twig'],
+				if: "(policy?.eproposal?.data?.endorsement_type == 'Premium bearing' || policy?.eproposal?.data?.endorsement_type == 'Installment Collection') ",
+				twigs: ['/mnt/ebs1/rsisghuendt/twigs/gpa-prem.twig'],
+				//sqs: {name: 'fgenEndt'},
+				disable_cache: true,
+				target: {
+					method: 'POST',
+					headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+					url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
+					errorPath: [
+						{
+							xfunc: '__get_fg_endt_err_status', mandatory: true
+						}
+					],
+					ignoreErrors: false,
+					attributes: [
+						{
+							xfunc: '__get_fg_endt_status',
+							name: 'fgen_endt_policy_no',
+							mandatory: true
+						}
+					]
+				}
+			},
+			{
+				name: 'gpa-non-prem',
+				products: ['gpa'],
+				if: "policy?.eproposal?.data?.endorsement_type == 'Non-Premium bearing'",
+				twigs: ['/mnt/ebs1/rsisghuendt/twigs/gpa-non-prem.twig'],
+				//sqs: {name: 'fgenEndt'},
+				disable_cache: true,
+				target: {
+					method: 'POST',
+					headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+					url: 'https://fgapi.royalsundaram.net/FirstGenV7/services/doHealthEndorsement?wsdl',
+					errorPath: [
+						{
+							xfunc: '__get_fg_endt_err_status', mandatory: true
+						}
+					],
+					ignoreErrors: false,
+					attributes: [
+						{
+							xfunc: '__get_fg_endt_status',
+							name: 'fgen_endt_policy_no',
+							mandatory: true
+						}
+					]
+				}
+			},
+			{
+				name: 'gpa-cancel',
+				products: ['gpa'],
+				if: "policy?.eproposal?.data?.endorsement_type == 'Policy cancellation' || policy?.eproposal?.data?.endorsement_type == 'Reinstate with changes' || policy?.eproposal?.data?.endorsement_type == 'Cancellation for Re instatement'",
+				twigs: ['/mnt/ebs1/rsisghuendt/twigs/gpa-cancel-prem.twig'],
+				//sqs: {name: 'fgenEndt'},
 				sqs: {},
 				disable_cache: true,
 				target: {
@@ -89,7 +199,7 @@ const conf = {
 		sqs: { name: 'fgenEndt' },
 		services: [
 			{
-				name: 'revfeed',
+				name: 'revfeed',				
 				if: "(fgen_endt_policy_no == 'SUCCESS')",
 				products: ['all'],
 				twigs: [],

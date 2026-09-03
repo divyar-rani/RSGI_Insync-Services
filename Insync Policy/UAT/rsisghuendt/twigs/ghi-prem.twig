@@ -316,26 +316,30 @@
                     <IUWP2_ADDITIONAL_FIELD50>0</IUWP2_ADDITIONAL_FIELD50>
 				</rsAdditionalDetailsVO>
 
-             <coverageVOList>
-                <IUWP3_COVG_CD>HSDPRM</IUWP3_COVG_CD>
-                <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>				
-                <IUWP3_RT_U>0</IUWP3_RT_U>
-                {% if eproposal.data.endorsement_name == 'Deletion of member' %}
-                <primeIUWP3_INCR_SI>-{{proposal.data.is_incr_si|number_format(2)}}</primeIUWP3_INCR_SI> {# Total SumInsured for the policy #}
-                {% else %}
-                <primeIUWP3_INCR_SI>{{proposal.data.is_incr_si|number_format(2)}}</primeIUWP3_INCR_SI> {# Total SumInsured for the policy #}
+                {% if (payment.data.total_amount != 0) %}
+                    <coverageVOList>
+                        <IUWP3_COVG_CD>HSDPRM</IUWP3_COVG_CD>
+                        <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>				
+                        <IUWP3_RT_U>0</IUWP3_RT_U>
+                        {% if eproposal.data.endorsement_name == 'Deletion of member' %}
+                        <primeIUWP3_INCR_SI>-{{proposal.data.is_incr_si|number_format(2)}}</primeIUWP3_INCR_SI> {# Total SumInsured for the policy #}
+                        {% else %}
+                        <primeIUWP3_INCR_SI>{{proposal.data.is_incr_si|number_format(2)}}</primeIUWP3_INCR_SI> {# Total SumInsured for the policy #}
+                        {% endif %}
+                        <primeIUWP3_INCR_PREM>{{eproposal.data.bk_end_base_premium | round(2, 'common')}}</primeIUWP3_INCR_PREM>
+                    </coverageVOList>  
                 {% endif %}
-				<primeIUWP3_INCR_PREM>{{eproposal.data.bk_end_base_premium | round(2, 'common')}}</primeIUWP3_INCR_PREM>
-            </coverageVOList>  
 
                 </itemSectionVOList>                       
             {# Zero or more repetitions: #}
-            <settlementVOList>
-                <IUWP1_ACC_CD>{{eproposal.data.pol_pay_acc_code.replaceAll('\\s+', '')}}</IUWP1_ACC_CD>
-                <IUWP1_STL_REF>{{eproposal.data.pol_pay_acc_code_no.replaceAll('\\s+', '')}}</IUWP1_STL_REF>
-                <IUWP1_STL_SRC>{% if eproposal.data.pol_pay_mode == 'CD'%}CD{% else %}RECT{% endif %}</IUWP1_STL_SRC>
-                <IUWP1_STL_TYPE>{% if eproposal.data.pol_pay_mode == 'CD'%}CD{% else %}EXISTINGRECT{% endif %}</IUWP1_STL_TYPE>
-            </settlementVOList> 
+            {% if (payment.data.total_amount != 0) %}
+                <settlementVOList>
+                    <IUWP1_ACC_CD>{{eproposal.data.pol_pay_acc_code.replaceAll('\\s+', '')}}</IUWP1_ACC_CD>
+                    <IUWP1_STL_REF>{{eproposal.data.pol_pay_acc_code_no.replaceAll('\\s+', '')}}</IUWP1_STL_REF>
+                    <IUWP1_STL_SRC>{% if eproposal.data.pol_pay_mode == 'CD'%}CD{% else %}RECT{% endif %}</IUWP1_STL_SRC>
+                    <IUWP1_STL_TYPE>{% if eproposal.data.pol_pay_mode == 'CD'%}CD{% else %}EXISTINGRECT{% endif %}</IUWP1_STL_TYPE>
+                </settlementVOList> 
+            {% endif %}
         {# {% for cobroker in proposal.data.cobroking %} 
          <coinsurerVOList>
             <IUWCO_NM>{{cobroker.imd_oa_agent}}</IUWCO_NM>
