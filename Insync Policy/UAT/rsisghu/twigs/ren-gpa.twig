@@ -3,6 +3,18 @@
     <soapenv:Header/>
     <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Short term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
       
+        {% set proposer_name = (proposal.data.first_name | replace({"&":"and"})) %}
+        {% set sumOfBreakupPrem = 0 %}
+        {% set share_percent = 100 %}
+        {% for i, item in proposal.data.coinsurers %}
+            {% if item.type == 'Leader' and item.insurer == 'Royal Sundaram General Insurance Co. Ltd.'%}
+                {% set share_percent=100 %}
+                    {% elseif item.type == 'Member' and item.insurer == 'Royal Sundaram General Insurance Co. Ltd.'%}
+                        {% set share_percent = item.share %}
+            {% endif %}    
+        {% endfor %}
+        {% set percetageInDecimal = share_percent / 100 %}
+        {% set shareOfSumInsured = sum_insured * percetageInDecimal %}
         <pol:FGUWPolicyVO>
             <oprId>GMCPOLICY</oprId>
             <polNo>{{proposal.data.proposer_expiring_policy_no}}</polNo>
@@ -10,12 +22,23 @@
             <IUWP1_PRD_CD>APG</IUWP1_PRD_CD>
             <IUWP1_ENDT_REAS>12</IUWP1_ENDT_REAS>
             <IUWP1_CAT_CD>D</IUWP1_CAT_CD>	       
-            {% for item in payment.details %}{% set party_id = item.data.exist_party_id|upper %}          
-            <IUWP1_ACC_CD>{{party_id}}</IUWP1_ACC_CD>{% endfor %}
+            {% if (proposal.data.coinsurance.type | default('Leader') == 'Leader' or proposal.data.coinsurance.type == 'Direct') %}	       
+                {% for item in payment.details %}
+                    {% set party_id = item.data.exist_party_id|upper %}          
+                    <IUWP1_ACC_CD>{{party_id.replaceAll('\\s+', '')}}</IUWP1_ACC_CD>
+                {% endfor %}
+                <IUWP1_CLI_CD>{{client_id.replaceAll('\\s+', '')}}</IUWP1_CLI_CD>
+            {% else %}
+                {% if (proposal.data.customer_type == 'New') %}
+                    <IUWP1_CLI_CD>{{policy.data.customerno_id}}</IUWP1_CLI_CD>
+                {% else %}
+                    <IUWP1_CLI_CD>{{proposal.data.party_id | upper}}</IUWP1_CLI_CD>
+                {% endif %}
+                <IUWP1_ACC_CD>{{proposal.data.imd_code}}</IUWP1_ACC_CD>
+            {% endif %}
             <IUWP1_BR_CD>{{proposal.data.branch_code}}</IUWP1_BR_CD>
             <isNewAgent>N</isNewAgent>
             <isNewClient>N</isNewClient> 
-            <IUWP1_CLI_CD>{{client_id}}</IUWP1_CLI_CD>
             <IUWP1_POL_NO_GEN_ID>M</IUWP1_POL_NO_GEN_ID>
             <IUWP1_DOM>URB</IUWP1_DOM>
             <IUWP1_TERR>{{proposal.data.branch_state_code}}</IUWP1_TERR>  
@@ -37,7 +60,6 @@
             <IUWP1_OLD_POL_NO></IUWP1_OLD_POL_NO>
             <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
             <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>
-            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP1_INCR_SI> {# Incremental SI / Total SI#}
             <IUWP1_POL_CREF_NO></IUWP1_POL_CREF_NO>
             <IUWP1_PLAN_NO></IUWP1_PLAN_NO>
             <IUWP1_DECLN_NO></IUWP1_DECLN_NO>
@@ -62,16 +84,17 @@
             <IUWP1_ISS_DT>{{proposal.data.is_fg_issue_date}}</IUWP1_ISS_DT>
             <IUWP1_ACC_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_ACC_DT>
             <IUWP1_EFF_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_EFF_DT>
+			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DR_PR_NO>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
             <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
             {% if (proposal.data.existing_client != 'Existing') %}<clientUpdateFlag>Y</clientUpdateFlag>
             {% else %}<clientUpdateFlag>N</clientUpdateFlag>{% endif %}
             <nomineeUpdateFlag>N</nomineeUpdateFlag>
-            <IUWP1_OTH_INT_PTY_CD1>{{proposal.data.imd_code}}</IUWP1_OTH_INT_PTY_CD1>
-            <IUWP1_OTH_INT_PTY_CD2>{{proposal.data.imd_sales_rep}}</IUWP1_OTH_INT_PTY_CD2>
-            <IUWP1_OTH_INT_PTY_CD3>{{proposal.data.imd_approving_uw}}</IUWP1_OTH_INT_PTY_CD3>
-            <IUWP1_OTH_INT_PTY_CD4>{{proposal.data.imd_trading_uw}}</IUWP1_OTH_INT_PTY_CD4>
+            <IUWP1_OTH_INT_PTY_CD1>{{proposal.data.imd_code.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD1>
+            <IUWP1_OTH_INT_PTY_CD2>{{proposal.data.imd_sales_rep.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD2>
+            <IUWP1_OTH_INT_PTY_CD3>{{proposal.data.imd_approving_uw.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD3>
+            <IUWP1_OTH_INT_PTY_CD4>{{proposal.data.imd_trading_uw.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD4>
             {% set data =(proposal.data.proposer_comm_addressline1 | default('')) ~ ' ' ~(proposal.data.proposer_comm_addressline2 | default('')) ~ ' ' ~(proposal.data.proposer_comm_addressline3 | default('')) ~ ' ' ~(proposal.data.proposer_comm_addressline4 | default(''))%}
             {% set data = data | replace({"&":"and"}) %}
             <IUWP1_CLI_ADDR_1>{{ data | slice(0,30) }}</IUWP1_CLI_ADDR_1>
@@ -79,7 +102,7 @@
             <IUWP1_CLI_ADDR_3>{{ data | slice(60,30) }}</IUWP1_CLI_ADDR_3>
             <IUWP1_CLI_ADDR_4>{{ data | slice(90,30) }}</IUWP1_CLI_ADDR_4>
             <receiptNumber/>
-            <voucherAmount/>
+            <voucherAmount>{{payment.total_amount * percetageInDecimal | round(2,'common')}}</voucherAmount>
             <bankCode/>
             <cardType/>
             <vipFlag/>
@@ -106,18 +129,86 @@
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{proposal.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
             <IUWP1_POL_WARR>{{ slice(proposal.data.proposer_expiring_policy_no, 0, 10) ~ slice(proposal.data.proposer_expiring_policy_no, proposal.data.proposer_expiring_policy_no|length-2, 2) ~ '000' }}</IUWP1_POL_WARR>
-            <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
-            <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
             <IUWP1_DED_TXT4></IUWP1_DED_TXT4>
             <IUWP1_DED_TXT5></IUWP1_DED_TXT5>
-            <IUWP1_COINS_DET></IUWP1_COINS_DET>
-            <IUWP1_COINS_TP></IUWP1_COINS_TP>
-            <IUWP1_COINS_LEADER></IUWP1_COINS_LEADER>
-            <IUWP1_CES_X></IUWP1_CES_X>
-            <IUWP1_COINS_LEADER_SHAREX></IUWP1_COINS_LEADER_SHAREX>
-            <IUWP1_COINS_PREM100X></IUWP1_COINS_PREM100X>
-            <IUWP1_COINS_CLAIM100X></IUWP1_COINS_CLAIM100X>
+            <IUWP1_ORG_SI_AMT>{{proposal.data.bk_total_sum_insured|number_format(0)}}</IUWP1_ORG_SI_AMT>
+            {% if (proposal.data.coinsurers | length > 0) %}
+                {% for i, item in proposal.data.coinsurers %}
+                    {% if (item.insurer == 'Royal Sundaram General Insurance Co. Ltd.') %}
+                        {% set rsShare = item.share %}
+                    {% endif %}
+                    {% if (item.type == 'Leader') %}
+                        {% set leaderCode = item.search_code | upper | trim %}
+                        {% set leaderShare = item.share %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% set rsShare = proposal.data.share_perc %}
+                {% set leaderCode = '' %}
+            {% endif %}
+            {% if (proposal.data.coinsurance.type == 'Leader' or proposal.data.coinsurance.type == 'Member') %}
+                {% if (proposal.data.coinsurance.type == 'Leader' and rsShare == 100) %}
+                    <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
+                    <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
+                    <IUWP1_COINS_DET>N</IUWP1_COINS_DET>
+                    <IUWP1_COINS_TP>L</IUWP1_COINS_TP>
+                    <IUWP1_COINS_PREM100X>Y</IUWP1_COINS_PREM100X>
+                    <IUWP1_COINS_CLAIM100X>Y</IUWP1_COINS_CLAIM100X>
+                    <IUWP1_COINS_LEADER></IUWP1_COINS_LEADER>
+                    <IUWP1_CES_X>{{ rsShare }}</IUWP1_CES_X>
+                    <IUWP1_COINS_LEADER_SHAREX></IUWP1_COINS_LEADER_SHAREX>
+                {% elseif (proposal.data.coinsurance.type == 'Leader' and rsShare < 100 ) %}
+                    <IUWP1_DED_TXT1>{{proposal.data.urn_no}}</IUWP1_DED_TXT1>
+                    <IUWP1_DED_TXT2>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DED_TXT2>
+                    <IUWP1_COINS_DET>Y</IUWP1_COINS_DET>
+                    <IUWP1_COINS_TP>L</IUWP1_COINS_TP>
+                    <IUWP1_COINS_PREM100X>Y</IUWP1_COINS_PREM100X>
+                    <IUWP1_COINS_CLAIM100X>Y</IUWP1_COINS_CLAIM100X>
+                    <IUWP1_COINS_LEADER>{{ leaderCode }}</IUWP1_COINS_LEADER>
+                    <IUWP1_CES_X>{{ rsShare }}</IUWP1_CES_X>
+                    <IUWP1_COINS_LEADER_SHAREX></IUWP1_COINS_LEADER_SHAREX>
+                    {% if proposal.data.coinsurers | length > 1 %}
+                        {% for i, item in proposal.data.coinsurers %}
+                            {% if item.type == 'Member' %}
+                                <coinsurerVOList>
+                                    <IUWCO_NM>{{item.search_code | upper | trim}}</IUWCO_NM>
+                                    <IUWCO_SHAREX>{{item.share}}</IUWCO_SHAREX>
+                                </coinsurerVOList>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% elseif proposal.data.coinsurance.type == 'Member' %}
+                    <IUWP1_DED_TXT1>{{proposal.data.urn_no}}</IUWP1_DED_TXT1>
+                    <IUWP1_DED_TXT2>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DED_TXT2>
+                    <IUWP1_COINS_DET>Y</IUWP1_COINS_DET>
+                    <IUWP1_COINS_TP>P</IUWP1_COINS_TP>
+                    <IUWP1_COINS_PREM100X>N</IUWP1_COINS_PREM100X>
+                    <IUWP1_COINS_CLAIM100X>N</IUWP1_COINS_CLAIM100X>
+                    <IUWP1_COINS_LEADER>{{ leaderCode }}</IUWP1_COINS_LEADER>
+                    <IUWP1_CES_X>{{ rsShare }}</IUWP1_CES_X>
+                    <IUWP1_COINS_LEADER_SHAREX>{{ leaderShare }}</IUWP1_COINS_LEADER_SHAREX>
+                    {% for i, item in proposal.data.coinsurers %}
+                        {% if item.type == 'Member' and item.insurer != 'Royal Sundaram General Insurance Co. Ltd.' %}
+                            <coinsurerVOList>
+                                <IUWCO_NM>{{item.search_code | upper | trim}}</IUWCO_NM>
+                                <IUWCO_SHAREX>{{item.share}}</IUWCO_SHAREX>
+                            </coinsurerVOList>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
+                <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
+                <IUWP1_COINS_DET>N</IUWP1_COINS_DET>
+                <IUWP1_COINS_TP>L</IUWP1_COINS_TP>
+                <IUWP1_COINS_PREM100X>Y</IUWP1_COINS_PREM100X>
+                <IUWP1_COINS_CLAIM100X>Y</IUWP1_COINS_CLAIM100X>
+                <IUWP1_COINS_LEADER></IUWP1_COINS_LEADER>
+                <IUWP1_CES_X>{{ rsShare }}</IUWP1_CES_X>
+                <IUWP1_COINS_LEADER_SHAREX></IUWP1_COINS_LEADER_SHAREX>
+            {% endif %}
+            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si * percetageInDecimal |round(2,'common')}}</primeIUWP1_INCR_SI> {# Incremental SI / Total SI#}
             <IUWP1_LINK_FLD>{{policy_no}}</IUWP1_LINK_FLD>
             <custSegment/>
             <IUWP1_QUOT_NO>{{quote_id}}</IUWP1_QUOT_NO>
@@ -127,7 +218,7 @@
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
                 <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>
                 <IUWPC_OTHRNAME2/>
-                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
+                <IUWPC_SURNAME2>{{slice(proposer_name,30,60)}}</IUWPC_SURNAME2>
                 {% if (proposal.data.cust_buss_type == 'Entity' )%}<IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
                 {% else %}<IUWPC_CLI_TP>I</IUWPC_CLI_TP>{%endif%} 
                 <IUWPC_HM_PHONE/>
@@ -145,18 +236,91 @@
                 <IUWPC_MARITAL_STATUS/>
             </clientVO>
             {# Zero or more repetitions: #}
-            {% for tax in proposal.data.tax_details.tax_parts|default([]) %}                
-                <policyCoverageVOList>
-                <IUWP4_COVG_CD>{{ taxes[tax.name] }}</IUWP4_COVG_CD>
+            {% for i, item in proposal.data.tax_details.tax_parts %}
+            {% if item.name == 'IGST' %}
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZIGST</IUWP4_COVG_CD>
                 <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                 <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
-                <IUWP4_RT_U>{{tax.rate}}</IUWP4_RT_U>
-                <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
-                </policyCoverageVOList>                
+                <IUWP4_RT_U>18</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{ item.value * percetageInDecimal | round(2,'common') }}</primeIUWP4_NEW_INCR_PREM>
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + item.value | round(2,'common') %}
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZSGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZCGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZUTGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            {% else %}
+            {% if item.name == 'CGST' %}
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZIGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZCGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>9</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{ item.value * percetageInDecimal | round(2,'common') }}</primeIUWP4_NEW_INCR_PREM>
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + item.value | round(2,'common') %}
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZSGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>9</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{ item.value * percetageInDecimal | round(2,'common') }}</primeIUWP4_NEW_INCR_PREM>
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + item.value | round(2,'common') %}
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZUTGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            {% elseif item.name == 'UGST' %}
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZSGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>0</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+            </policyCoverageVOList>
+            <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZUTGST</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U>9</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{ item.value * percetageInDecimal | round(2,'common') }}</primeIUWP4_NEW_INCR_PREM>
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + item.value | round(2,'common') %}
+            </policyCoverageVOList>
+            {% endif %}
+            {% endif %}
             {% endfor %}
             {# {% if proposal.data.bk_broker_commission > 7.5 %}
                 <policyCoverageVOList>
-                    <IUWP4_COVG_CD>ZOCMTX</IUWP4_COVG_CD>
+                    <IUWP4_COVG_CD>ZOVCM</IUWP4_COVG_CD>
                     <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                     <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                     <IUWP4_RT_U>{{ proposal.data.bk_broker_commission }}</IUWP4_RT_U>
@@ -172,6 +336,7 @@
                 <IUWP4_RT_U>{{proposal.data.actual_tpa_commision}}</IUWP4_RT_U>
                 <primeIUWP4_NEW_INCR_PREM>{{proposal.data.calc_tpa_fees|number_format(2)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + proposal.data.calc_tpa_fees|number_format(2) | round(2,'common') %}
             {% endif %}
             {% if proposal.data.total_loading != 0 %}
                 <policyCoverageVOList>
@@ -181,6 +346,7 @@
                 <IUWP4_RT_U></IUWP4_RT_U>
                 <primeIUWP4_NEW_INCR_PREM>{{proposal.data.total_loading|number_format(2)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                 
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + proposal.data.total_loading|number_format(2) | round(2,'common') %}
             {% endif %}
             {% if proposal.data.total_discount != 0 %}
                 <policyCoverageVOList>
@@ -190,7 +356,9 @@
                 <IUWP4_RT_U></IUWP4_RT_U>
                 <primeIUWP4_NEW_INCR_PREM>{{proposal.data.total_discount|number_format(0)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                 
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + proposal.data.total_discount|number_format(2) | round(2,'common') %}
             {% endif %}            
+
             {% if proposal.data.sme_flag == "SME" %}
 
                 {% set limbs_premium = proposal.data.ren_sme_limbs_premium | default(0) %}
@@ -258,9 +426,9 @@
                 <IUWP2_DESC9></IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
                 <IUWP2_DESC11></IUWP2_DESC11>
-                <IUWP2_DESC12></IUWP2_DESC12>
+                <IUWP2_DESC12>{{proposal.data.proposer_gst_no}}</IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
-                <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
+                <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si * percetageInDecimal |round(2,'common')}}</primeIUWP2_INCR_SI>
                 <primeIUWP2_INCR_ACT_PREM>{{proposal.data.ren_total_premium |number_format(2) }}</primeIUWP2_INCR_ACT_PREM>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
@@ -362,12 +530,68 @@
                     <IUWP2_ADDITIONAL_FIELD42>0</IUWP2_ADDITIONAL_FIELD42>
                     <IUWP2_ADDITIONAL_FIELD43>0</IUWP2_ADDITIONAL_FIELD43>
                     <IUWP2_ADDITIONAL_FIELD44>0</IUWP2_ADDITIONAL_FIELD44>
-                    <IUWP2_ADDITIONAL_FIELD45>0</IUWP2_ADDITIONAL_FIELD45>
-                    <IUWP2_ADDITIONAL_FIELD46>0</IUWP2_ADDITIONAL_FIELD46>
-                    <IUWP2_ADDITIONAL_FIELD47>0</IUWP2_ADDITIONAL_FIELD47>
-                    <IUWP2_ADDITIONAL_FIELD48>0</IUWP2_ADDITIONAL_FIELD48>
-                    <IUWP2_ADDITIONAL_FIELD49>0</IUWP2_ADDITIONAL_FIELD49>
-                    <IUWP2_ADDITIONAL_FIELD50>0</IUWP2_ADDITIONAL_FIELD50>
+                    {% if proposal.data.coinsurance.commision == "Over all Premium" %}
+                        <IUWP2_ADDITIONAL_FIELD45>Y</IUWP2_ADDITIONAL_FIELD45>
+                    {% else %}
+                        <IUWP2_ADDITIONAL_FIELD45>N</IUWP2_ADDITIONAL_FIELD45>
+                    {% endif %}
+                    {%- set officeCode1 = 0 -%}
+                    {%- set officeCode2 = 0 -%}
+                    {%- set officeCode3 = 0 -%}
+                    {%- set officeCode4 = 0 -%}
+                    {%- set officeCode5 = 0 -%}
+                    {%- if proposal.data.coinsurers is defined -%}
+                        {%- if proposal.data.coinsurers[0] is defined -%}
+                            {%- if proposal.data.coinsurers[0].type | default('Leader') == 'Member' -%}
+                                {%- if proposal.data.coinsurers[0].office_code | default('') != '' -%}
+                                    {%- set officeCode1 = proposal.data.coinsurers[0].office_code -%}
+                                {%- else -%}
+                                    {%- set officeCode1 = 0 -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                        {%- if proposal.data.coinsurers[1] is defined -%}
+                            {%- if proposal.data.coinsurers[1].type | default('Leader') == 'Member' -%}
+                                {%- if proposal.data.coinsurers[1].office_code | default('') != '' -%}
+                                    {%- set officeCode2 = proposal.data.coinsurers[1].office_code -%}
+                                {%- else -%}
+                                    {%- set officeCode2 = 0 -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                        {%- if proposal.data.coinsurers[2] is defined -%}
+                            {%- if proposal.data.coinsurers[2].type | default('Leader') == 'Member' -%}
+                                {%- if proposal.data.coinsurers[2].office_code | default('') != '' -%}
+                                    {%- set officeCode3 = proposal.data.coinsurers[2].office_code -%}
+                                {%- else -%}
+                                    {%- set officeCode3 = 0 -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                        {%- if proposal.data.coinsurers[3] is defined -%}
+                            {%- if proposal.data.coinsurers[3].type | default('Leader') == 'Member' -%}
+                                {%- if proposal.data.coinsurers[3].office_code | default('') != '' -%}
+                                    {%- set officeCode4 = proposal.data.coinsurers[3].office_code -%}
+                                {%- else -%}
+                                    {%- set officeCode4 = 0 -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                        {%- if proposal.data.coinsurers[4] is defined -%}
+                            {%- if proposal.data.coinsurers[4].type | default('Leader') == 'Member' -%}
+                                {%- if proposal.data.coinsurers[4].office_code | default('') != '' -%}
+                                    {%- set officeCode5 = proposal.data.coinsurers[4].office_code -%}
+                                {%- else -%}
+                                    {%- set officeCode5 = 0 -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                    <IUWP2_ADDITIONAL_FIELD46>{{ officeCode1 }}</IUWP2_ADDITIONAL_FIELD46>
+                    <IUWP2_ADDITIONAL_FIELD47>{{ officeCode2 }}</IUWP2_ADDITIONAL_FIELD47>
+                    <IUWP2_ADDITIONAL_FIELD48>{{ officeCode3 }}</IUWP2_ADDITIONAL_FIELD48>
+                    <IUWP2_ADDITIONAL_FIELD49>{{ officeCode4 }}</IUWP2_ADDITIONAL_FIELD49>
+                    <IUWP2_ADDITIONAL_FIELD50>{{ officeCode5 }}</IUWP2_ADDITIONAL_FIELD50>
                 </rsAdditionalDetailsVO>
                 {# Zero or more repetitions: #}
 				{% for cover in covers %}
@@ -394,6 +618,7 @@
 							{% set c_premium = 0 %}
 						{% else %}
 							{% set c_premium = premium_raw|number_format(2) %}
+                            {% set c_premium = c_premium * percetageInDecimal | round(2,'common') %}
 						{% endif %}
 
 						<coverageVOList>
@@ -401,36 +626,39 @@
 							<IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
 							<IUWP3_RT_U>{{ c_rate }}</IUWP3_RT_U>
 							<primeIUWP3_INCR_PREM>{{ c_premium }}</primeIUWP3_INCR_PREM>
-							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si }}</primeIUWP3_INCR_SI>
+							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si * percetageInDecimal | round(2,'common') }}</primeIUWP3_INCR_SI>
 						</coverageVOList>
+                        {% set sumOfBreakupPrem = sumOfBreakupPrem + c_premium | round(2,'common') %}
 
 					{% endif %}
 				{% endfor %}
             </itemSectionVOList>
             {# Zero or more repetitions: #}
-            {% for detail in payment.details %} 
-            {% set mode = detail.data.payment_method_mode %}
-            {% set party = detail.data.exist_party_id %} 
-            {% if (mode == 'CD') and detail.data.cd_no != '' %} 
-                <settlementVOList>
-                <IUWP1_ACC_CD>{{party}}</IUWP1_ACC_CD>
-                <IUWP1_STL_REF>{{ detail.data.cd_no }}</IUWP1_STL_REF>
-                <IUWP1_STL_SRC>CD</IUWP1_STL_SRC>
-                <IUWP1_STL_TYPE>CD</IUWP1_STL_TYPE>
-                </settlementVOList>
-            {% elseif mode != 'Bank Guarantee' %}
-            {% set ref = '' %} 
-            {% if detail.data.fg_receipt_no != '' %}{% set ref = detail.data.fg_receipt_no %}{% elseif detail.data.receipt_no != '' %}{% set ref = detail.data.receipt_no %}{% endif %} 
-            {% if ref != '' %} 
-                <settlementVOList>
-                <IUWP1_ACC_CD>{{party}}</IUWP1_ACC_CD>
-                <IUWP1_STL_REF>{{ref}}</IUWP1_STL_REF>
-                <IUWP1_STL_SRC>RECT</IUWP1_STL_SRC>
-                <IUWP1_STL_TYPE>EXISTINGRECT</IUWP1_STL_TYPE>
-                </settlementVOList> 
-            {% endif %} 
-            {% endif %} 
-            {% endfor %}
+            {% if (((proposal.data.coinsurance.type | default('Leader') == 'Leader') or (proposal.data.coinsurance.type | default('Direct') == 'Direct')) and (payment.data.payment_method_mode|default('') != 'Bank Guarantee')) %}
+                {% for detail in payment.details %} 
+                {% set mode = detail.data.payment_method_mode %}
+                {% set party = detail.data.exist_party_id %} 
+                {% if (mode == 'CD') and detail.data.cd_no != '' %} 
+                    <settlementVOList>
+                    <IUWP1_ACC_CD>{{party}}</IUWP1_ACC_CD>
+                    <IUWP1_STL_REF>{{ detail.data.cd_no }}</IUWP1_STL_REF>
+                    <IUWP1_STL_SRC>CD</IUWP1_STL_SRC>
+                    <IUWP1_STL_TYPE>CD</IUWP1_STL_TYPE>
+                    </settlementVOList>
+                {% elseif mode != 'Bank Guarantee' %}
+                {% set ref = '' %} 
+                {% if detail.data.fg_receipt_no != '' %}{% set ref = detail.data.fg_receipt_no %}{% elseif detail.data.receipt_no != '' %}{% set ref = detail.data.receipt_no %}{% endif %} 
+                {% if ref != '' %} 
+                    <settlementVOList>
+                    <IUWP1_ACC_CD>{{party}}</IUWP1_ACC_CD>
+                    <IUWP1_STL_REF>{{ref}}</IUWP1_STL_REF>
+                    <IUWP1_STL_SRC>RECT</IUWP1_STL_SRC>
+                    <IUWP1_STL_TYPE>EXISTINGRECT</IUWP1_STL_TYPE>
+                    </settlementVOList> 
+                {% endif %} 
+                {% endif %} 
+                {% endfor %}
+            {% endif %}
             {# Zero or more repetitions: #}
             
          {#<coinsurerVOList>            
@@ -440,7 +668,7 @@
             <userTextVO>
                 <IUWP1_ATEXT1>{{proposal.data.proposer_expiring_policy_no}}</IUWP1_ATEXT1> {# existing policy Number #}
                 <IUWP1_ATEXT2></IUWP1_ATEXT2>
-                <IUWP1_ATEXT3>INSILLION</IUWP1_ATEXT3>
+                <IUWP1_ATEXT3>INSUREX</IUWP1_ATEXT3>
                 <IUWP1_ATEXT4></IUWP1_ATEXT4>                
                 <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si}}</IUWP1_ATEXT5>                
                 <IUWP1_ATEXT6></IUWP1_ATEXT6>
@@ -448,7 +676,11 @@
                 <IUWP1_ATEXT8></IUWP1_ATEXT8>
                 <IUWP1_ATEXT9></IUWP1_ATEXT9>
                 <IUWP1_ATEXT10></IUWP1_ATEXT10>
-                <IUWP1_ATEXT11></IUWP1_ATEXT11>
+                {% if proposal.data.ckyc_no|default('') != "" %}
+                <IUWP1_ATEXT11>CKYC: {{proposal.data.ckyc_no}}</IUWP1_ATEXT11>
+                {% elseif proposal.data.kyc_reference_no|default('') != "" %}
+                <IUWP1_ATEXT11>KYC: {{proposal.data.kyc_reference_no}}</IUWP1_ATEXT11>
+                {% endif %}
                 <IUWP1_ATEXT12></IUWP1_ATEXT12>
                 <IUWP1_ATEXT13></IUWP1_ATEXT13>
                 <IUWP1_ATEXT14></IUWP1_ATEXT14>
@@ -467,6 +699,42 @@
                 <IUWDD_TXT_CLAUSE></IUWDD_TXT_CLAUSE>
             </freeTextVOList>
 
+            {% set writeOffRemaining = payment.data.amount | round(2, 'common') %}
+            {% if (writeOffRemaining <= 5 and writeOffRemaining >= 0) %}
+                {% set sumOfBreakupPrem = sumOfBreakupPrem + writeOffRemaining %}
+            {% endif %}
+            {% set breakupdiff = payment.data.total_amount - sumOfBreakupPrem %}
+            {% if proposal.data.coinsurance.type|default('Leader') != 'Member' %}
+                {% if (breakupdiff <= 4 and breakupdiff >=-4) %}
+                    <policyCoverageVOList>
+                        <IUWP4_COVG_CD>ZWROFF</IUWP4_COVG_CD>
+                        <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                        <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                        <IUWP4_RT_U>0</IUWP4_RT_U>
+                        <primeIUWP4_NEW_INCR_PREM>{{ breakupdiff | round(2, 'common') }}</primeIUWP4_NEW_INCR_PREM>
+                    </policyCoverageVOList>
+                {% else %}
+                    <policyCoverageVOList>
+                        <IUWP4_COVG_CD>ZWROFF</IUWP4_COVG_CD>
+                        <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                        <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                        <IUWP4_RT_U>0</IUWP4_RT_U>
+                        <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+                    </policyCoverageVOList>
+                {% endif %}
+            {% else %}
+                <policyCoverageVOList>
+                    <IUWP4_COVG_CD>ZWROFF</IUWP4_COVG_CD>
+                    <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                    <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
+                    <IUWP4_RT_U>0</IUWP4_RT_U>
+                    <primeIUWP4_NEW_INCR_PREM>0</primeIUWP4_NEW_INCR_PREM>
+                </policyCoverageVOList>
+            {% endif %}
+            <writoffList>
+                <breakupDiff>{{ breakupdiff }}</breakupDiff>
+                <sumofBreakupPrem>{{ sumOfBreakupPrem }}</sumofBreakupPrem>
+            </writoffList>
         </pol:FGUWPolicyVO>
     </soapenv:Body>
 </soapenv:Envelope>
