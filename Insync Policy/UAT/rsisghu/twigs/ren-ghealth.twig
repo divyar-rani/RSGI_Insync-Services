@@ -87,10 +87,14 @@
             <IUWP1_ICP_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_ICP_DT>
             <IUWP1_EXP_DT>{{proposal.data.f_policy_end_date}}</IUWP1_EXP_DT>            
             <IUWP1_ISS_DT>{{proposal.data.is_fg_issue_date}}</IUWP1_ISS_DT>
-            <IUWP1_ACC_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_ACC_DT>
+            {% if ((concat(slice(proposal.data.is_fg_policy_start_date, 6, 4), '', slice(proposal.data.is_fg_policy_start_date, 3, 2), '', slice(proposal.data.is_fg_policy_start_date, 0, 2)))  > (concat(slice(issue_date, 0, 4), '', slice(issue_date, 5, 2), '', slice(issue_date, 8, 2)))) %}
+                <IUWP1_ACC_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_ACC_DT>
+            {% else %}
+                <IUWP1_ACC_DT>{{ concat(slice(issue_date, 8, 2), '/', slice(issue_date, 5, 2), '/', slice(issue_date, 0, 4))}}</IUWP1_ACC_DT>
+            {% endif %} 
             <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT> 	
-			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DR_PR_NO>
+			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_issue_date}}</IUWP1_DR_PR_NO>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
             <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
             {% if (proposal.data.existing_client != 'Existing') %}
