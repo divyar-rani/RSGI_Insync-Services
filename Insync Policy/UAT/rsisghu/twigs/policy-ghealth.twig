@@ -103,7 +103,7 @@
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT> 	
 			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_issue_date}}</IUWP1_DR_PR_NO>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
-            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
+            <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
             {% if (proposal.data.existing_client != 'Existing') %}
             <clientUpdateFlag>Y</clientUpdateFlag>
             {% else %}
@@ -133,7 +133,7 @@
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
             <IUWP1_DED_TXT4>{{proposal.data.email}}</IUWP1_DED_TXT4>
             <IUWP1_DED_TXT5></IUWP1_DED_TXT5>
-            <IUWP1_ORG_SI_AMT>{{proposal.data.final_max_si|number_format(0)}}</IUWP1_ORG_SI_AMT>
+            <IUWP1_ORG_SI_AMT>{{proposal.data.bk_total_sum_insured|number_format(0)}}</IUWP1_ORG_SI_AMT>
             {% if (proposal.data.coinsurers | length > 0) %}
                 {% for i, item in proposal.data.coinsurers %}
                     {% if (item.insurer == 'Royal Sundaram General Insurance Co. Ltd.') %}
@@ -209,7 +209,7 @@
                 <IUWP1_CES_X>{{ rsShare }}</IUWP1_CES_X>
                 <IUWP1_COINS_LEADER_SHAREX></IUWP1_COINS_LEADER_SHAREX>
             {% endif %}
-            <primeIUWP1_INCR_SI>{{proposal.data.final_max_si * percetageInDecimal |round(2,'common')}}</primeIUWP1_INCR_SI>
+            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_sum_insured * percetageInDecimal |round(2,'common')}}</primeIUWP1_INCR_SI>
             <IUWP1_LINK_FLD>{{proposal_no}}</IUWP1_LINK_FLD>
             <custSegment/>
             <IUWP1_OTH_INT_PTY_CD1>{{proposal.data.imd_code.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD1>

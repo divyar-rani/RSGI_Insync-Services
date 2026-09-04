@@ -86,11 +86,11 @@
             {% else %}
                 <IUWP1_ACC_DT>{{ concat(slice(issue_date, 8, 2), '/', slice(issue_date, 5, 2), '/', slice(issue_date, 0, 4))}}</IUWP1_ACC_DT>
             {% endif %} 
-            <IUWP1_EFF_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_EFF_DT>
+            <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
 			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_issue_date}}</IUWP1_DR_PR_NO>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
-            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
+            <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
             {% if (proposal.data.existing_client != 'Existing') %}<clientUpdateFlag>Y</clientUpdateFlag>
             {% else %}<clientUpdateFlag>N</clientUpdateFlag>{% endif %}          
             <nomineeUpdateFlag>N</nomineeUpdateFlag>
@@ -135,7 +135,7 @@
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
             <IUWP1_DED_TXT4></IUWP1_DED_TXT4>
             <IUWP1_DED_TXT5></IUWP1_DED_TXT5>
-            <IUWP1_ORG_SI_AMT>{{proposal.data.bk_total_sum_insured|number_format(0)}}</IUWP1_ORG_SI_AMT>
+            <IUWP1_ORG_SI_AMT>{{proposal.data.bk_total_si|number_format(0)}}</IUWP1_ORG_SI_AMT>
             {% if (proposal.data.coinsurers | length > 0) %}
                 {% for i, item in proposal.data.coinsurers %}
                     {% if (item.insurer == 'Royal Sundaram General Insurance Co. Ltd.') %}
@@ -465,7 +465,7 @@
                 <IUWP2_RSK_CAT>{{quote.data.occ_pa_category}}</IUWP2_RSK_CAT>
                 <IUWP2_EMLX>{{proposal.data.email}}</IUWP2_EMLX>
                 <IUWP2_ZIP_CD>{{proposal.data.proposer_comm_pincode}}</IUWP2_ZIP_CD>
-                <IUWP2_TERR_CD>{{proposal.data.branch_state_code}}</IUWP2_TERR_CD> 
+                <IUWP2_TERR_CD>{{proposal.data.proposer_comm_state_code}}</IUWP2_TERR_CD>
                 <IUWP2_DED_CODE/>
                 <IUWP2_INT_CD/>
                 <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
