@@ -61,10 +61,11 @@
             <IUWP1_EXP_DT>{{proposal.data.is_fg_policy_end_date}}</IUWP1_EXP_DT>
             <IUWP1_ISS_DT>{{proposal.data.is_fg_issue_date}}</IUWP1_ISS_DT>
             <IUWP1_ACC_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_ACC_DT>
-            <IUWP1_EFF_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_EFF_DT>
+            <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
+			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DR_PR_NO>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
-            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
+            <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
             {% if (proposal.data.existing_client != 'Existing') %}<clientUpdateFlag>Y</clientUpdateFlag>
             {% else %}<clientUpdateFlag>N</clientUpdateFlag>{% endif %}
             <nomineeUpdateFlag>N</nomineeUpdateFlag>
@@ -105,7 +106,7 @@
             <nomineeAddr3/>
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{proposal.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
-            <IUWP1_POL_WARR>{{ slice(proposer_expiring_policy_no, 0, 10) ~ slice(proposer_expiring_policy_no, length(proposer_expiring_policy_no) - 2, 2) ~ '000' }}</IUWP1_POL_WARR>
+            <IUWP1_POL_WARR>{{ slice(proposal.data.proposer_expiring_policy_no, 0, 10) ~ slice(proposal.data.proposer_expiring_policy_no, proposal.data.proposer_expiring_policy_no|length-2, 2) ~ '000' }}</IUWP1_POL_WARR>
             <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
             <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
@@ -127,7 +128,7 @@
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
                 <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>
                 <IUWPC_OTHRNAME2/>
-                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
+                <IUWPC_SURNAME2>{{slice(proposer_name,30,30)}}</IUWPC_SURNAME2>
                 {% if (proposal.data.cust_buss_type == 'Entity' )%}<IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
                 {% else %}<IUWPC_CLI_TP>I</IUWPC_CLI_TP>{%endif%} 
                 <IUWPC_HM_PHONE/>
@@ -156,7 +157,7 @@
             {% endfor %}
             {# {% if proposal.data.bk_broker_commission > 7.5 %}
                 <policyCoverageVOList>
-                    <IUWP4_COVG_CD>ZOCMTX</IUWP4_COVG_CD>
+                    <IUWP4_COVG_CD>ZOVCM</IUWP4_COVG_CD>
                     <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                     <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                     <IUWP4_RT_U>{{ proposal.data.bk_broker_commission }}</IUWP4_RT_U>
@@ -258,7 +259,7 @@
                 <IUWP2_DESC9></IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
                 <IUWP2_DESC11></IUWP2_DESC11>
-                <IUWP2_DESC12></IUWP2_DESC12>
+                <IUWP2_DESC12>{{proposal.data.proposer_gst_no}}</IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
                 <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
                 <primeIUWP2_INCR_ACT_PREM>{{proposal.data.ren_total_premium |number_format(2) }}</primeIUWP2_INCR_ACT_PREM>
@@ -276,7 +277,7 @@
                 <IUWP2_INT_CD/>
                 <IUWP2_SI_TP>{{rag[proposal.data.category_rag]}}</IUWP2_SI_TP>
                 <rsPaVO>
-                    <IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>
+                    {%if proposal.data.tpa_code == '' %}<IUWP2_PA_CD>SP000000</IUWP2_PA_CD>{% else %}<IUWP2_PA_CD>{{proposal.data.tpa_code}}</IUWP2_PA_CD>{% endif %}
                     <isNewInsured>N</isNewInsured>
                     <isInsuredClient>N</isInsuredClient>
                     <isInsuredNominee>N</isInsuredNominee>
@@ -440,7 +441,7 @@
             <userTextVO>
                 <IUWP1_ATEXT1>{{proposal.data.proposer_expiring_policy_no}}</IUWP1_ATEXT1> {# existing policy Number #}
                 <IUWP1_ATEXT2></IUWP1_ATEXT2>
-                <IUWP1_ATEXT3>INSILLION</IUWP1_ATEXT3>
+                <IUWP1_ATEXT3>INSUREX</IUWP1_ATEXT3>
                 <IUWP1_ATEXT4></IUWP1_ATEXT4>                
                 <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si}}</IUWP1_ATEXT5>                
                 <IUWP1_ATEXT6></IUWP1_ATEXT6>
@@ -466,7 +467,7 @@
             <freeTextVOList>
                 <IUWDD_TXT_CLAUSE></IUWDD_TXT_CLAUSE>
             </freeTextVOList>
-
+			<IUWP1_SB_OPT>G</IUWP1_SB_OPT>
         </pol:FGUWPolicyVO>
     </soapenv:Body>
 </soapenv:Envelope>

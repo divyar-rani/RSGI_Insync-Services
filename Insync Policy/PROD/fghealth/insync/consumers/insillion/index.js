@@ -45,14 +45,16 @@ class insillion extends twigbase {
     }
 
     async _process_service(service, policy) {
-		 console.log("Return true***************** ",service.name,  policy.policy_id); ;
+		
+		return true;
+		/* console.log("Return true***************** ",service.name,  policy.policy_id); ;
         let attr = await db.row('select * from is_policy_attr where policy_id=?', [policy.policy_id]);
         let adata = JSON.parse(attr?.data || {});
         if (Object.keys(adata).length == 0) return false
         let ret = await this.__update_ins_meta(policy, adata, attr);
 		await this.ish.__log('info', `RevFeed: ${policy.policy_id} SUCCESS`, policy.policy_id, service.name);
 		await this.ish.set_attr(policy.policy_id, `revfeed-${policy.policy_id}`, 'SUCCESS');		
-        return ret;
+        return ret; */
     }
 
 }

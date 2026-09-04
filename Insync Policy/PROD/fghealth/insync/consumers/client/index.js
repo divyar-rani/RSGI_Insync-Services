@@ -1,16 +1,17 @@
 const { workerData } = require('worker_threads');
 const twigbase = require('../common/twigbase');
-const ish = require('./../common/ishelper');
 const utils = require('../common/utils')
 
 
 class client extends twigbase {
 	
 	async __add_additional_data(policy) {
-     if(policy.proposal?.data?.customer_id != '' && policy.proposal?.data?.customer_id != null){
-        let client_id = policy.proposal?.data?.customer_id;
-        await this.ish.set_attr(policy.policy_id,'client_id',client_id);
-     }
+		const customerType = policy?.proposal?.data?.customer_type;
+		const partyId = policy?.proposal?.data?.party_id;
+
+		if ((customerType === 'Existing' || customerType === 'New') && partyId) {
+			await this.ish.set_attr(policy.policy_id, 'client_id', partyId);
+		}		
     }
 	
     async _process_service(service, policy) {
