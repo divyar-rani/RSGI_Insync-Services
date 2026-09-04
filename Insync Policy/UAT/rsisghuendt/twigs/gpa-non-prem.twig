@@ -311,7 +311,11 @@
                 <IUWP2_DESC9></IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
                 <IUWP2_DESC11></IUWP2_DESC11>
-                <IUWP2_DESC12>{{eproposal.data.proposer_gst|default(proposal.data.proposer_gst)}}</IUWP2_DESC12>
+                {% if eproposal.data.proposer_gst_no is defined %}
+                    <IUWP2_DESC12>{{eproposal.data.proposer_gst_no|default(proposal.data.proposer_gst_no)}}</IUWP2_DESC12>
+                {% else %}
+                    <IUWP2_DESC12>{{eproposal.data.proposer_gst|default(proposal.data.proposer_gst)}}</IUWP2_DESC12>
+                {% else %}
                 <IUWP2_DESC13></IUWP2_DESC13>
                 <primeIUWP2_INCR_SI></primeIUWP2_INCR_SI>
                 <primeIUWP2_INCR_ACT_PREM></primeIUWP2_INCR_ACT_PREM>						
