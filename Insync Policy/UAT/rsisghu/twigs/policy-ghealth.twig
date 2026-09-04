@@ -364,7 +364,7 @@
                 <IUWP2_DESC9>{{proposal.data.dem_mem_final_lives}}</IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
                 <IUWP2_DESC11>{{ (proposal.data.ps_prem_bac - proposal.data.ps_prem_bac)|number_format(0) }}</IUWP2_DESC11> {# ACTUAL PREMIUM - TECHNICAL PREMIUM #}
-                <IUWP2_DESC12>{{eproposal.data.proposer_gst|default(proposal.data.proposer_gst_no)}}</IUWP2_DESC12>
+                <IUWP2_DESC12>{{proposal.data.proposer_gst|default(proposal.data.proposer_gst_no)}}</IUWP2_DESC12>
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
                 <IUWP2_SECT_NO>01</IUWP2_SECT_NO>

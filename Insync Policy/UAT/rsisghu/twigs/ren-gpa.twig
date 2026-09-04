@@ -365,8 +365,19 @@
 
             {% if proposal.data.sme_flag == "SME" %}
 
-                {% set limbs_premium = proposal.data.ren_sme_limbs_premium | default(0) %}
-                {% set ttd_total_premium = (proposal.data.ren_sme_ttd_premium | default(0)) + limbs_premium %}
+                {% if proposal.data.ren_sme_limbs_premium != "" %}
+                    {% set limbs_premium = proposal.data.ren_sme_limbs_premium | default(0) %}
+                {% else %}
+                    {% set limbs_premium = 0 %}
+                {% endif %}
+
+                {% if proposal.data.ren_sme_ttd_premium != "" %}
+                    {% set ren_sme_ttd_premium = proposal.data.ren_sme_ttd_premium | default(0) %}
+                {% else %}
+                    {% set ren_sme_ttd_premium = 0 %}
+                {% endif %}
+                    
+                {% set ttd_total_premium = ren_sme_ttd_premium + limbs_premium %}
 
                 {% if proposal.data.addon_medical_expense_type | lower == 'standard' %}
                     {% set medex_premium = proposal.data.ren_sme_std_med_premium | default(0) %}
@@ -392,8 +403,17 @@
 
             {% else %}
 
-                {% set limbs_premium = proposal.data.ren_limbs_premium | default(0) %}
-                {% set ttd_total_premium = (proposal.data.ren_ttd_premium | default(0)) + limbs_premium %}
+                {% if proposal.data.ren_limbs_premium != "" %}
+                    {% set limbs_premium = proposal.data.ren_limbs_premium | default(0) %}
+                {% else %}
+                    {% set limbs_premium = 0 %}
+                {% endif %}
+                {% if proposal.data.ren_ttd_premium != "" %}
+                    {% set ren_ttd_premium = proposal.data.ren_ttd_premium | default(0) %}
+                {% else %}
+                    {% set ren_ttd_premium = 0 %}
+                {% endif %}
+                {% set ttd_total_premium = ren_ttd_premium + limbs_premium %}
 
                 {% if proposal.data.addon_medical_expense_type | lower == 'standard' %}
                     {% set medex_premium = proposal.data.ren_std_med_premium | default(0) %}

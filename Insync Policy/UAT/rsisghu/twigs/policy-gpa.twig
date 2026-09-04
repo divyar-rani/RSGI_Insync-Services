@@ -168,7 +168,7 @@
                     <IUWP1_CES_X>{{ rsShare }}</IUWP1_CES_X>
                     <IUWP1_COINS_LEADER_SHAREX></IUWP1_COINS_LEADER_SHAREX>
                 {% elseif (proposal.data.coinsurance.type == 'Leader' and rsShare < 100 ) %}
-                    <IUWP1_DED_TXT1>{{proposal.data.urn_no}}</IUWP1_DED_TXT1>
+                    <IUWP1_DED_TXT1>{{policy.data.urnno_no}}</IUWP1_DED_TXT1>
                     <IUWP1_DED_TXT2>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DED_TXT2>
                     <IUWP1_COINS_DET>Y</IUWP1_COINS_DET>
                     <IUWP1_COINS_TP>L</IUWP1_COINS_TP>
@@ -188,7 +188,7 @@
                         {% endfor %}
                     {% endif %}
                 {% elseif proposal.data.coinsurance.type == 'Member' %}
-                    <IUWP1_DED_TXT1>{{proposal.data.urn_no}}</IUWP1_DED_TXT1>
+                    <IUWP1_DED_TXT1>{{policy.data.urnno_no}}</IUWP1_DED_TXT1>
                     <IUWP1_DED_TXT2>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DED_TXT2>
                     <IUWP1_COINS_DET>Y</IUWP1_COINS_DET>
                     <IUWP1_COINS_TP>P</IUWP1_COINS_TP>
@@ -368,14 +368,29 @@
                 {% set funeral_premium = 0 %}            
                 {% set limbs_premium = 0 %}
             {% else %}
-                {% set funeral_premium = proposal.data.funeral_expense_premium | default(0) %}   
-                {% set limbs_premium = proposal.data.limbs_f_premium | default(0) %}
+                {% if proposal.data.funeral_expense_premium != "" %}
+                    {% set funeral_premium = proposal.data.funeral_expense_premium | default(0) %}   
+                {% else %}
+                    {% set funeral_premium = 0 %}
+                {% endif %}
+                {% if proposal.data.limbs_f_premium != "" %}
+                    {% set limbs_premium = proposal.data.limbs_f_premium | default(0) %}
+                {% else %}
+                    {% set limbs_premium = 0 %}
+                {% endif %}
             {% endif %}
 
             {% set ttd_total_premium = proposal.data.final_ttd_premium + limbs_premium  %}
-            {% set base_coverage_premium = (proposal.data.death_cover_premium | default(0)) + 0 %}
-            {% set total_loading = (proposal.data.total_loading | default(0)) + 0 %}
-
+            {% if proposal.data.death_cover_premium != "" %}
+                {% set base_coverage_premium = (proposal.data.death_cover_premium | default(0)) + 0 %}
+            {% else %}
+                {% set base_coverage_premium = 0 %}
+            {% endif %}
+            {% if proposal.data.total_loading != "" %}
+                {% set total_loading = (proposal.data.total_loading | default(0)) + 0 %}
+            {% else %}
+                {% set total_loading = 0 %}
+            {% endif %}
             {% if total_loading > 0 %}
                 {% set base_coverage_premium = base_coverage_premium + total_loading %}
             {% endif %}
@@ -576,6 +591,11 @@
                     <IUWP2_ADDITIONAL_FIELD50>{{ officeCode5 }}</IUWP2_ADDITIONAL_FIELD50>
                 </rsAdditionalDetailsVO>
                 {# Zero or more repetitions: #}
+                {% if proposal.data.bk_total_pa_si == "" %}
+                    {% set bk_total_pa_si = 0  %}
+                {% else %}
+                    {% set bk_total_pa_si = proposal.data.bk_total_pa_si | number_format(0)  %}
+                {% endif %}
 				{% for cover in covers %}
 					{% if cover.flag == 'Yes' or cover.flag == true %}
 
@@ -608,7 +628,7 @@
 							<IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
 							<IUWP3_RT_U>{{ c_rate }}</IUWP3_RT_U>
 							<primeIUWP3_INCR_PREM>{{ c_premium }}</primeIUWP3_INCR_PREM>
-							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_pa_si * percetageInDecimal | round(2,'common') }}</primeIUWP3_INCR_SI>
+							<primeIUWP3_INCR_SI>{{ bk_total_pa_si * percetageInDecimal | round(2,'common') }}</primeIUWP3_INCR_SI>
 						</coverageVOList>
                         {% set sumOfBreakupPrem = sumOfBreakupPrem + c_premium | round(2,'common') %}
 					{% endif %}

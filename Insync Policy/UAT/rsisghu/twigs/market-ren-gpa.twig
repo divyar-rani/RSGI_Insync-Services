@@ -393,7 +393,12 @@
 
             {% else %}
 
-                {% set limbs_premium = proposal.data.ren_limbs_f_premium | default(0) %}
+                {% if proposal.data.ren_limbs_f_premium != "" %}
+                    {% set limbs_premium = proposal.data.ren_limbs_f_premium | default(0) %}
+                {% else %}
+                    {% set limbs_premium = 0 %}
+                {% endif %}
+
                 {% if proposal.data.ren_final_ttd_premium == '' %}
                     {% set ttd_total_premium = limbs_premium * 1 %}
                 {% elseif limbs_premium == '' %}
@@ -401,10 +406,21 @@
                 {% else %}
                     {% set ttd_total_premium = (proposal.data.ren_final_ttd_premium * 1) + (limbs_premium * 1) %}
                 {% endif %}				                
-				{% set medex_premium = proposal.data.ren_medical_expense_premium | default(0) %}   
-                {% set base_coverage_premium = (proposal.data.ren_death_cover_premium | default(0)) + 0 %}
-                {% set total_loading = (proposal.data.total_loading | default(0)) + 0 %}
-
+                {% if proposal.data.ren_medical_expense_premium != "" %}
+				    {% set medex_premium = proposal.data.ren_medical_expense_premium | default(0) %}   
+                {% else %}
+                    {% set medex_premium = 0 %}
+                {% endif %}
+                {% if proposal.data.ren_death_cover_premium != "" %}
+                    {% set base_coverage_premium = (proposal.data.ren_death_cover_premium | default(0)) + 0 %}
+                {% else %}
+                    {% set base_coverage_premium = 0 %}
+                {% endif %}
+                {% if proposal.data.total_loading != "" %}
+                    {% set total_loading = (proposal.data.total_loading | default(0)) + 0 %}
+                {% else %}
+                    {% set total_loading = 0 %}
+                {% endif %}
                 {% if total_loading > 0 %}
                     {% set base_coverage_premium = base_coverage_premium + total_loading %}
                 {% endif %}
