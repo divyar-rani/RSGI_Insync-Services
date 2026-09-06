@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
     <soapenv:Header/>
-    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Short term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}		
-      
+    <soapenv:Body>{% set global_map = {'Group':'GR','Mid Corporate':'MC','Affinity':'AA','SF':'AA','C.N.A':'CNA','CODAN':'CO','Global Network (RSA)':'GN','Globex Underwriting Services':'GBX','HDI Gerling':'HD','Helvetia':'HV','Intact Insurance Specialty Solutions':'IT','Liberty Mutual':'LM','POHJOLA INSURANCE LTD':'PO','R+V Re':'RUV','RSA':'RS','Swiss Re':'SWRE','The Hanover Insurance Group':'HIG','Trygg Hansa':'TR','Vero Insurance':'VE','Vienna Insurance Group':'VIG','Retail Agency':'AA','Commercial':'MC','AAR':'AA','Affinity Relationship':'AA','Banca':'AA','Global':'Global','Key Broker':'MC','National Broker':'MC','Opportunity':'AA','Priority-Agency/RB':'AA','Priority-Dealer':'AA','Priority-SME':'SM','Strategic Broker':'MC'} %} {% set policy_term = {'Short Term':'03','Short term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK'} %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber':'A','Red':'R'} %} {% set taxes = {'SGST':'ZSGST','CGST':'ZCGST','IGST':'ZIGST','UGST':'ZUTGST'} %}
+	{% set proposer_name = (proposal.data.first_name | replace({"&":"and"})) %}		
+    {% set proposer_name = (proposer_name | replace({"&":"and"})) %}
+	{# {% set nb_total = (proposal.data.ren_total_premium|default(0)) + 0 %}
+	{% set loading = (proposal.data.total_loading|default(0)) + 0 %}
+	{% set tpafee = (proposal.data.calc_tpa_fees|default(0)) + 0 %}	
+	{% set act_prem = nb_total + loading + tpafee %}	
+	{% set total_tax = 0 %}
+	{% for tax in proposal.data.tax_details.tax_parts|default([]) %} {% set total_tax = total_tax + ((tax.value|default(0)) + 0) %} {% endfor %}
+	{% set total_discount = (proposal.data.total_discount|default(0)) + 0 %}
+	{% set final_act_prem = (act_prem + total_tax) - total_discount %}
+	{% set adjustment_diff = 0 %}
+	{% for item in payment.details %}
+		{% set receipt_amount = (item.data.receipt_amount|default(0)) + 0 %}
+		{% set cd_balance = (item.data.voucher_amount|default(item.data.cd_balance|default(0))) + 0 %}
+		{% set receipt_diff = final_act_prem - receipt_amount %}
+		{% if receipt_diff != 0 and receipt_diff >= -5 and receipt_diff <= 5 %}{% set adjustment_diff = adjustment_diff + receipt_diff %}{% endif %}
+		{% if cd_balance <= receipt_amount %}{% set cd_diff = final_act_prem - cd_balance %}{% if cd_diff != 0 and cd_diff >= -5 and cd_diff <= 5 %}{% set adjustment_diff = adjustment_diff + cd_diff %}{% endif %}
+		{% endif %}
+	{% endfor %} #}	      
         <pol:FGUWPolicyVO>
             <oprId>GMCPOLICY</oprId>
             <polNo>{{policy_no}}</polNo>
@@ -33,11 +51,11 @@
             <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
             <IUWP1_INSTL_MODE>A</IUWP1_INSTL_MODE>
             <IUWP1_NO_INST></IUWP1_NO_INST>
-            <IUWP1_RN_CD>00</IUWP1_RN_CD>
+            <IUWP1_RN_CD>Y</IUWP1_RN_CD>
             <IUWP1_OLD_POL_NO></IUWP1_OLD_POL_NO>
             <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
             <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>
-            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP1_INCR_SI> {# Incremental SI / Total SI#}
+            <primeIUWP1_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP1_INCR_SI> {# Total SumInsured for the policy #}
             <IUWP1_POL_CREF_NO></IUWP1_POL_CREF_NO>
             <IUWP1_PLAN_NO></IUWP1_PLAN_NO>
             <IUWP1_DECLN_NO></IUWP1_DECLN_NO>
@@ -61,12 +79,12 @@
             <IUWP1_EXP_DT>{{proposal.data.is_fg_policy_end_date}}</IUWP1_EXP_DT>
             <IUWP1_ISS_DT>{{proposal.data.is_fg_issue_date}}</IUWP1_ISS_DT>
             <IUWP1_ACC_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_ACC_DT>
-            <IUWP1_EFF_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_EFF_DT>
+            <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT>
+			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DR_PR_NO>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
-            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
-            {% if (proposal.data.existing_client != 'Existing') %}<clientUpdateFlag>Y</clientUpdateFlag>
-            {% else %}<clientUpdateFlag>N</clientUpdateFlag>{% endif %}
+            <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
+            <clientUpdateFlag>Y</clientUpdateFlag>            
             <nomineeUpdateFlag>N</nomineeUpdateFlag>
             <IUWP1_OTH_INT_PTY_CD1>{{proposal.data.imd_code}}</IUWP1_OTH_INT_PTY_CD1>
             <IUWP1_OTH_INT_PTY_CD2>{{proposal.data.imd_sales_rep}}</IUWP1_OTH_INT_PTY_CD2>
@@ -105,7 +123,7 @@
             <nomineeAddr3/>
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{proposal.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
-            <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR>
+            <IUWP1_POL_WARR>{{proposal.data.is_fg_policy_no}}</IUWP1_POL_WARR>
             <IUWP1_DED_TXT1></IUWP1_DED_TXT1>
             <IUWP1_DED_TXT2></IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
@@ -121,26 +139,20 @@
             <IUWP1_LINK_FLD>{{proposal_no}}</IUWP1_LINK_FLD>
             <custSegment/>
             <IUWP1_QUOT_NO>{{quote_id}}</IUWP1_QUOT_NO>
-            {%if (proposal.data.policy_transaction_type == 'New Business') and (proposal.data.existing_client == 'Existing') and (payment.data.exist_party_id != '') %}
-                <IUWP1_DELIVERY_MODE>EN</IUWP1_DELIVERY_MODE>
-            {% elseif proposal.data.policy_transaction_type == 'New Business'  or proposal.data.policy_transaction_type == 'Market Renewal'%}
-                <IUWP1_DELIVERY_MODE>N</IUWP1_DELIVERY_MODE>
-            {% else %}
-                <IUWP1_DELIVERY_MODE>NA</IUWP1_DELIVERY_MODE>
-            {%endif%}            
+            <IUWP1_DELIVERY_MODE>EDR</IUWP1_DELIVERY_MODE>            
             <IUWP1_CUSTOMERSEGMENT/>
             <clientVO>
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
-                <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>
+                <IUWPC_FIRSTNAME2>{{slice(proposer_name,0,30)}}</IUWPC_FIRSTNAME2>
                 <IUWPC_OTHRNAME2/>
-                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
+                <IUWPC_SURNAME2>{{slice(proposer_name,30,30)}}</IUWPC_SURNAME2>
                 {% if (proposal.data.cust_buss_type == 'Entity' )%}<IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
                 {% else %}<IUWPC_CLI_TP>I</IUWPC_CLI_TP>{%endif%} 
                 <IUWPC_HM_PHONE/>
                 <IUWPC_CLI_EMAIL1>{{proposal.data.email}}</IUWPC_CLI_EMAIL1>
                 <IUWPC_HAND_PHONE/>
                 <IUWPC_OFF_PHONE/>
-                <cityCode></cityCode>
+                <cityCode>{{proposal.data.proposer_comm_city_code}}</cityCode>	
                 <IUWPC_STATE_CD>{{proposal.data.proposer_comm_state_code}}</IUWPC_STATE_CD> 
                 <IUWPC_2ND_ZIP>{{proposal.data.proposer_comm_pincode}}</IUWPC_2ND_ZIP>
                 <IUWPC_CON_CD>IND</IUWPC_CON_CD>
@@ -160,16 +172,15 @@
                 <primeIUWP4_NEW_INCR_PREM>{{ tax.value|number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endfor %}
-            {# {% if proposal.data.bk_broker_commission > 0 %}
+            {% if proposal.data.bk_broker_commission > 0 %}
                 <policyCoverageVOList>
-                    <IUWP4_COVG_CD>ZOCMTX</IUWP4_COVG_CD>
+                    <IUWP4_COVG_CD>ZOVCM</IUWP4_COVG_CD>
                     <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                     <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                     <IUWP4_RT_U>{{ proposal.data.bk_broker_commission }}</IUWP4_RT_U>
-                    {% set co_broking = ((proposal.data.death_cover_premium | default(0)) * (proposal.data.bk_broker_commission / 100)) %}
-                    <primeIUWP4_NEW_INCR_PREM>{{ co_broking | number_format(2) }}</primeIUWP4_NEW_INCR_PREM>
+                    <primeIUWP4_NEW_INCR_PREM/>
                 </policyCoverageVOList>    
-            {% endif %} #}
+            {% endif %} 
             {% if proposal.data.calc_tpa_fees != 0 %}                
                 <policyCoverageVOList>
                 <IUWP4_COVG_CD>ZTPAFE</IUWP4_COVG_CD>
@@ -179,15 +190,6 @@
                 <primeIUWP4_NEW_INCR_PREM>{{proposal.data.calc_tpa_fees|number_format(2)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                
             {% endif %}
-            {% if proposal.data.total_loading != 0 %}
-                <policyCoverageVOList>
-                <IUWP4_COVG_CD>ZDISC</IUWP4_COVG_CD>
-                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
-                <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
-                <IUWP4_RT_U></IUWP4_RT_U>
-                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.total_loading|number_format(2)}}</primeIUWP4_NEW_INCR_PREM>
-                </policyCoverageVOList>                 
-            {% endif %}
             {% if proposal.data.total_discount != 0 %}
                 <policyCoverageVOList>
                 <IUWP4_COVG_CD>ZDISC</IUWP4_COVG_CD>
@@ -196,12 +198,25 @@
                 <IUWP4_RT_U></IUWP4_RT_U>
                 <primeIUWP4_NEW_INCR_PREM>{{proposal.data.total_discount|number_format(0)}}</primeIUWP4_NEW_INCR_PREM>
                 </policyCoverageVOList>                 
-            {% endif %}            
+            {% endif %}
+            {% if adjustment_diff != 0 %}
+                <policyCoverageVOList>
+                <IUWP4_COVG_CD>ZWROFF</IUWP4_COVG_CD>
+                <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
+                <IUWP4_PREM_CURR_RATE>0</IUWP4_PREM_CURR_RATE>
+                <IUWP4_RT_U/>
+                <primeIUWP4_NEW_INCR_PREM>-{{adjustment_diff|number_format(2,'.','')}}</primeIUWP4_NEW_INCR_PREM>
+                </policyCoverageVOList>                 
+            {% endif %}			
             {% if proposal.data.sme_flag == "SME" %}
-
-                {% set limbs_premium = proposal.data.ren_sme_limbs_premium | default(0) %}
-                {% set ttd_total_premium = (proposal.data.ren_sme_ttd_premium | default(0)) + limbs_premium %}
-
+			{% set limbs_premium = proposal.data.ren_sme_limbs_premium | default(0) %}
+			{% if proposal.data.ren_sme_ttd_premium == '' %}
+				{% set ttd_total_premium = limbs_premium * 1 %}
+			{% elseif limbs_premium == '' %}
+				{% set ttd_total_premium = proposal.data.ren_sme_ttd_premium * 1 %}
+			{% else %}
+				{% set ttd_total_premium = (proposal.data.ren_sme_ttd_premium * 1) + (limbs_premium * 1) %}
+			{% endif %}
                 {% if proposal.data.addon_medical_expense_type | lower == 'standard' %}
                     {% set medex_premium = proposal.data.ren_sme_std_med_premium | default(0) %}
                 {% elseif proposal.data.addon_medical_expense_type | lower == 'delinked' %}
@@ -209,46 +224,57 @@
                 {% else %}
                     {% set medex_premium = proposal.data.ren_sme_both_premium | default(0) %}
                 {% endif %}
+				
+				{% set base_coverage_premium = (proposal.data.ren_sme_death_premium | default(0)) + 0 %}
+				{% set total_loading = (proposal.data.total_loading | default(0)) + 0 %}
 
+				{% if total_loading > 0 %}
+					{% set base_coverage_premium = base_coverage_premium + total_loading %}
+				{% endif %}
+			
                 {% set covers = [
-                    {"code": "APDPRM", "flag": proposal.data.addon_death, "premium": proposal.data.ren_sme_death_premium, "rate": ""},
-                    {"code": "APSPRM", "flag": proposal.data.addon_ptd, "premium": proposal.data.ren_sme_ptd_premium, "rate": ""},
-                    {"code": "APPPRM", "flag": proposal.data.addon_ppd, "premium": proposal.data.ren_sme_ppd_premium, "rate": ""},
-                    {"code": "APGTPR", "flag": proposal.data.addon_ttd or proposal.data.addon_loss_of_limbs, "premium": ttd_total_premium, "rate": ""},
-                    {"code": "APMPRM", "flag": proposal.data.addon_medical_exp, "premium": medex_premium, "rate": ""},
-                    {"code": "APEDG", "flag": proposal.data.addon_child_benefits, "premium": 0, "rate": ""},
-                    {"code": "ACLOD", "flag": proposal.data.addon_ambulance, "premium": 0, "rate": ""},
-                    {"code": "APGMB", "flag": proposal.data.addon_modification, "premium": 0, "rate": ""},
-                    {"code": "APGFT", "flag": proposal.data.addon_family_trans_benefit, "premium": 0, "rate": ""},
-                    {"code": "TRTROR", "flag": proposal.data.addon_repatriation_mortal_remains, "premium": 0, "rate": ""},
-                    {"code": "APCCE", "flag": proposal.data.addon_funeral_expenses, "premium": 0, "rate": ""}
+                    {"code": "APDPRM","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_death, "premium": base_coverage_premium, "rate": ""},
+                    {"code": "APSPRM","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_ptd, "premium": proposal.data.ren_sme_ptd_premium, "rate": ""},
+                    {"code": "APPPRM","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_ppd, "premium": proposal.data.ren_sme_ppd_premium, "rate": ""},
+                    {"code": "APGTPR","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_ttd or proposal.data.addon_loss_of_limbs, "premium": ttd_total_premium, "rate": ""},
+                    {"code": "APMPRM","si":proposal.data.bk_t_std_addon_si,"flag": proposal.data.addon_medical_exp, "premium": medex_premium, "rate": ""},
+                    {"code": "APEDG","si":proposal.data.child_benefit_si,"flag": proposal.data.addon_child_benefits, "premium": 0, "rate": ""},
+                    {"code": "ACLOD","si":proposal.data.ambulance_addon_si,"flag": proposal.data.addon_ambulance, "premium": 0, "rate": ""},
+                    {"code": "APGMB","si":proposal.data.modification_si,"flag": proposal.data.addon_modification, "premium": 0, "rate": ""},
+                    {"code": "APGFT","si":proposal.data.family_trans_si,"flag": proposal.data.addon_family_trans_benefit, "premium": 0, "rate": ""},
+                    {"code": "TRTROR","si":proposal.data.trans_mortal_si,"flag": proposal.data.addon_repatriation_mortal_remains, "premium": 0, "rate": ""},
+                    {"code": "APCCE","si":proposal.data.funeral_si,"flag": proposal.data.addon_funeral_expenses, "premium": 0, "rate": ""}
                 ] %}
 
             {% else %}
 
-                {% set limbs_premium = proposal.data.ren_limbs_premium | default(0) %}
-                {% set ttd_total_premium = (proposal.data.ren_ttd_premium | default(0)) + limbs_premium %}
+                {% set limbs_premium = proposal.data.ren_limbs_f_premium | default(0) %}
+				{% if proposal.data.ren_final_ttd_premium == '' %}
+					{% set ttd_total_premium = limbs_premium * 1 %}
+				{% elseif limbs_premium == '' %}
+					{% set ttd_total_premium = proposal.data.ren_final_ttd_premium * 1 %}
+				{% else %}
+					{% set ttd_total_premium = (proposal.data.ren_final_ttd_premium * 1) + (limbs_premium * 1) %}
+				{% endif %}				                
+				{% set medex_premium = proposal.data.ren_medical_expense_premium | default(0) %}   
+				{% set base_coverage_premium = (proposal.data.ren_death_cover_premium | default(0)) + 0 %}
+				{% set total_loading = (proposal.data.total_loading | default(0)) + 0 %}
 
-                {% if proposal.data.addon_medical_expense_type | lower == 'standard' %}
-                    {% set medex_premium = proposal.data.ren_std_med_premium | default(0) %}
-                {% elseif proposal.data.addon_medical_expense_type | lower == 'delinked' %}
-                    {% set medex_premium = proposal.data.ren_delink_premium | default(0) %}
-                {% else %}
-                    {% set medex_premium = proposal.data.ren_both_premium | default(0) %}
-                {% endif %}
-
+				{% if total_loading > 0 %}
+					{% set base_coverage_premium = base_coverage_premium + total_loading %}
+				{% endif %}				
                 {% set covers = [
-                    {"code": "APDPRM", "flag": proposal.data.addon_death, "premium": proposal.data.ren_death_premium, "rate": ""},
-                    {"code": "APSPRM", "flag": proposal.data.addon_ptd, "premium": proposal.data.ren_ptd_premium, "rate": ""},
-                    {"code": "APPPRM", "flag": proposal.data.addon_ppd, "premium": proposal.data.ren_ppd_premium, "rate": ""},
-                    {"code": "APGTPR", "flag": proposal.data.addon_ttd or proposal.data.addon_loss_of_limbs, "premium": ttd_total_premium, "rate": ""},
-                    {"code": "APMPRM", "flag": proposal.data.addon_medical_exp, "premium": medex_premium, "rate": ""},
-                    {"code": "APEDG", "flag": proposal.data.addon_child_benefits, "premium": 0, "rate": ""},
-                    {"code": "ACLOD", "flag": proposal.data.addon_ambulance, "premium": 0, "rate": ""},
-                    {"code": "APGMB", "flag": proposal.data.addon_modification, "premium": 0, "rate": ""},
-                    {"code": "APGFT", "flag": proposal.data.addon_family_trans_benefit, "premium": 0, "rate": ""},
-                    {"code": "TRTROR", "flag": proposal.data.addon_repatriation_mortal_remains, "premium": 0, "rate": ""},
-                    {"code": "APCCE", "flag": proposal.data.addon_funeral_expenses, "premium": 0, "rate": ""}
+                    {"code": "APDPRM","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_death, "premium": base_coverage_premium, "rate": ""},
+                    {"code": "APSPRM","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_ptd, "premium": proposal.data.ren_ptd_f_premium, "rate": ""},
+                    {"code": "APPPRM","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_ppd, "premium": proposal.data.ren_ppd_f_premium, "rate": ""},
+                    {"code": "APGTPR","si":proposal.data.bk_total_pa_si,"flag": proposal.data.addon_ttd or proposal.data.addon_loss_of_limbs, "premium": ttd_total_premium, "rate": ""},
+                    {"code": "APMPRM","si":proposal.data.bk_t_std_addon_si,"flag": proposal.data.addon_medical_exp, "premium": medex_premium, "rate": ""},
+                    {"code": "APEDG","si":proposal.data.child_benefit_si,"flag": proposal.data.addon_child_benefits, "premium": proposal.data.ren_child_education_premium, "rate": ""},
+                    {"code": "ACLOD","si":proposal.data.ambulance_addon_si,"flag": proposal.data.addon_ambulance, "premium": proposal.data.ren_ambulance_premium, "rate": ""},
+                    {"code": "APGMB","si":proposal.data.modification_si,"flag": proposal.data.addon_modification, "premium": proposal.data.ren_modification_benefits_premium, "rate": ""},
+                    {"code": "APGFT","si":proposal.data.family_trans_si,"flag": proposal.data.addon_family_trans_benefit, "premium": proposal.data.ren_family_trans_premium, "rate": ""},
+                    {"code": "TRTROR","si":proposal.data.trans_mortal_si,"flag": proposal.data.addon_repatriation_mortal_remains, "premium": proposal.data.ren_repatriations_premium, "rate": ""},
+                    {"code": "APCCE","si":proposal.data.funeral_si,"flag": proposal.data.addon_funeral_expenses, "premium": proposal.data.ren_funeral_expense_premium, "rate": ""}
                 ] %}
             {% endif %}
             <itemSectionVOList>
@@ -264,10 +290,11 @@
                 <IUWP2_DESC9></IUWP2_DESC9>
                 <IUWP2_DESC10></IUWP2_DESC10>
                 <IUWP2_DESC11></IUWP2_DESC11>
-                <IUWP2_DESC12></IUWP2_DESC12>
+                <IUWP2_DESC12>{{proposal.data.proposer_gst_no}}</IUWP2_DESC12>
                 <IUWP2_DESC13></IUWP2_DESC13>
                 <primeIUWP2_INCR_SI>{{proposal.data.bk_total_si}}</primeIUWP2_INCR_SI>
-                <primeIUWP2_INCR_ACT_PREM>{{proposal.data.ren_total_premium |number_format(2) }}</primeIUWP2_INCR_ACT_PREM>
+				{% set nb_total = (proposal.data.ren_total_premium | default(0)) + 0 %}{% set loading = (proposal.data.total_loading | default(0)) + 0 %}{% set act_prem = nb_total + loading %}				
+                <primeIUWP2_INCR_ACT_PREM>{{ act_prem |number_format(2) }}</primeIUWP2_INCR_ACT_PREM>						
                 <IUWP2_ITEM_NO>00001</IUWP2_ITEM_NO>
                 <IUWP2_MAP_REF_NO>1</IUWP2_MAP_REF_NO>
                 <IUWP2_OTH_INT_PTY_CD/>
@@ -333,7 +360,7 @@
                     <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
                     <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_type}}</IUWP2_ADDITIONAL_FIELD8>
                     <IUWP2_ADDITIONAL_FIELD9>0</IUWP2_ADDITIONAL_FIELD9>
-                    <IUWP2_ADDITIONAL_FIELD10>{{proposal.data.first_name}}</IUWP2_ADDITIONAL_FIELD10>
+                    <IUWP2_ADDITIONAL_FIELD10>{{proposer_name}}</IUWP2_ADDITIONAL_FIELD10>
                     <IUWP2_ADDITIONAL_FIELD11>{{proposal.data.email}}</IUWP2_ADDITIONAL_FIELD11>
                     <IUWP2_ADDITIONAL_FIELD12>{{proposal.data.mobile_no}}</IUWP2_ADDITIONAL_FIELD12>
                     <IUWP2_ADDITIONAL_FIELD13>0</IUWP2_ADDITIONAL_FIELD13>
@@ -381,13 +408,13 @@
 
 						{% set premium_raw = cover.premium %}
 
-						{% if proposal.data.sme_flag == 'SME' %}
+						{# {% if proposal.data.sme_flag == 'SME' %}
 							{% if cover.code != 'APDPRM'
 								and cover.code != 'APGTPR'
 								and cover.code != 'APMPRM' %}
 								{% set premium_raw = 0 %}
 							{% endif %}
-						{% endif %}
+						{% endif %} #}
 
 						{% if cover.rate == '' or cover.rate == 0 or cover.rate == '0' %}
 							{% set c_rate = 0 %}
@@ -407,7 +434,7 @@
 							<IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
 							<IUWP3_RT_U>{{ c_rate }}</IUWP3_RT_U>
 							<primeIUWP3_INCR_PREM>{{ c_premium }}</primeIUWP3_INCR_PREM>
-							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si }}</primeIUWP3_INCR_SI>
+							<primeIUWP3_INCR_SI>{{ cover.si }}</primeIUWP3_INCR_SI>
 						</coverageVOList>
 
 					{% endif %}
@@ -445,8 +472,8 @@
          </coinsurerVOList>  #}           
             <userTextVO>
                 <IUWP1_ATEXT1></IUWP1_ATEXT1>
-                <IUWP1_ATEXT2></IUWP1_ATEXT2>
-                <IUWP1_ATEXT3>INSILLION</IUWP1_ATEXT3>
+                <IUWP1_ATEXT2>{{created_by}}</IUWP1_ATEXT2>
+                <IUWP1_ATEXT3>INSUREX</IUWP1_ATEXT3>
                 <IUWP1_ATEXT4></IUWP1_ATEXT4>                
                 <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si}}</IUWP1_ATEXT5>                
                 <IUWP1_ATEXT6></IUWP1_ATEXT6>
@@ -472,7 +499,7 @@
             <freeTextVOList>
                 <IUWDD_TXT_CLAUSE></IUWDD_TXT_CLAUSE>
             </freeTextVOList>
-
+			<IUWP1_SB_OPT>G</IUWP1_SB_OPT>	
         </pol:FGUWPolicyVO>
     </soapenv:Body>
 </soapenv:Envelope>

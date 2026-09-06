@@ -7,7 +7,7 @@ const conf = {
         }
     },
     delay: 3 * 1000,
-    tmp: '/mnt/ebs1/tmp/is_fghealth',
+    tmp: '/mnt/ebs1/tmp/is_rsisghu',
     // simulator: 'http://127.0.0.1:8099/cxf/',
     ignore: [''],
     whitelist: ['ghealth', 'gpa'],
@@ -43,7 +43,7 @@ const conf = {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/clientCreation.twig'],                
-                if: "(policy?.proposal?.data?.client_type?.trim() && policy?.proposal?.data?.customer_type?.trim() && policy?.proposal?.data?.cust_buss_type?.trim() && (policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && policy?.proposal?.data?.cust_buss_type !== 'Entity')",
+                if: "((policy?.proposal?.data?.client_type == 'Existing' || policy?.proposal?.data?.customer_type === 'New') && policy?.proposal?.data?.cust_buss_type == 'Individual')",
                 disable_cache: true,
                 target: {
                     method: 'POST',
@@ -67,7 +67,7 @@ const conf = {
                 name: 'client-create',
                 products: ['gpa', 'ghealth'],                
                 twigs: ['/mnt/ebs1/fghealth/twigs/clientCreation.twig'],
-                if: "((policy?.proposal?.data?.client_type !== 'Existing' || policy?.proposal?.data?.customer_type === 'New') && (policy?.proposal?.data?.cust_buss_type === 'Entity'))",
+                if: "((policy?.proposal?.data?.client_type != 'Existing' || policy?.proposal?.data?.customer_type != 'New') && policy?.proposal?.data?.cust_buss_type != 'Individual')",
                 disable_cache: true,
                 sqs: { name: 'client' },                
                 target: {
@@ -101,7 +101,7 @@ const conf = {
                 name: 'gpa-fgenPolicy',
                 products: ['gpa'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/policy-gpa.twig'],
-                if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business')",
+                if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business' )",
                 disable_cache: true,
                 sqs: { name: 'fgenPolicy' },
 				//sqs: {},
@@ -129,7 +129,7 @@ const conf = {
                 name: 'ghealth-fgenPolicy',
                 products: ['ghealth'],
                 twigs: ['/mnt/ebs1/fghealth/twigs/policy-ghealth.twig'],
-                if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business' )",
+                if: "(policy?.proposal?.data?.policy_transaction_type === 'New Business')",
                 disable_cache: true,
                 sqs: { name: 'fgenPolicy' },
 				//sqs: {},
@@ -157,7 +157,7 @@ const conf = {
         ],
     },
 
-    fgenRen: {
+     fgenRen: {
         name: "fgenRen",
         sqs: { name: 'fgenPolicy' },
         preprocess: { nulls_to_empty: true, skip_yes_no: true },
@@ -165,14 +165,14 @@ const conf = {
             {
                 name: 'gpa-fgenRen',
                 products: ['gpa'],
-                twigs: ['/mnt/ebs1/fghealth/twigs/ren-gpa.twig'],
+                twigs: ['/mnt/ebs1/fghealth/twigs/market-ren-gpa.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
                 disable_cache: true,
-                sqs: {},
+                //sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
-                    url: 'https://fgapi.royalsundaram.in/FirstGenV7/services/doHealthRenewal?wsdl',
+                    url: 'https://fgapi.royalsundaram.in/FirstGenV7/services/doHealthNewBusiness?wsdl',
                     errorPath: [
                         {
                             xfunc: '__get_fg_ren_err_status',
@@ -195,7 +195,36 @@ const conf = {
                 twigs: ['/mnt/ebs1/fghealth/twigs/market-ren-gpa.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
-                sqs: {},
+                //sqs: {},
+                sqs: { name: 'fgenRen' },
+                target: {
+                    method: 'POST',
+                    headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
+                    url: 'https://fgapi.royalsundaram.in/FirstGenV7/services/doHealthNewBusiness?wsdl',
+                    errorPath: [
+                        {
+                            xfunc: '__get_fg_ren_err_status',
+                            mandatory: true
+                        }
+                    ],
+                    ignoreErrors: true,
+                    attributes: [
+                        {
+                            xfunc: '__get_fg_ren_status',
+                            name: 'fgen_ren_policy_no',
+                            mandatory: true
+                        }
+                    ]
+                }
+            },            
+            {
+                name: 'ghealth-fgenRen',
+                products: ['ghealth'],
+                twigs: ['/mnt/ebs1/fghealth/twigs/market-ren-ghealth.twig'],
+                if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
+                disable_cache: true,
+                //sqs: {},
+                //sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -217,39 +246,12 @@ const conf = {
                 }
             },
             {
-                name: 'ghealth-fgenRen',
-                products: ['ghealth'],
-                twigs: ['/mnt/ebs1/fghealth/twigs/ren-ghealth.twig'],
-                if: "( policy?.proposal?.data?.policy_transaction_type === 'Our Renewal')",
-                disable_cache: true,
-                sqs: {},
-                target: {
-                    method: 'POST',
-                    headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
-                    url: 'https://fgapi.royalsundaram.in/FirstGenV7/services/doHealthRenewal?wsdl',
-                    errorPath: [
-                        {
-                            xfunc: '__get_fg_ren_err_status',
-                            mandatory: true
-                        }
-                    ],
-                    ignoreErrors: true,
-                    attributes: [
-                        {
-                            xfunc: '__get_fg_ren_status',
-                            name: 'fgen_ren_policy_no',
-                            mandatory: true
-                        }
-                    ]
-                }
-            },
-			{
                 name: 'ghealth-fgenMRen',
                 products: ['ghealth'],
-                twigs: ['/mnt/ebs1/fghealth/twigs/ren-ghealth.twig'],
+                twigs: ['/mnt/ebs1/fghealth/twigs/market-ren-ghealth.twig'],
                 if: "( policy?.proposal?.data?.policy_transaction_type === 'Market Renewal')",
                 disable_cache: true,
-                sqs: {},
+                sqs: { name: 'fgenRen' },
                 target: {
                     method: 'POST',
                     headers: { 'Content-Type': "application/soap+xml; charset=UTF-8" },
@@ -269,28 +271,25 @@ const conf = {
                         }
                     ]
                 }
-            },
-
-        
+            },            
 
         ],
-    }, 
+    },
 
   
-	/* insillion: {
+	 insillion: {
         name: "insillion",
         sqs: {name: 'fgenRen'},		
         services: [
             {
-                name: 'revfeed',
-                if: "(fgen_policy_no != '')",
+                name: 'revfeed',                
                 products: ['all'],
                 twigs: [],
                 sqs: {},
                 disable_cache: true
             }
         ],
-    }  */
+    }  
 
 }
 if (process.env.IS_TMP) conf.tmp = process.env.IS_TMP;

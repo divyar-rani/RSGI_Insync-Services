@@ -104,11 +104,7 @@
 			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_issue_date}}</IUWP1_DR_PR_NO>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
             <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
-            {% if (proposal.data.existing_client != 'Existing') %}
             <clientUpdateFlag>Y</clientUpdateFlag>
-            {% else %}
-            <clientUpdateFlag>N</clientUpdateFlag>
-            {% endif %}
             <vipFlag>N</vipFlag>
             {%if proposal.data.proposer_pan != '' %}<panNo>{{proposal.data.proposer_pan}}</panNo> {% else %}<panNo/> {% endif %}
             <isNewNominee/>
@@ -483,7 +479,7 @@
                 <IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>				
                 <IUWP3_RT_U>0</IUWP3_RT_U>
                 <primeIUWP3_INCR_PREM>{{proposal.data.ps_prem_bac * percetageInDecimal | round(2,'common')}}</primeIUWP3_INCR_PREM>
-                <primeIUWP3_INCR_SI>{{proposal.data.final_max_si * percetageInDecimal | round(2,'common')}}</primeIUWP3_INCR_SI>
+                <primeIUWP3_INCR_SI>{{proposal.data.bk_total_sum_insured * percetageInDecimal | round(2,'common')}}</primeIUWP3_INCR_SI>
             </coverageVOList>  
             {% set sumOfBreakupPrem = sumOfBreakupPrem + proposal.data.ps_prem_bac | round(2,'common') %}
                 </itemSectionVOList>                       
@@ -524,7 +520,7 @@
                 <IUWP1_ATEXT2>{{created_by}}</IUWP1_ATEXT2>
                 <IUWP1_ATEXT3>INSUREX</IUWP1_ATEXT3>
                 <IUWP1_ATEXT4></IUWP1_ATEXT4>                
-                <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si}}</IUWP1_ATEXT5>                
+                <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si|number_format(2)}}</IUWP1_ATEXT5>                
                 <IUWP1_ATEXT6></IUWP1_ATEXT6>
                 <IUWP1_ATEXT7></IUWP1_ATEXT7>
                 <IUWP1_ATEXT8></IUWP1_ATEXT8>

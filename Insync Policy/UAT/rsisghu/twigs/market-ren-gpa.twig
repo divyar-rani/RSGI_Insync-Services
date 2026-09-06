@@ -87,12 +87,11 @@
                 <IUWP1_ACC_DT>{{ concat(slice(issue_date, 8, 2), '/', slice(issue_date, 5, 2), '/', slice(issue_date, 0, 4))}}</IUWP1_ACC_DT>
             {% endif %} 
             <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
-			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_issue_date}}</IUWP1_DR_PR_NO>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT>
+			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_issue_date}}</IUWP1_DR_PR_NO>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
             <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
-            {% if (proposal.data.existing_client != 'Existing') %}<clientUpdateFlag>Y</clientUpdateFlag>
-            {% else %}<clientUpdateFlag>N</clientUpdateFlag>{% endif %}          
+            <clientUpdateFlag>Y</clientUpdateFlag>
             <nomineeUpdateFlag>N</nomineeUpdateFlag>
             <IUWP1_OTH_INT_PTY_CD1>{{proposal.data.imd_code.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD1>
             <IUWP1_OTH_INT_PTY_CD2>{{proposal.data.imd_sales_rep.replaceAll('\\s+', '') | upper}}</IUWP1_OTH_INT_PTY_CD2>
@@ -652,7 +651,7 @@
 							<IUWP3_DEDUCTIBLE_AMT>0</IUWP3_DEDUCTIBLE_AMT>
 							<IUWP3_RT_U>{{ c_rate }}</IUWP3_RT_U>
 							<primeIUWP3_INCR_PREM>{{ c_premium }}</primeIUWP3_INCR_PREM>
-							<primeIUWP3_INCR_SI>{{ proposal.data.bk_total_si * percetageInDecimal | round(2,'common') }}</primeIUWP3_INCR_SI>
+							<primeIUWP3_INCR_SI>{{ cover.si * percetageInDecimal | round(2,'common') }}</primeIUWP3_INCR_SI>
 						</coverageVOList>
                         {% set sumOfBreakupPrem = sumOfBreakupPrem + c_premium | round(2,'common') %}
 					{% endif %}

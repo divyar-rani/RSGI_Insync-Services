@@ -228,9 +228,9 @@ class insync {
 
             let res = null;
             if (p) {
-                res = await db.exec("update is_policy set policy_no=?, product_name=?, issue_date=?, proposal_no=? where policy_id=?", [policy.policy_no||null, prodname, policy.endorsement_date, policy.propoal_no||'', policyId]);
+                res = await db.exec("update is_policy set policy_no=?, product_name=?, issue_date=?, proposal_no=? where policy_id=?", [policy.endorsement_no||null, prodname, policy.endorsement_date, policy.propoal_no||'', policyId]);
             } else {
-                let params = [policyId, policy.policy_no, prodname, policy.product_id, policy.endorsement_date, policy.proposal_no, def.name];
+                let params = [policyId, policy.endorsement_no, prodname, policy.product_id, policy.endorsement_date, policy.proposal_no, def.name];
                 res = await db.exec("insert into is_policy(policy_id, policy_no, product_name, product_id, issue_date, sync_state, proposal_no, def_name) values (?,?,?,?,?,'downloaded',?,?)", params);
             }
 
@@ -557,7 +557,7 @@ class insync {
         let values = [];
         for (let policy of ret.data) {
             if (eids[policy.policy_id]) continue;
-            values.push([policy.policy_id, policy.policy_no, policy.product_id, policy.product_group_id, policy.issue_date]);
+            values.push([policy.policy_id, policy.endorsement_no, policy.product_id, policy.product_group_id, policy.issue_date]);
             if (values.length>=1000) {
                 console.log('insert/update', values.length);
                 await db.exec("insert into is_policy_issued(policy_id, policy_no, product_id, product_group_id, issue_date) values ? on duplicate key UPDATE policy_id=policy_id", [values]);

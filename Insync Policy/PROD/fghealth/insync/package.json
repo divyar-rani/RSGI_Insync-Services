@@ -19,6 +19,7 @@
     "moment": "^2.29.3",
     "moment-timezone": "^0.5.47",
     "mysql2": "^2.3.3",
+    "oracledb": "^7.0.1",
     "request": "^2.88.2",
     "ssh2-sftp-client": "^9.0.3",
     "twig": "^1.15.4",

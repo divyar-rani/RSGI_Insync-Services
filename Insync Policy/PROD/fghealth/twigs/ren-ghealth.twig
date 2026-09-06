@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:pol="http://policymovements.webservices.uw.rs.firstapex.com/">
     <soapenv:Header/>
-    <soapenv:Body>{% set global_map = {'Group' : 'GR','Mid Corporate' : 'MC','Affinity' : 'AA','SF' : 'SF','C.N.A' : 'CNA','CODAN' : 'CO','Global Network (RSA)' : 'GN','Globex Underwriting Services' : 'GBX','HDI Gerling' : 'HD','Helvetia' : 'HV','Intact Insurance Specialty Solutions' : 'IT','Liberty Mutual' : 'LM','POHJOLA INSURANCE LTD' : 'PO','R+V Re' : 'RUV','RSA' : 'RS','RUV' : 'RUV','Swiss Re' : 'SWRE','The Hanover Insurance Group' : 'HIG','Trygg Hansa' : 'TR','Vero Insurance' : 'VE','Vienna Insurance Group' : 'VIG','Retail Agency' : 'AA','Commercial': 'CM', 'AAR' : 'AA'} %} {% set policy_term = {'Short Term':'03','Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK' } %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber' : 'A','Red':'R'}  %}{% set taxes =  { 'SGST' : 'ZSGST', 'CGST' : 'ZCGST','IGST' : 'ZIGST', 'UGST' : 'ZUTGST' } %}		
+    <soapenv:Body>{% set global_map = {'Group' : 'GR','Mid Corporate' : 'MC','Affinity' : 'AA','SF' : 'SF','C.N.A' : 'CNA','CODAN' : 'CO','Global Network (RSA)' : 'GN','Globex Underwriting Services' : 'GBX','HDI Gerling' : 'HD','Helvetia' : 'HV','Intact Insurance Specialty Solutions' : 'IT','Liberty Mutual' : 'LM','POHJOLA INSURANCE LTD' : 'PO','R+V Re' : 'RUV','RSA' : 'RS','RUV' : 'RUV','Swiss Re' : 'SWRE','The Hanover Insurance Group' : 'HIG','Trygg Hansa' : 'TR','Vero Insurance' : 'VE','Vienna Insurance Group' : 'VIG','Retail Agency' : 'AA','Commercial': 'CM', 'AAR' : 'AA'} %} {% set policy_term = {'Short Term':'03','Annualized':'01'} %} {% set payment_mode = {'Cash':'CASH','Cheque':'CHQ','Bank debit':'BD','CD':'CD','BG':'BANK' } %} {% set installment = {'10 instl':'10','12 instl':'12','Four - monthly':'3','4 instl':'4','Bi-monthly':'6','Quarterly - 2 years':'7','9 instl':'9','Annual':'A','Adjustment':'E','Half-Yearly':'H','Monthly':'M','Quarterly':'Q','Single':'S'} %} {% set rag = {'Green':'G','Amber' : 'A','Red':'R'}  %}{% set taxes =  { 'SGST' : 'ZSGST', 'CGST' : 'ZCGST','IGST' : 'ZIGST', 'UGST' : 'ZUTGST' } %}		
 
         
         <pol:FGUWPolicyVO>
@@ -9,7 +9,7 @@
             <polNo>{{policy_no}}</polNo>
             <endtNo>000</endtNo>
             <IUWP1_PRD_CD>AMG</IUWP1_PRD_CD>
-            <IUWP1_ENDT_REAS>12</IUWP1_ENDT_REAS>
+            <IUWP1_ENDT_REAS>00</IUWP1_ENDT_REAS>
             <IUWP1_CAT_CD>D</IUWP1_CAT_CD>
             {% for item in payment.details %}{% set party_id = item.data.exist_party_id|upper %}          
             <IUWP1_ACC_CD>{{party_id}}</IUWP1_ACC_CD>{% endfor %}
@@ -36,7 +36,7 @@
             <IUWP1_METH_PAY>CASH</IUWP1_METH_PAY>
             <IUWP1_INSTL_MODE>A</IUWP1_INSTL_MODE>
             <IUWP1_NO_INST></IUWP1_NO_INST>            
-            <IUWP1_OLD_POL_NO>{{proposal.data.proposer_expiring_policy_no}}</IUWP1_OLD_POL_NO>
+            <IUWP1_OLD_POL_NO></IUWP1_OLD_POL_NO>
             <primeIUWP1_INCR_SI>{{proposal.data.final_max_si}}</primeIUWP1_INCR_SI>
             <IUWP1_POL_CREF_NO></IUWP1_POL_CREF_NO>
             <IUWP1_PLAN_NO></IUWP1_PLAN_NO>
@@ -60,7 +60,7 @@
             {% else %}
                 <IUWP1_DELIVERY_MODE>NA</IUWP1_DELIVERY_MODE>
             {%endif%}
-            <IUWP1_RN_CD>12</IUWP1_RN_CD>
+            <IUWP1_RN_CD>00</IUWP1_RN_CD>
             <IUWP1_SI_CUR>INR</IUWP1_SI_CUR>
             <IUWP1_PRM_CUR>INR</IUWP1_PRM_CUR>            
             <IUWP1_DECLN_NO/>			
@@ -70,8 +70,9 @@
             <IUWP1_ACC_DT>{{proposal.data.is_fg_acc_date}}</IUWP1_ACC_DT>
             <IUWP1_EFF_DT>{{proposal.data.is_fg_policy_start_date}}</IUWP1_EFF_DT>
             <IUWP1_PROPOSAL_DT>{{proposal.data.is_fg_proposal_date}}</IUWP1_PROPOSAL_DT> 	
+			<IUWP1_DR_PR_NO>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DR_PR_NO>
             <strIUWP1_ICP_TM>000001</strIUWP1_ICP_TM>
-            <strIUWP1_EXP_TM>000000</strIUWP1_EXP_TM>
+            <strIUWP1_EXP_TM>235959</strIUWP1_EXP_TM>
             {% if (proposal.data.existing_client != 'Existing') %}
             <clientUpdateFlag>Y</clientUpdateFlag>
             {% else %}
@@ -97,7 +98,8 @@
             <nomineeAddr3/>
             <nomineeAddr4/>
             <IUWP1_ENQ_KEY_2>{{quote.data.branch_gst_no}}</IUWP1_ENQ_KEY_2>
-            <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR>
+            <IUWP1_POL_WARR></IUWP1_POL_WARR>
+			{# <IUWP1_POL_WARR>{{policy.data.taxinvoice_id}}</IUWP1_POL_WARR> #}
             <IUWP1_DED_TXT1>{{proposal.data.urn_no}}</IUWP1_DED_TXT1>
             <IUWP1_DED_TXT2>{{proposal.data.is_fg_policy_start_date}}</IUWP1_DED_TXT2>
             <IUWP1_DED_TXT3></IUWP1_DED_TXT3>
@@ -125,7 +127,7 @@
                 <IUWPC_PREFIX1></IUWPC_PREFIX1>
                 <IUWPC_FIRSTNAME2>{{slice(proposal.data.first_name,0,30)}}</IUWPC_FIRSTNAME2>
                 <IUWPC_OTHRNAME2/>
-                <IUWPC_SURNAME2>{{slice(proposal.data.first_name,30,60)}}</IUWPC_SURNAME2>
+                <IUWPC_SURNAME2>{{slice(proposer_name,30,30)}}</IUWPC_SURNAME2>
                 {% if (proposal.data.cust_buss_type == 'Entity' )%}<IUWPC_CLI_TP>O</IUWPC_CLI_TP>                                      
                 {% else %}<IUWPC_CLI_TP>I</IUWPC_CLI_TP>{%endif%} 
                 <IUWPC_HM_PHONE/>
@@ -170,6 +172,7 @@
                 <IUWP4_PREM_CURR>INR</IUWP4_PREM_CURR>
                 <IUWP4_PREM_CURR_RATE>1</IUWP4_PREM_CURR_RATE>
                 <IUWP4_RT_U>{{proposal.data.bk_bw_tot_comm}}</IUWP4_RT_U>
+                <primeIUWP4_NEW_INCR_PREM>{{proposal.data.bk_bw_tot_comm}}</primeIUWP4_NEW_INCR_PREM>                
                 </policyCoverageVOList>    
             {% endif %}
 
@@ -229,7 +232,7 @@
                     <IUWP2_ADDITIONAL_FIELD7>{{proposal.data.imd_channel}}</IUWP2_ADDITIONAL_FIELD7>
                     <IUWP2_ADDITIONAL_FIELD8>{{proposal.data.industry_cat}}</IUWP2_ADDITIONAL_FIELD8>
                     <IUWP2_ADDITIONAL_FIELD9></IUWP2_ADDITIONAL_FIELD9>					  
-					<IUWP2_ADDITIONAL_FIELD10>{{slice(proposal.data.first_name,0,30)}}</IUWP2_ADDITIONAL_FIELD10>
+					<IUWP2_ADDITIONAL_FIELD10>{{proposal.data.first_name}}</IUWP2_ADDITIONAL_FIELD10>
 					<IUWP2_ADDITIONAL_FIELD11>{{proposal.data.email}}</IUWP2_ADDITIONAL_FIELD11>
 					<IUWP2_ADDITIONAL_FIELD12>{{proposal.data.mobile_no}}</IUWP2_ADDITIONAL_FIELD12>
                     <IUWP2_ADDITIONAL_FIELD40>0</IUWP2_ADDITIONAL_FIELD40>
@@ -287,7 +290,7 @@
             <userTextVO>
                 <IUWP1_ATEXT1></IUWP1_ATEXT1>
                 <IUWP1_ATEXT2></IUWP1_ATEXT2>
-                <IUWP1_ATEXT3>INSILLION</IUWP1_ATEXT3>
+                <IUWP1_ATEXT3>INSUREX</IUWP1_ATEXT3>
                 <IUWP1_ATEXT4></IUWP1_ATEXT4>                
                 <IUWP1_ATEXT5>{{proposal.data.bk_highest_individual_si}}</IUWP1_ATEXT5>                
                 <IUWP1_ATEXT6></IUWP1_ATEXT6>
